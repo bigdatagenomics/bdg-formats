@@ -6,12 +6,12 @@
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
     <version>7</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>org.bdgenomics.bdg-formats</groupId>
   <artifactId>bdg-formats</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
   <name>Big Data Genomics: Avro Formats</name>
 
