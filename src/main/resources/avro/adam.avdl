@@ -144,14 +144,6 @@ record ADAMPileup {
     union { null, string } recordGroupSample = null;
 }
 
-record ADAMNestedPileup {
-     // nested pileup data type - contains reference to list of overlapping reads
-     // note: cannot be used with databases (e.g. hive/shark)
-     ADAMPileup pileup;
-     array<ADAMRecord> readEvidence;
-}
-
-
 record ADAMVariant {
   union { null, ADAMContig } contig = null;
   union { null, long } position = null;
