@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-@namespace("org.bdgenomics.bdg_formats.avro")
+@namespace("org.bdgenomics.formats.avro")
 protocol ADAM {
 
 record ADAMContig {
