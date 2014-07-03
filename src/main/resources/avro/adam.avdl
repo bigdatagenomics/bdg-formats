@@ -50,7 +50,6 @@ record ADAMRecord {
     union { null, string } cigar = null;
     union { null, string } qual = null;
     union { null, string } recordGroupName = null;
-    union { null, int } recordGroupId = null;
     union { int, null } basesTrimmedFromStart = 0;
     union { int, null } basesTrimmedFromEnd = 0;
 
