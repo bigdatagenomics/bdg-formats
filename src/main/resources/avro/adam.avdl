@@ -167,7 +167,7 @@ record ADAMVariant {
   union { null, long } position = null;
   union { null, long } exclusiveEnd = null;
   union { null, string } referenceAllele = null;
-  union { null, string } variantAllele = null;
+  union { null, string } alternateAllele = null;
 }
 
 enum ADAMGenotypeAllele {
