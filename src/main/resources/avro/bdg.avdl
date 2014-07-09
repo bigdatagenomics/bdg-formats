@@ -164,8 +164,9 @@ record Pileup {
 
 record Variant {
   union { null, Contig } contig = null;
-  union { null, long } position = null;
-  union { null, long } exclusiveEnd = null;
+  // zero-based coordinate system, closed-open intervals
+  union { null, long } start = null;
+  union { null, long } end = null;
   union { null, string } referenceAllele = null;
   union { null, string } alternateAllele = null;
 }
