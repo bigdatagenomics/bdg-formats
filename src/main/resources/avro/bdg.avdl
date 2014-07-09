@@ -17,9 +17,9 @@
  */
 
 @namespace("org.bdgenomics.formats.avro")
-protocol ADAM {
+protocol BDG {
 
-record ADAMContig {
+record Contig {
   union { null, string } contigName = null;
   union { null, long }   contigLength = null;
   union { null, string } contigMD5 = null;
@@ -28,7 +28,7 @@ record ADAMContig {
   union { null, string } species = null;
 }
 
-record ADAMRecord {
+record Read {
 
     /**
      * These two fields, along with the two
@@ -37,7 +37,7 @@ record ADAMRecord {
      * of the Sequence Dictionary embedded in the these
      * records from the BAM / SAM itself.
      */
-    union { null, ADAMContig } contig = null;
+    union { null, Contig } contig = null;
 
     // 0-based reference position start and end
     union { null, long } start = null;
@@ -98,7 +98,7 @@ record ADAMRecord {
     union { null, string } recordGroupPlatformUnit = null;
     union { null, string } recordGroupSample = null;
 
-    union { null, ADAMContig} mateContig = null;
+    union { null, Contig} mateContig = null;
 }
 
 enum Base {
@@ -121,11 +121,11 @@ enum Base {
     D  // not C
 }
 
-record ADAMNucleotideContigFragment {
+record NucleotideContigFragment {
     // stores a contig of nucleotides; this may be a reference chromosome, may be an
     // assembly, may be a BAC. very long contigs (>1Mbp) need to be split into fragments.
     // it seems that they are too long to load in a single go.
-    union { null, ADAMContig } contig = null;
+    union { null, Contig } contig = null;
     union { null, string } description = null;
     union { null, string } fragmentSequence = null; // sequence of bases in this fragment
     union { null, int } fragmentNumber = null; // ordered number for this fragment
@@ -133,8 +133,8 @@ record ADAMNucleotideContigFragment {
     union { null, int } numberOfFragmentsInContig = null; // total number of fragments in contig
 }
 
-record ADAMPileup {
-    union { null, ADAMContig } contig = null;
+record Pileup {
+    union { null, Contig } contig = null;
     union { null, long } position = null;
     union { null, int } rangeOffset = null;
     union { null, int } rangeLength = null;
@@ -163,22 +163,22 @@ record ADAMPileup {
     union { null, string } recordGroupSample = null;
 }
 
-record ADAMVariant {
-  union { null, ADAMContig } contig = null;
+record Variant {
+  union { null, Contig } contig = null;
   union { null, long } position = null;
   union { null, long } exclusiveEnd = null;
   union { null, string } referenceAllele = null;
   union { null, string } alternateAllele = null;
 }
 
-enum ADAMGenotypeAllele {
+enum GenotypeAllele {
   Ref,   // Genotype is the reference allele
   Alt,   // Genotype is the alternate allele
   OtherAlt, // Genotype is unspecified other alternate allele (e.g. split from multi-allelic)
   NoCall // Genotype could not be called
 }
 
-enum ADAMGenotypeType {
+enum GenotypeType {
   HOM_REF,
   HET,
   HOM_ALT,
@@ -218,7 +218,7 @@ record VariantCallingAnnotations {
   union { null, boolean } usedForPositiveTrainingSet = null;
 }
 
-record ADAMFlatGenotype {
+record FlatGenotype {
     union { null, string } referenceName = null;
     union { null, long }   position = null;
     union { null, string } referenceAllele = null;
@@ -232,8 +232,8 @@ record ADAMFlatGenotype {
     union { null, string } sampleId = null;
 }
 
-record ADAMGenotype {
-  ADAMVariant variant;
+record Genotype {
+  Variant variant;
   union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
 
   // Sample-level data, i.e. data specific to this particular sample
@@ -242,7 +242,7 @@ record ADAMGenotype {
   union { null, string }  processingDescription = null;
 
   // Length is equal to the ploidy
-  union { null, array <ADAMGenotypeAllele> } alleles = null;
+  union { null, array <GenotypeAllele> } alleles = null;
 
   // Allele dosage (EC)
   union { null, float } expectedAlleleDosage = null;
@@ -263,7 +263,7 @@ record ADAMGenotype {
   // Component statistics which comprise the Fisher's Exact Test to detect strand bias
   union { null, array<int> } strandBiasComponents = null;
 
-  // In ADAM we split multi-allelic VCF lines into multiple
+  // In  we split multi-allelic VCF lines into multiple
   // single-alternate records.  This bit is set if that happened for this
   // record.
   union { boolean, null } splitFromMultiAllelic = false;
@@ -283,8 +283,8 @@ record VariantEffect
   union {null, string} transcriptId = null;
 }
 
-record ADAMDatabaseVariantAnnotation {
-  union { null, ADAMVariant } variant;
+record DatabaseVariantAnnotation {
+  union { null, Variant } variant;
 
   union { null, int } dbSnpId = null;
 
@@ -330,7 +330,7 @@ enum Strand {
   Independent
 }
 
-record ADAMFeature {
+record Feature {
   // identifier for the particular feature object
   // if provided, then preferably unique within a given trackName
   union { null, string } featureId = null;
@@ -343,12 +343,12 @@ record ADAMFeature {
 
   // pointers to parent features, a la Chado feature database schema
   // parentIds and parentdbxrefs should correspond to each other
-  // only inconsistency is Chado would treat ADAMContig as a Feature;
+  // only inconsistency is Chado would treat Contig as a Feature;
   array<string> parentIds = null;
   array<string> parentdbxrefs = null;
 
   // coordinate system to locate against
-  union { null, ADAMContig } contig = null;
+  union { null, Contig } contig = null;
 
   // position
   union { null, long } start = null;
@@ -368,7 +368,7 @@ record ADAMFeature {
   union { null, long } thickStart = null;
   union { null, long } thickEnd = null;
   union { null, string } itemRgb = null;
-  // should these be parsed into new ADAMFeatures while setting their parentIds?
+  // should these be parsed into new Features while setting their parentIds?
   union { null, long } blockCount = null;
   array<long> blockSizes = null;
   array<long> blockStarts = null;
