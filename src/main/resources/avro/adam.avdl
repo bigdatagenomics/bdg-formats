@@ -39,8 +39,9 @@ record ADAMRecord {
      */
     union { null, ADAMContig } contig = null;
 
-    // 0-based reference position start
+    // 0-based reference position start and end
     union { null, long } start = null;
+    union { null, long } end = null;
 
     union { null, int } mapq = null;
     union { null, string } readName = null;
