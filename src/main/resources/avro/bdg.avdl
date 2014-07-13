@@ -383,6 +383,11 @@ record Feature {
   // strand -- parsed into strand
   union { null, long } frame = null;
 
+  // Also, parsing out 'source' and 'feature' into separate fields, since we'll
+  // need to independently sort and handle these values.
+  union { null, string } source = null;
+  union { null, string } featureType = null;
+
   // narrowPeak format - (BED6+4)
   union { null, double } signalValue = null;
   union { null, double } pValue = null;
