@@ -19,165 +19,370 @@
 @namespace("org.bdgenomics.formats.avro")
 protocol BDG {
 
+/**
+ Record for describing a reference assembly. Not used for storing the contents
+ of said assembly.
+
+ @see NucleotideContigFragment
+ */
 record Contig {
+  /**
+   The name of this contig in the assembly (e.g., "chr1").
+   */
   union { null, string } contigName = null;
+  
+  /**
+   The length of this contig.
+   */
   union { null, long }   contigLength = null;
+
+  /**
+   The MD5 checksum of the assembly for this contig.
+   */
   union { null, string } contigMD5 = null;
+
+  /**
+   The URL at which this reference assembly can be found.
+   */
   union { null, string } referenceURL = null;
+
+  /**
+   The name of this assembly (e.g., "hg19").
+   */
   union { null, string } assembly = null;
+
+  /**
+   The species that this assembly is for.
+   */
   union { null, string } species = null;
 }
 
 record Read {
 
-    /**
-     * These two fields, along with the two
-     * reference{Length, Url} fields at the bottom
-     * of the schema, collectively form the contents
-     * of the Sequence Dictionary embedded in the these
-     * records from the BAM / SAM itself.
-     */
-    union { null, Contig } contig = null;
+  /**
+   The reference sequence details for the reference chromosome that
+   this read is aligned to. If the read is unaligned, this field should
+   be null.
+   */
+  union { null, Contig } contig = null;
 
-    // 0-based reference position start and end
-    union { null, long } start = null;
-    union { null, long } end = null;
+  /**
+   0 based reference position for the start of this read's alignment.
+   Should be null if the read is unaligned.
+   */
+  union { null, long } start = null;
+  /**
+   0 based reference position for the end of this read's alignment.
+   Should be null if the read is unaligned.
+   */
+  union { null, long } end = null;
 
-    union { null, int } mapq = null;
-    union { null, string } readName = null;
-    union { null, string } sequence = null;
-    union { null, string } mateReference = null;
-    union { null, long } mateAlignmentStart = null;
-    union { null, string } cigar = null;
-    union { null, string } qual = null;
-    union { null, string } recordGroupName = null;
-    union { int, null } basesTrimmedFromStart = 0;
-    union { int, null } basesTrimmedFromEnd = 0;
+  /**
+   The global mapping quality of this read.
+   */
+  union { null, int } mapq = null;
 
-    // Read flags (all default to false)
-    union { boolean, null } readPaired = false;
-    union { boolean, null } properPair = false;
-    union { boolean, null } readMapped = false;
-    union { boolean, null } mateMapped = false;
-    union { boolean, null } firstOfPair = false;
-    union { boolean, null } secondOfPair = false;
-    union { boolean, null } failedVendorQualityChecks = false;
-    union { boolean, null } duplicateRead = false;
+  /**
+   The name of this read. This should be unique within the read group
+   that this read is from, and can be used to identify other reads that
+   are derived from a single fragment.
+   */
+  union { null, string } readName = null;
+  /**
+   The bases in this alignment. If the read has been hard clipped, this may
+   not represent all the bases in the original read.
+   */
+  union { null, string } sequence = null;
+  /**
+   The per-base quality scores in this alignment. If the read has been hard
+   clipped, this may not represent all the bases in the original read.
+   Additionally, if the error scores have been recalibrated, this field
+   will not contain the original base quality scores.
 
-    // alignment flags (all default to null, as readMapped defaults to false)
-    union { boolean, null } readNegativeStrand = false; // aligned to reverse compliment
-    union { boolean, null } mateNegativeStrand = false; // mate aligned to reverse compliment
-    // primary vs. secondary vs. supplementary:
-    // - primary is either the best linear alignment or the "first" linear alignment 
-    //   in a chimeric alignment
-    // - supplementary is a non-primary linear alignment in a chimeric alignment
-    // - secondary is an alignment that is not the best alignment (an alignment that is
-    //   worse than the primary alignment) and that is not a supplimental linear alignment in a 
-    //   chimeric alignment (thus not supplimentary)
-    union { boolean, null } primaryAlignment = false;
-    union { boolean, null } secondaryAlignment = false;
-    union { boolean, null } supplementaryAlignment = false;
+   @see origQual
+   */
+  union { null, string } qual = null;
+  /**
+   The Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
+   describes the local alignment of this read. Contains {length, operator}
+   pairs for all contiguous alignment operations. The operators include:
+   
+   * M, ALIGNMENT_MATCH: An alignment match indicates that a sequence can be
+     aligned to the reference without evidence of an INDEL. Unlike the
+     SEQUENCE_MATCH and SEQUENCE_MISMATCH operators, the ALIGNMENT_MATCH
+     operator does not indicate whether the reference and read sequences are an
+     exact match.
+   * I, INSERT: The insert operator indicates that the read contains evidence of
+     bases being inserted into the reference.
+   * D, DELETE: The delete operator indicates that the read contains evidence of
+     bases being deleted from the reference.
+   * N, SKIP: The skip operator indicates that this read skips a long segment of
+     the reference, but the bases have not been deleted. This operator is
+     commonly used when working with RNA-seq data, where reads may skip long
+     segments of the reference between exons.
+   * S, CLIP_SOFT: The soft clip operator indicates that bases at the start/end
+     of a read have not been considered during alignment. This may occur if the
+     majority of a read maps, except for low quality bases at the start/end of
+     a read. Bases that are soft clipped will still be stored in the read.
+   * H, CLIP_HARD: The hard clip operator indicates that bases at the start/end of
+     a read have been omitted from this alignment. This may occur if this linear
+     alignment is part of a chimeric alignment, or if the read has been trimmed
+     (e.g., during error correction, or to trim poly-A tails for RNA-seq).
+   * P, PAD: The pad operator indicates that there is padding in an alignment.
+   * =, SEQUENCE_MATCH: This operator indicates that this portion of the aligned
+     sequence exactly matches the reference (e.g., all bases are equal to the
+     reference bases).
+   * X, SEQUENCE_MISMATCH: This operator indicates that this portion of the 
+     aligned sequence is an alignment match to the reference, but a sequence
+     mismatch (e.g., the bases are not equal to the reference). This can
+     indicate a SNP or a read error.
+    */
+  union { null, string } cigar = null;
+  /**
+   The number of bases in this read/alignment that have been trimmed from the
+   start of the read. By default, this is equal to 0. If the value is non-zero,
+   that means that the start of the read has been hard-clipped.
 
-    // Commonly used optional attributes
-    union { null, string } mismatchingPositions = null;
-    union { null, string } origQual = null;
+   @see cigar
+   */
+  union { int, null } basesTrimmedFromStart = 0;
+  /**
+   The number of bases in this read/alignment that have been trimmed from the
+   end of the read. By default, this is equal to 0. If the value is non-zero,
+   that means that the end of the read has been hard-clipped.
 
-    // Remaining optional attributes flattened into a string
-    union { null, string } attributes = null;
+   @see cigar
+   */
+  union { int, null } basesTrimmedFromEnd = 0;
 
-    // record group identifer from sequencing run
-    union { null, string } recordGroupSequencingCenter = null;
-    union { null, string } recordGroupDescription = null;
-    union { null, long } recordGroupRunDateEpoch = null;
-    union { null, string } recordGroupFlowOrder = null;
-    union { null, string } recordGroupKeySequence = null;
-    union { null, string } recordGroupLibrary = null;
-    union { null, int } recordGroupPredictedMedianInsertSize = null;
-    union { null, string } recordGroupPlatform = null;
-    union { null, string } recordGroupPlatformUnit = null;
-    union { null, string } recordGroupSample = null;
+  // Read flags (all default to false)
+  union { boolean, null } readPaired = false;
+  union { boolean, null } properPair = false;
+  union { boolean, null } readMapped = false;
+  union { boolean, null } mateMapped = false;
+  union { boolean, null } firstOfPair = false;
+  union { boolean, null } secondOfPair = false;
+  union { boolean, null } failedVendorQualityChecks = false;
+  union { boolean, null } duplicateRead = false;
 
-    union { null, Contig} mateContig = null;
+  /**
+   True if this alignment is mapped as a reverse compliment. This field
+   defaults to false.
+   */
+  union { boolean, null } readNegativeStrand = false;
+  /**
+   True if the mate pair of this alignment is mapped as a reverse compliment.
+   This field defaults to false.
+   */
+  union { boolean, null } mateNegativeStrand = false;
+  /**
+   This field is true if this alignment is either the best linear alignment,
+   or the first linear alignment in a chimeric alignment. Defaults to false.
+
+   @see secondaryAlignment
+   @see supplementaryAlignment
+   */
+  union { boolean, null } primaryAlignment = false;
+  /**
+   This field is true if this alignment is a lower quality linear alignment
+   for a multiply-mapped read. Defaults to false.
+
+   @see primaryAlignment
+   @see supplementaryAlignment
+   */
+  union { boolean, null } secondaryAlignment = false;
+  /**
+   This field is true if this alignment is a non-primary linear alignment in
+   a chimeric alignment. Defaults to false.
+
+   @see primaryAlignment
+   @see secondaryAlignment
+   */
+  union { boolean, null } supplementaryAlignment = false;
+
+  // Commonly used optional attributes
+  union { null, string } mismatchingPositions = null;
+  union { null, string } origQual = null;
+
+  // Remaining optional attributes flattened into a string
+  union { null, string } attributes = null;
+
+  // record group identifer from sequencing run
+  union { null, string } recordGroupName = null;
+  union { null, string } recordGroupSequencingCenter = null;
+  union { null, string } recordGroupDescription = null;
+  union { null, long } recordGroupRunDateEpoch = null;
+  union { null, string } recordGroupFlowOrder = null;
+  union { null, string } recordGroupKeySequence = null;
+  union { null, string } recordGroupLibrary = null;
+  union { null, int } recordGroupPredictedMedianInsertSize = null;
+  union { null, string } recordGroupPlatform = null;
+  union { null, string } recordGroupPlatformUnit = null;
+  union { null, string } recordGroupSample = null;
+
+  /**
+   The start position of the mate of this read. Should be set to null if the
+   mate is unaligned, or if the mate does not exist.
+   */
+  union { null, long } mateAlignmentStart = null;
+  /**
+   The end position of the mate of this read. Should be set to null if the
+   mate is unaligned, or if the mate does not exist.
+   */
+  union { null, long } mateAlignmentEnd = null;
+  /**
+   The reference contig of the mate of this read. Should be set to null if the
+   mate is unaligned, or if the mate does not exist.
+   */
+  union { null, Contig } mateContig = null;
 }
 
+/**
+ Enumeration for DNA/RNA bases. For codes outside of ACTGU, see the IUPAC 
+ resolution codes (http://www.bioinformatics.org/sms/iupac.html).
+ */
 enum Base {
-    A,
-    C,
-    T,
-    G,
-    U,
-    N, // any
-    X, // any
-    K, // keto: G/T
-    M, // aMino: A/C
-    R, // puRine: A/G
-    Y, // pYriminidine: C/T
-    S, // Strong: C/G
-    W, // Weak: A/T
-    B, // not A
-    V, // not T
-    H, // not G
-    D  // not C
+  A,
+  C,
+  T,
+  G,
+  U,
+  N, // any
+  X, // any
+  K, // keto: G/T
+  M, // aMino: A/C
+  R, // puRine: A/G
+  Y, // pYriminidine: C/T
+  S, // Strong: C/G
+  W, // Weak: A/T
+  B, // not A
+  V, // not T
+  H, // not G
+  D  // not C
 }
 
+/**
+ Stores a contig of nucleotides; this may be a reference chromosome, may be an
+ assembly, may be a BAC. Very long contigs (>1Mbp) need to be split into fragments.
+ It seems that they are too long to load in a single go. For best performance,
+ it seems like 10kbp is a good point at which to start splitting contigs into
+ fragments.
+ */
 record NucleotideContigFragment {
-    // stores a contig of nucleotides; this may be a reference chromosome, may be an
-    // assembly, may be a BAC. very long contigs (>1Mbp) need to be split into fragments.
-    // it seems that they are too long to load in a single go.
-    union { null, Contig } contig = null;
-    union { null, string } description = null;
-    union { null, string } fragmentSequence = null; // sequence of bases in this fragment
-    union { null, int } fragmentNumber = null; // ordered number for this fragment
-    union { null, long } fragmentStartPosition = null; // position of first base of fragment in contig
-    union { null, int } numberOfFragmentsInContig = null; // total number of fragments in contig
+  /**
+   The contig identification descriptor for this contig.
+   */
+  union { null, Contig } contig = null;
+  /**
+   A description for this contig. When importing from FASTA, the FASTA header
+   description line should be stored here.
+   */
+  union { null, string } description = null;
+  /**
+   The sequence of bases in this fragment.
+   */
+  union { null, string } fragmentSequence = null;
+  /**
+   In a fragmented contig, the position of this fragment in the set of fragments.
+   Can be null if the contig is not fragmented.
+   */
+  union { null, int } fragmentNumber = null;
+  /**
+   The position of the first base of this fragment in the overall contig. E.g.,
+   if all fragments are 10kbp and this is the third fragment in the contig,
+   the start position would be 20000L.
+   */
+  union { null, long } fragmentStartPosition = null;
+  /**
+   The total count of fragments that this contig has been broken into. Can be
+   null if the contig is not fragmented.
+   */
+  union { null, int } numberOfFragmentsInContig = null; // total number of fragments in contig
 }
 
 record Pileup {
-    union { null, Contig } contig = null;
-    union { null, long } position = null;
-    union { null, int } rangeOffset = null;
-    union { null, int } rangeLength = null;
-    union { null, Base } referenceBase = null;
-    union { null, Base } readBase = null;
-    union { null, int } sangerQuality = null;
-    union { null, int } mapQuality = null;
-    union { null, int } numSoftClipped = null;
-    union { null, int } numReverseStrand = null;
-    union { null, int } countAtPosition = null;
+  union { null, Contig } contig = null;
+  union { null, long } position = null;
+  union { null, int } rangeOffset = null;
+  union { null, int } rangeLength = null;
+  union { null, Base } referenceBase = null;
+  union { null, Base } readBase = null;
+  union { null, int } sangerQuality = null;
+  union { null, int } mapQuality = null;
+  union { null, int } numSoftClipped = null;
+  union { null, int } numReverseStrand = null;
+  union { null, int } countAtPosition = null;
 
-    union { null, string } readName = null;
-    union { null, long } readStart = null;
-    union { null, long } readEnd = null;
+  union { null, string } readName = null;
+  union { null, long } readStart = null;
+  union { null, long } readEnd = null;
 
-    // record group identifer from sequencing run
-    union { null, string } recordGroupSequencingCenter = null;
-    union { null, string } recordGroupDescription = null;
-    union { null, long } recordGroupRunDateEpoch = null;
-    union { null, string } recordGroupFlowOrder = null;
-    union { null, string } recordGroupKeySequence = null;
-    union { null, string } recordGroupLibrary = null;
-    union { null, int } recordGroupPredictedMedianInsertSize = null;
-    union { null, string } recordGroupPlatform = null;
-    union { null, string } recordGroupPlatformUnit = null;
-    union { null, string } recordGroupSample = null;
+  // record group identifer from sequencing run
+  union { null, string } recordGroupSequencingCenter = null;
+  union { null, string } recordGroupDescription = null;
+  union { null, long } recordGroupRunDateEpoch = null;
+  union { null, string } recordGroupFlowOrder = null;
+  union { null, string } recordGroupKeySequence = null;
+  union { null, string } recordGroupLibrary = null;
+  union { null, int } recordGroupPredictedMedianInsertSize = null;
+  union { null, string } recordGroupPlatform = null;
+  union { null, string } recordGroupPlatformUnit = null;
+  union { null, string } recordGroupSample = null;
 }
 
 record Variant {
+  /**
+   The reference contig that this variant exists on.
+   */
   union { null, Contig } contig = null;
-  // zero-based coordinate system, closed-open intervals
+  /**
+   The 0-based start position of this variant on the reference contig.
+   */
   union { null, long } start = null;
+  /**
+   The 0-based, exclusive end position of this variant on the reference contig.
+   */
   union { null, long } end = null;
+  /**
+   A string describing the reference allele at this site.
+   */
   union { null, string } referenceAllele = null;
+  /**
+   A string describing the variant allele at this site.
+   */
   union { null, string } alternateAllele = null;
 }
 
+/**
+ An enumeration that describes the allele that corresponds to a genotype. Can take
+ the following values:
+
+ * Ref: The genotype is the reference allele
+ * Alt: The genotype is the alternate allele
+ * OtherAlt: The genotype is an unspecified other alternate allele. This occurs
+   in our schema when we have split a multi-allelic genotype into two genotype
+   records.
+ * NoCall: The genotype could not be called.
+ */
 enum GenotypeAllele {
-  Ref,   // Genotype is the reference allele
-  Alt,   // Genotype is the alternate allele
-  OtherAlt, // Genotype is unspecified other alternate allele (e.g. split from multi-allelic)
-  NoCall // Genotype could not be called
+  Ref,
+  Alt,
+  OtherAlt,
+  NoCall
 }
 
+/**
+ An enumeration that describes the characteristics of a genotype at a site. Can
+ take the following values:
+
+ * HOM_REF: All genotypes at this site were called as the reference allele.
+ * HET: Genotypes at this site were called as multiple different alleles. This
+   most commonly occurs if a diploid sample's genotype contains one reference
+   and one variant allele, but can also occur if the genotype contains multiple
+   alternate alleles.
+ * HOM_ALT: All genotypes at this site were called as a single alternate allele.
+ * NO_CALL: The genotype could not be called at this site.
+ */
 enum GenotypeType {
   HOM_REF,
   HET,
@@ -219,58 +424,142 @@ record VariantCallingAnnotations {
 }
 
 record FlatGenotype {
-    union { null, string } referenceName = null;
-    union { null, long }   position = null;
-    union { null, string } referenceAllele = null;
-    union { null, array<string> } alleles = null;
+  union { null, string } referenceName = null;
+  union { null, long }   position = null;
+  union { null, string } referenceAllele = null;
+  array<string> alleles = [];
 
-    union { null, array<int> } genotypeLikelihoods = null;
-    union { null, array<int> } alleleDepths = null;
-    union { null, int } readDepth = null;
-    union { null, int } genotypeQuality = null;
+  array<int> genotypeLikelihoods = [];
+  array<int> alleleDepths = [];
+  union { null, int } readDepth = null;
+  union { null, int } genotypeQuality = null;
 
-    union { null, string } sampleId = null;
+  union { null, string } sampleId = null;
 }
 
 record Genotype {
+  /**
+   The variant called at this site.
+   */
   Variant variant;
+
+  /**
+   Statistics collected at this site, if available.
+   */
   union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
 
-  // Sample-level data, i.e. data specific to this particular sample
+  /**
+   The unique identifier for this sample.
+   */
   union { null, string }  sampleId = null;
+  /**
+   A description of this sample.
+   */
   union { null, string }  sampleDescription = null;
+  /**
+   A string describing the provenance of this sample and the processing applied
+   in genotyping this sample.
+   */
   union { null, string }  processingDescription = null;
 
   // Length is equal to the ploidy
-  union { null, array <GenotypeAllele> } alleles = null;
+  /**
+   An array describing the genotype called at this site. The length of this
+   array is equal to the ploidy of the sample at this site. This array may
+   reference OtherAlt alleles if this site is multi-allelic in this sample.
+   */
+  array <GenotypeAllele> alleles = [];
 
-  // Allele dosage (EC)
+  /**
+   The expected dosage of the alternate allele in this sample.
+   */
   union { null, float } expectedAlleleDosage = null;
 
-  // How many reference and alternate reads (AD)
+  /**
+   The number of reads that show evidence for the reference at this site.
+   
+   @see alternateReadDepth
+   @see readDepth
+   */  
   union { null, int }     referenceReadDepth = null;
+  /**
+   The number of reads that show evidence for this alternate allele at this site.
+   
+   @see referenceReadDepth
+   @see readDepth
+   */
   union { null, int }     alternateReadDepth = null;
-  // How many reads and minimum reads at this position in this sample (DP, MIN_DP)
+  /**
+   The total number of reads at this site. May not equal (alternateReadDepth +
+   referenceReadDepth) if this site shows evidence of multiple alternate alleles.
+   
+   @see referenceReadDepth
+   @see alternateReadDepth
+
+   @note Analogous to VCF's DP.
+   */
   union { null, int }     readDepth = null;
+  /**
+   The minimum number of reads seen at this site across samples when joint
+   calling variants.
+
+   @note Analogous to VCF's MIN_DP.
+   */
   union { null, int }     minReadDepth = null;
-  // The phred-scaled probability that we're correct for this genotype call (GQ)
+  /**
+   The phred-scaled probability that we're correct for this genotype call.
+
+   @note Analogous to VCF's GQ.
+   */
   union { null, int }     genotypeQuality = null;
 
-  // Phred-scaled. Always length 3 since all variants are bi-allelic
-  union { null, array<int> } genotypeLikelihoods = null;
-  union { null, array<int> } nonReferenceLikelihoods = null;
+  /**
+   Phred scaled likelihoods that we have n copies of this alternate allele.
+   The number of elements in this array should be equal to the ploidy at this
+   site, plus 1.
+   
+   @note Analogous to VCF's PL.
+   */
+  array<int> genotypeLikelihoods = [];
+  /**
+   Phred scaled likelihoods that we have n non-reference alleles at this site.
+   The number of elements in this array should be equal to the ploidy at this
+   site, plus 1.
+   */
+  array<int> nonReferenceLikelihoods = [];
 
-  // Component statistics which comprise the Fisher's Exact Test to detect strand bias
-  union { null, array<int> } strandBiasComponents = null;
+  /**
+   Component statistics which comprise the Fisher's Exact Test to detect strand bias.
+   */
+  array<int> strandBiasComponents = [];
 
-  // In  we split multi-allelic VCF lines into multiple
-  // single-alternate records.  This bit is set if that happened for this
-  // record.
+  /**
+   We split multi-allelic VCF lines into multiple
+   single-alternate records.  This bit is set if that happened for this
+   record.
+   */
   union { boolean, null } splitFromMultiAllelic = false;
 
-  // Whether this is a phased genotype, and if so the phase set and quality
-  union { null, boolean } isPhased = null;
+  /**
+   True if this genotype is phased.
+
+   @see phaseSetId
+   @see phaseQuality
+   */
+  union { boolean, null } isPhased = false;
+  /**
+   The ID of this phase set, if this genotype is phased. Should only be populated
+   if isPhased == true; else should be null.
+
+   @see isPhased
+   */
   union { null, int }     phaseSetId = null;
+  /**
+   Phred scaled quality score for the phasing of this genotype, if this genotype
+   is phased. Should only be populated if isPhased == true; else should be null.
+
+   @see isPhased
+   */
   union { null, int }     phaseQuality = null;
 }
 
@@ -321,8 +610,6 @@ record DatabaseVariantAnnotation {
   union { null, string } mutationTasterPred = null;
 
 }
-
-
 
 enum Strand {
   Forward,
