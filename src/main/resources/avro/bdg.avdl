@@ -57,7 +57,7 @@ record Contig {
   union { null, string } species = null;
 }
 
-record Read {
+record AlignmentRecord {
 
   /**
    The reference sequence details for the reference chromosome that
