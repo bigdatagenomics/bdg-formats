@@ -301,33 +301,46 @@ record NucleotideContigFragment {
 }
 
 record Pileup {
+  /**
+   The reference contig that this pileup is mapped to.
+   */
   union { null, Contig } contig = null;
+  /**
+   The 0-based mapping position of this pileup on the reference contig.
+   */
   union { null, long } position = null;
+
+  /**
+   The range offset and range length fields are used when an insertion or
+   deletion has occured. The range length indicates the length of the event
+   and the range offset field indicates the location of this base in the
+   insertion or deletion event.
+   */
   union { null, int } rangeOffset = null;
   union { null, int } rangeLength = null;
+
+  /**
+   The base in the reference at this position.
+   */
   union { null, Base } referenceBase = null;
+  /**
+   The read base at this position.
+   */
   union { null, Base } readBase = null;
+
+  /**
+   The Phred scaled base quality at this position.
+   */
   union { null, int } sangerQuality = null;
+  /**
+   The Phred scaled mapping quality of the read this pileup came from.
+   */
   union { null, int } mapQuality = null;
-  union { null, int } numSoftClipped = null;
-  union { null, int } numReverseStrand = null;
-  union { null, int } countAtPosition = null;
 
-  union { null, string } readName = null;
-  union { null, long } readStart = null;
-  union { null, long } readEnd = null;
-
-  // record group identifer from sequencing run
-  union { null, string } recordGroupSequencingCenter = null;
-  union { null, string } recordGroupDescription = null;
-  union { null, long } recordGroupRunDateEpoch = null;
-  union { null, string } recordGroupFlowOrder = null;
-  union { null, string } recordGroupKeySequence = null;
-  union { null, string } recordGroupLibrary = null;
-  union { null, int } recordGroupPredictedMedianInsertSize = null;
-  union { null, string } recordGroupPlatform = null;
-  union { null, string } recordGroupPlatformUnit = null;
-  union { null, string } recordGroupSample = null;
+  /**
+   True if this base is on the reverse strand.
+   */
+  union { boolean, null } isReverseStrand = false;
 }
 
 /**
