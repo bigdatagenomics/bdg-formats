@@ -71,6 +71,14 @@ record AlignmentRecord {
    Should be null if the read is unaligned.
    */
   union { null, long } start = null;
+
+  /**
+   0 based reference position where this read used to start before
+   local realignment.
+   Stores the same data as the OP field in the SAM format.
+   */
+  union { null, long } oldPosition = null;
+
   /**
    0 based reference position for the end of this read's alignment.
    Should be null if the read is unaligned.
@@ -138,6 +146,13 @@ record AlignmentRecord {
      indicate a SNP or a read error.
     */
   union { null, string } cigar = null;
+  /**
+   Stores the CIGAR string present before local indel realignment.
+   Stores the same data as the OC field in the SAM format.
+
+   @see cigar
+    */
+  union { null, string } oldCigar = null;
   /**
    The number of bases in this read/alignment that have been trimmed from the
    start of the read. By default, this is equal to 0. If the value is non-zero,
