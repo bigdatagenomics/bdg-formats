@@ -617,6 +617,32 @@ enum Strand {
   Independent
 }
 
+record Dbxref {
+  string accession;
+  string db;
+}
+
+record FeatureAttribute {
+  string key;
+  union { null, string } value = null;
+}
+
+record Feature2 {
+  union { null, string } featureId = null;
+  union { null, string } featureType = null;
+  union { null, string } source = null;
+  union { null, Contig } contig = null;
+  union { null, long } start = null;
+  union { null, long } end = null;
+  union { null, Strand } strand = null;
+  union { null, long } frame = null;
+  union { null, double } score = null;
+
+  array<Dbxref> dbxrefs = null;
+  array<string> parentIds = null;
+  array<FeatureAttribute> attributes = null;
+}
+
 record Feature {
   // identifier for the particular feature object
   // if provided, then preferably unique within a given trackName
