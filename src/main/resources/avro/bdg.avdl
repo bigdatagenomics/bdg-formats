@@ -328,6 +328,8 @@ record Pileup {
    */
   union { null, Base } readBase = null;
 
+  union { null, string } sampleId = null;
+
   /**
    The Phred scaled base quality at this position.
    */
