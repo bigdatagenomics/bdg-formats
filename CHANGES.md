@@ -1,5 +1,8 @@
 # bdg-formats #
 
+### Version 0.3.1 ###
+* ISSUE [30](https://github.com/bigdatagenomics/bdg-formats/pull/30): [BDG-FORMATS-29] Re-organize the Feature schema
+
 ### Version 0.3.0 ###
 * ISSUE [32](https://github.com/bigdatagenomics/bdg-formats/pull/32): [BDG-FORMATS-31] Added sampleId to Pileup
 * ISSUE [26](https://github.com/bigdatagenomics/bdg-formats/pull/26): [BDG-FORMATS-26] Removing bulky fields from the pileup record.
