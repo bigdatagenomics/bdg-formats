@@ -432,6 +432,12 @@ record Variant {
    null.
    */
   union { null, StructuralVariant } svAllele = null;
+
+  /**
+   A boolean describing whether this variant call is somatic; in this case, the
+   `referenceAllele` will have been observed in another sample.
+   */
+  union { boolean, null } isSomatic = false;
 }
 
 /**
@@ -496,12 +502,32 @@ record VariantCallingAnnotations {
   union { null, float }   variantQualityByDepth = null;
   union { null, float }   readPositionRankSum = null;
 
+  /**
+   The Phred scaled prior probabilities of the various genotype states at this site.
+   The number of elements in this array should be equal to the ploidy at this
+   site, plus 1.
+   */
+  array<int> genotypePriors = [];
+  /**
+   The Phred scaled posterior probabilities of the various genotype states at this site,
+   in this sample. The number of elements in this array should be equal to the ploidy at
+   this site, plus 1.
+   */
+  array<int> genotypePosteriors = [];
+
   // VQSR: Log-odds ratio of being a true vs false variant under trained
   // Gaussian mixture model.
   union { null, float }   vqslod = null;
   union { null, string }  culprit = null;
   union { null, boolean } usedForNegativeTrainingSet = null;
   union { null, boolean } usedForPositiveTrainingSet = null;
+
+  /**
+   Additional feature info that doesn't fit into the standard fields above.
+   
+   They are all encoded as (string, string) key-value pairs.
+   */
+  map<string> attributes = {};
 }
 
 record FlatGenotype {
@@ -522,7 +548,7 @@ record Genotype {
   /**
    The variant called at this site.
    */
-  Variant variant;
+  union { null, Variant } variant = null;
 
   /**
    Statistics collected at this site, if available.
