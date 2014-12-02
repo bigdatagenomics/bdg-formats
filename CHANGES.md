@@ -1,5 +1,8 @@
 # bdg-formats #
 
+### Version 0.5.0 ###
+* ISSUE [39](https://github.com/bigdatagenomics/bdg-formats/pull/39): [bdg-formats-38] Add prior/posterior fields, somatic status, and attribute map
+
 ### Version 0.4.0 ###
 * ISSUE [36](https://github.com/bigdatagenomics/bdg-formats/pull/36): [BDG-FORMATS-35] Change Avro strings to Java String
 
