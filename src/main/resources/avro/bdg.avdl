@@ -57,6 +57,39 @@ record Contig {
   union { null, string } species = null;
 }
 
+/**
+   The description of what it has been experimentally read from a DNA fragment.
+*/
+record Fragment {
+  /**
+     The name of this Fragment. 
+  */
+  union { null, string } readName = null;
+
+  union { null, string } instrument;
+	union { null, string } runId;
+  /**
+     The following are Illumina specific, is it a problem?
+   */
+  union { null, string } flowcellId;
+  union { null, int} lane = null;
+  union { null, int} tile = null;
+  union { null, int} surface = null;      
+  union { null, int} xPosition = null;
+  union { null, int} yPosition = null;
+  
+  /**
+   The sequence of bases as read by the sequencer.
+   @see qual
+   */
+  array<string> sequences = [];
+  /**
+   The per-base quality scores of the measured sequences.
+   */
+  union { null, array<string> } qualities = null;
+}
+  
+
 record AlignmentRecord {
 
   /**
