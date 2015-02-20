@@ -30,7 +30,7 @@ record Contig {
    The name of this contig in the assembly (e.g., "chr1").
    */
   union { null, string } contigName = null;
-  
+
   /**
    The length of this contig.
    */
@@ -57,40 +57,12 @@ record Contig {
   union { null, string } species = null;
 }
 
-/**
-   The description of what it has been experimentally read from a DNA fragment.
-*/
-record Fragment {
-  /**
-     The name of this Fragment. 
-  */
-  union { null, string } readName = null;
-
-  union { null, string } instrument;
-	union { null, string } runId;
-  /**
-     The following are Illumina specific, is it a problem?
-   */
-  union { null, string } flowcellId;
-  union { null, int} lane = null;
-  union { null, int} tile = null;
-  union { null, int} surface = null;      
-  union { null, int} xPosition = null;
-  union { null, int} yPosition = null;
-  
-  /**
-   The sequence of bases as read by the sequencer.
-   @see qual
-   */
-  array<string> sequences = [];
-  /**
-   The per-base quality scores of the measured sequences.
-   */
-  union { null, array<string> } qualities = null;
-}
-  
-
 record AlignmentRecord {
+ 
+  /**
+   Read number within the array of fragment reads.
+   */
+  union { int, null } readNum = 0;
 
   /**
    The reference sequence details for the reference chromosome that
@@ -147,7 +119,7 @@ record AlignmentRecord {
    The Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
    describes the local alignment of this read. Contains {length, operator}
    pairs for all contiguous alignment operations. The operators include:
-   
+
    * M, ALIGNMENT_MATCH: An alignment match indicates that a sequence can be
      aligned to the reference without evidence of an INDEL. Unlike the
      SEQUENCE_MATCH and SEQUENCE_MISMATCH operators, the ALIGNMENT_MATCH
@@ -173,7 +145,7 @@ record AlignmentRecord {
    * =, SEQUENCE_MATCH: This operator indicates that this portion of the aligned
      sequence exactly matches the reference (e.g., all bases are equal to the
      reference bases).
-   * X, SEQUENCE_MISMATCH: This operator indicates that this portion of the 
+   * X, SEQUENCE_MISMATCH: This operator indicates that this portion of the
      aligned sequence is an alignment match to the reference, but a sequence
      mismatch (e.g., the bases are not equal to the reference). This can
      indicate a SNP or a read error.
@@ -285,8 +257,39 @@ record AlignmentRecord {
   union { null, Contig } mateContig = null;
 }
 
+record Sequence {
+  union { null, string } bases = null;
+  union { null, string } qualities = null;
+}
+
 /**
- Enumeration for DNA/RNA bases. For codes outside of ACTGU, see the IUPAC 
+   The DNA fragment that is was targeted by the sequencer, resulting in
+   one or more reads.
+*/
+record Fragment {
+  /**
+   The name of this Fragment.
+   */
+  union { null, string } readName = null;
+
+  union { null, string } instrument = null;
+  union { null, string } runId = null; 
+
+  /**
+   Fragment's insert size derived from alignment, if the reads have been
+   aligned.
+   */
+  union { null, int } fragmentSize = null;
+
+  /**
+   The sequences read from this fragment.
+   */
+  array<Sequence> sequences = [];
+  array<AlignmentRecord> alignments = [];
+}
+
+/**
+ Enumeration for DNA/RNA bases. For codes outside of ACTGU, see the IUPAC
  resolution codes (http://www.bioinformatics.org/sms/iupac.html).
  */
 enum Base {
@@ -416,7 +419,7 @@ record Variant {
   union { null, string } alternateAllele = null;
   /**
    The structural variant at this site, if the alternate allele is a structural
-   variant. If the site is not a structural variant, this field should be left 
+   variant. If the site is not a structural variant, this field should be left
    null.
    */
   union { null, StructuralVariant } svAllele = null;
@@ -512,7 +515,7 @@ record VariantCallingAnnotations {
 
   /**
    Additional feature info that doesn't fit into the standard fields above.
-   
+
    They are all encoded as (string, string) key-value pairs.
    */
   map<string> attributes = {};
@@ -572,14 +575,14 @@ record Genotype {
 
   /**
    The number of reads that show evidence for the reference at this site.
-   
+
    @see alternateReadDepth
    @see readDepth
-   */  
+   */
   union { null, int }     referenceReadDepth = null;
   /**
    The number of reads that show evidence for this alternate allele at this site.
-   
+
    @see referenceReadDepth
    @see readDepth
    */
@@ -587,7 +590,7 @@ record Genotype {
   /**
    The total number of reads at this site. May not equal (alternateReadDepth +
    referenceReadDepth) if this site shows evidence of multiple alternate alleles.
-   
+
    @see referenceReadDepth
    @see alternateReadDepth
 
@@ -612,7 +615,7 @@ record Genotype {
    Phred scaled likelihoods that we have n copies of this alternate allele.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
-   
+
    @note Analogous to VCF's PL.
    */
   array<int> genotypeLikelihoods = [];
@@ -721,59 +724,59 @@ record Feature {
    Preferably unique ID for this Feature object
    */
   union { null, string } featureId = null;
-  
+
   /**
    The type of feature this is (aka, "track").
-   
+
    Examples are "conservation", "centipede", "gene"
    */
   union { null, string } featureType = null;
-  
+
   /**
    The original source for this feature.
-   
+
    Path/filename/URL and/or the file type (e.g., BED, GFF, etc.)
    */
   union { null, string } source = null;
-  
+
   /**
    The contig this feature is located on
    */
   union { null, Contig } contig = null;
-  
+
   /**
    Start coordinate on the contig
    */
   union { null, long } start = null;
-  
+
   /**
    End coordinate on the contig
    */
   union { null, long } end = null;
-  
+
   /**
    Strand information for this feature
    */
   union { null, Strand } strand = null;
-  
+
   /**
    The value associated with this feature (if double)
    */
   union { null, double } value = null;
-  
+
   /**
    Cross-references into other databases.
    */
   array<Dbxref> dbxrefs = [];
-  
+
   /**
    List of parent featureIds, for implementing feature hierachies/graphs.
    */
   array<string> parentIds = [];
-  
+
   /**
    Additional feature info that doesn't fit into the standard fields above.
-   
+
    They are all encoded as (string, string) key-value pairs.
    */
   map<string> attributes = {};
