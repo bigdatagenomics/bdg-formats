@@ -57,8 +57,14 @@ record Contig {
   union { null, string } species = null;
 }
 
+record Sequence {
+  union { null, string } bases;
+  union { null, string } qualities;
+}
+
 /**
-   The description of what it has been experimentally read from a DNA fragment.
+   The DNA fragment that is was targeted by the sequencer, resulting in
+   one or more reads.
 */
 record Fragment {
   /**
@@ -79,18 +85,26 @@ record Fragment {
   union { null, int} yPosition = null;
 
   /**
-   The sequence of bases as read by the sequencer.
-   @see qual
+    Fragment's insert size derived from alignment, if the reads have been
+    aligned.
    */
-  array<string> sequences = [];
+  union { null, int} fragmentSize = null;
+
   /**
-   The per-base quality scores of the measured sequences.
+   The sequences read from this fragment.
    */
-  union { null, array<string> } qualities = null;
+  array<Sequence> sequences = [];
+  array<AlignmentRecord> alignments = [];
 }
 
 
 record AlignmentRecord {
+
+  
+  /**
+    Read number within the array of fragment reads.
+  */
+  union { int, null } readNum = 0;
 
   /**
    The reference sequence details for the reference chromosome that
