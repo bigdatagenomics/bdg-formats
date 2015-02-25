@@ -315,51 +315,6 @@ record NucleotideContigFragment {
   union { null, int } numberOfFragmentsInContig = null; // total number of fragments in contig
 }
 
-record Pileup {
-  /**
-   The reference contig that this pileup is mapped to.
-   */
-  union { null, Contig } contig = null;
-  /**
-   The 0-based mapping position of this pileup on the reference contig.
-   */
-  union { null, long } position = null;
-
-  /**
-   The range offset and range length fields are used when an insertion or
-   deletion has occured. The range length indicates the length of the event
-   and the range offset field indicates the location of this base in the
-   insertion or deletion event.
-   */
-  union { null, int } rangeOffset = null;
-  union { null, int } rangeLength = null;
-
-  /**
-   The base in the reference at this position.
-   */
-  union { null, Base } referenceBase = null;
-  /**
-   The read base at this position.
-   */
-  union { null, Base } readBase = null;
-
-  union { null, string } sampleId = null;
-
-  /**
-   The Phred scaled base quality at this position.
-   */
-  union { null, int } sangerQuality = null;
-  /**
-   The Phred scaled mapping quality of the read this pileup came from.
-   */
-  union { null, int } mapQuality = null;
-
-  /**
-   True if this base is on the reverse strand.
-   */
-  union { boolean, null } isReverseStrand = false;
-}
-
 /**
  Descriptors for the type of a structural variant. The most specific descriptor
  should be used, if possible. E.g., duplication should be used instead of
