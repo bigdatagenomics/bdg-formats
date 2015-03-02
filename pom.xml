@@ -91,29 +91,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <!-- Generates UML diagrams automatically within Javadoc -->
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
-        <configuration>
-	  <aggregate>true</aggregate>
-	  <show>private</show>
-	  <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-	  <docletArtifact>
-            <groupId>org.umlgraph</groupId>
-            <artifactId>umlgraph</artifactId>
-            <version>5.6.6</version>
-	  </docletArtifact>
-	  <!-- Documentation: http://www.umlgraph.org/doc/cd-opt.html -->
-	  <additionalparam>
-            -attributes  -enumerations  -enumconstants  -qualify  -types  -visibility
-            -inferdep  -inferrel  -collpackages java.util.*
-            -hide java.*  -hide org.bdgenomics.formats.avro.*.Builder
-            -postfixpackage  -nodefontsize 9  -nodefontpackagesize 7
-          </additionalparam>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   
@@ -162,6 +139,49 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!--
+        Insert UML diagrams within the HTML generated Javadoc.
+
+        The UmlGraphDoc requires GraphViz to be installed in the classpath of the target system
+        (more specifically the 'dot' executable)
+        
+        USAGE
+        
+          mvn javadoc:javadoc -P uml-diagrams
+
+        DOCUMENTATION
+          
+          * Parameters (in additionalparam section below)
+          http://www.umlgraph.org/doc/cd-opt.html
+      -->
+      <id>uml-diagrams</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <configuration>
+              <aggregate>true</aggregate>
+              <show>private</show>
+              <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+              <docletArtifact>
+                <groupId>org.umlgraph</groupId>
+                <artifactId>umlgraph</artifactId>
+                <version>5.6.6</version>
+              </docletArtifact>
+              <additionalparam>
+                -attributes  -enumerations  -enumconstants  -qualify  -types  -visibility
+                -inferdep  -inferrel  -collpackages java.util.*
+                -hide java.*  -hide org.bdgenomics.formats.avro.*.Builder
+                -postfixpackage  -nodefontsize 9  -nodefontpackagesize 7
+              </additionalparam>
+            </configuration>
           </plugin>
         </plugins>
       </build>
