@@ -255,6 +255,10 @@ record AlignmentRecord {
    mate is unaligned, or if the mate does not exist.
    */
   union { null, Contig } mateContig = null;
+  /**
+   The distance between this read and it's mate as inferred from alignment.
+   */
+  union { null, long } inferredInsertSize = null;
 }
 
 record Sequence {
