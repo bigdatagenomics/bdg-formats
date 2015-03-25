@@ -57,53 +57,11 @@ record Contig {
   union { null, string } species = null;
 }
 
-record Sequence {
-  union { null, string } bases;
-  union { null, string } qualities;
-}
-
-/**
-   The DNA fragment that is was targeted by the sequencer, resulting in
-   one or more reads.
-*/
-record Fragment {
-  /**
-     The name of this Fragment.
-  */
-  union { null, string } readName = null;
-
-  union { null, string } instrument;
-	union { null, string } runId;
-  /**
-     The following are Illumina specific, is it a problem?
-   */
-  union { null, string } flowcellId;
-  union { null, int} lane = null;
-  union { null, int} tile = null;
-  union { null, int} surface = null;
-  union { null, int} xPosition = null;
-  union { null, int} yPosition = null;
-
-  /**
-    Fragment's insert size derived from alignment, if the reads have been
-    aligned.
-   */
-  union { null, int} fragmentSize = null;
-
-  /**
-   The sequences read from this fragment.
-   */
-  array<Sequence> sequences = [];
-  array<AlignmentRecord> alignments = [];
-}
-
-
 record AlignmentRecord {
-
-  
+ 
   /**
-    Read number within the array of fragment reads.
-  */
+   Read number within the array of fragment reads.
+   */
   union { int, null } readNum = 0;
 
   /**
@@ -297,6 +255,37 @@ record AlignmentRecord {
    mate is unaligned, or if the mate does not exist.
    */
   union { null, Contig } mateContig = null;
+}
+
+record Sequence {
+  union { null, string } bases = null;
+  union { null, string } qualities = null;
+}
+
+/**
+   The DNA fragment that is was targeted by the sequencer, resulting in
+   one or more reads.
+*/
+record Fragment {
+  /**
+   The name of this Fragment.
+   */
+  union { null, string } readName = null;
+
+  union { null, string } instrument = null;
+  union { null, string } runId = null; 
+
+  /**
+   Fragment's insert size derived from alignment, if the reads have been
+   aligned.
+   */
+  union { null, int } fragmentSize = null;
+
+  /**
+   The sequences read from this fragment.
+   */
+  array<Sequence> sequences = [];
+  array<AlignmentRecord> alignments = [];
 }
 
 /**
