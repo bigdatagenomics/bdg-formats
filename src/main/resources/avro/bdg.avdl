@@ -179,7 +179,6 @@ record AlignmentRecord {
   union { boolean, null } readPaired = false;
   union { boolean, null } properPair = false;
   union { boolean, null } readMapped = false;
-  union { boolean, null } mateMapped = false;
   union { boolean, null } firstOfPair = false;
   union { boolean, null } secondOfPair = false;
   union { boolean, null } failedVendorQualityChecks = false;
@@ -190,11 +189,6 @@ record AlignmentRecord {
    defaults to false.
    */
   union { boolean, null } readNegativeStrand = false;
-  /**
-   True if the mate pair of this alignment is mapped as a reverse compliment.
-   This field defaults to false.
-   */
-  union { boolean, null } mateNegativeStrand = false;
   /**
    This field is true if this alignment is either the best linear alignment,
    or the first linear alignment in a chimeric alignment. Defaults to false.
@@ -239,22 +233,6 @@ record AlignmentRecord {
   union { null, string } recordGroupPlatform = null;
   union { null, string } recordGroupPlatformUnit = null;
   union { null, string } recordGroupSample = null;
-
-  /**
-   The start position of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
-   */
-  union { null, long } mateAlignmentStart = null;
-  /**
-   The end position of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
-   */
-  union { null, long } mateAlignmentEnd = null;
-  /**
-   The reference contig of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
-   */
-  union { null, Contig } mateContig = null;
 }
 
 record Sequence {
