@@ -262,6 +262,19 @@ record Sequence {
   union { null, string } qualities = null;
 }
 
+enum Platform {
+  IlluminaHT /* Illumina high-throughput */
+}
+
+record IlluminaHTInfo {
+  union { null, string } flowcellId;
+  union { null, int } lane;
+  union { null, int } tile;
+  union { null, int } surface;
+  union { null, int } xPosition;
+  union { null, int } yPosition;
+}
+
 /**
    The DNA fragment that is was targeted by the sequencer, resulting in
    one or more reads.
@@ -286,6 +299,13 @@ record Fragment {
    */
   array<Sequence> sequences = [];
   array<AlignmentRecord> alignments = [];
+
+
+  /**
+   Platform-specific information about this Fragment.
+   */
+  union { null, Platform } platformType;
+  union { null, IlluminaHTInfo } platformInfo;
 }
 
 /**
