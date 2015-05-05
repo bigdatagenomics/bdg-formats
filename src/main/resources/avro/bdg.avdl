@@ -259,32 +259,43 @@ record AlignmentRecord {
   union { null, long } inferredInsertSize = null;
 }
 
+enum SequencingPlatform {
+  Illumina
+}
+
+record IlluminaInfo {
+  union { null, string } flowcellId;
+  union { null, int } lane;
+  union { null, int } tile;
+  union { null, int } surface;
+  union { null, int } xPosition;
+  union { null, int } yPosition;
+}
+
 record Sequence {
+  /**
+   Analogous to fastq
+   */
+  union { null, string } sequenceName = null;
   union { null, string } bases = null;
   union { null, string } qualities = null;
+  union { null, SequencingPlatform } platformType = null;
+  union { null, IlluminaInfo } platformInfo = null;
 }
 
 /**
-   The DNA fragment that is was targeted by the sequencer, resulting in
-   one or more reads.
+   A set of objects that should be physically analyzed/stored together.
+   Typically the result of some type of groupby operation.
 */
-record Fragment {
+record Bucket {
   /**
-   The name of this Fragment.
+   The name of this Bucket.  Can include the group key in the logical
+   group-by operation.
    */
-  union { null, string } readName = null;
-
-  union { null, string } instrument = null;
-  union { null, string } runId = null; 
+  union { null, string } bucketName = null;
 
   /**
-   Fragment's insert size derived from alignment, if the reads have been
-   aligned.
-   */
-  union { null, int } fragmentSize = null;
-
-  /**
-   The sequences read from this fragment.
+   The grouped objects.  Only one of these arrays should be non-empty.
    */
   array<Sequence> sequences = [];
   array<AlignmentRecord> alignments = [];
