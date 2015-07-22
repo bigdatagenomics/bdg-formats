@@ -521,20 +521,6 @@ record VariantCallingAnnotations {
   map<string> attributes = {};
 }
 
-record FlatGenotype {
-  union { null, string } referenceName = null;
-  union { null, long }   position = null;
-  union { null, string } referenceAllele = null;
-  array<string> alleles = [];
-
-  array<int> genotypeLikelihoods = [];
-  array<int> alleleDepths = [];
-  union { null, int } readDepth = null;
-  union { null, int } genotypeQuality = null;
-
-  union { null, string } sampleId = null;
-}
-
 record Genotype {
   /**
    The variant called at this site.
