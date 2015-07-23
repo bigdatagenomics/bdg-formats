@@ -347,6 +347,10 @@ record NucleotideContigFragment {
    */
   union { null, long } fragmentStartPosition = null;
   /**
+   The length of this fragment.
+   */
+  union { null, long } fragmentLength = null;
+  /**
    The total count of fragments that this contig has been broken into. Can be
    null if the contig is not fragmented.
    */
