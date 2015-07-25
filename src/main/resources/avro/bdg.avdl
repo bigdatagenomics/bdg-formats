@@ -402,6 +402,12 @@ record StructuralVariant {
 
 record Variant {
   /**
+   The Phred scaled error probability of a variant, given the probabilities of
+   the variant in a population.
+   */
+  union { null, int } variantErrorProbability = null;
+
+  /**
    The reference contig that this variant exists on.
    */
   union { null, Contig } contig = null;
@@ -478,46 +484,90 @@ enum GenotypeType {
 // sample but are computed based on the samples.  For instance,  MAPQ0 is an aggregate
 // stat computed from all samples and stored inside the INFO line.
 record VariantCallingAnnotations {
-  // QUAL: Phred-scaled probability of error for this variant call.
-  union { null, float }   variantCallErrorProbability = null;
 
   // FILTER: True or false implies that filters were applied and this variant PASSed or not.
   // While 'null' implies not filters were applied.
   union { null, boolean } variantIsPassing = null;
   array <string> variantFilters = [];
 
-  union { null, int }     readDepth = null;
+  /**
+   True if the reads covering this site were randomly downsampled to reduce coverage.
+   */
   union { null, boolean } downsampled = null;
-  union { null, float }   baseQRankSum = null;
-  union { null, float }   clippingRankSum = null;
-  union { null, float }   fisherStrandBiasPValue = null; // Phred-scaled.
-  union { null, float }   haplotypeScore = null;
-  union { null, float }   inbreedingCoefficient = null;
-  union { null, float }   rmsMapQ = null;
-  union { null, int }     mapq0Reads = null;
-  union { null, float }   mqRankSum = null;
-  union { null, float }   variantQualityByDepth = null;
-  union { null, float }   readPositionRankSum = null;
 
   /**
-   The Phred scaled prior probabilities of the various genotype states at this site.
+   The Wilcoxon rank-sum test statistic of the base quality scores. The base quality
+   scores are separated by whether or not the base supports the reference or the
+   alternate allele.
+   */
+  union { null, float } baseQRankSum = null;
+
+  /**
+   The Fisher's exact test score for the strand bias of the reference and alternate
+   alleles. Stored as a phred scaled probability. Thus, if:
+
+   * a = The number of positive strand reads covering the reference allele
+   * b = The number of positive strand reads covering the alternate allele
+   * c = The number of negative strand reads covering the reference allele
+   * d = The number of negative strand reads covering the alternate allele
+
+   This value takes the score:
+   
+   -10 log((a + b)! * (c + d)! * (a + c)! * (b + d)! / (a! b! c! d! n!)
+
+   Where n = a + b + c + d.
+   */
+  union { null, float } fisherStrandBiasPValue = null;
+
+  /**
+   The root mean square of the mapping qualities of reads covering this site.
+   */
+  union { null, float } rmsMapQ = null;
+  
+  /**
+   The number of reads at this site with mapping quality equal to 0.
+   */
+  union { null, int } mapq0Reads = null;
+
+  /**
+   The Wilcoxon rank-sum test statistic of the mapping quality scores. The mapping
+   quality scores are separated by whether or not the read supported the reference or the
+   alternate allele.
+   */
+  union { null, float } mqRankSum = null;
+
+  /**
+   The Wilcoxon rank-sum test statistic of the position of the base in the read at this site.
+   The positions are separated by whether or not the base supports the reference or the
+   alternate allele.
+   */
+  union { null, float } readPositionRankSum = null;
+
+  /**
+   The log scale prior probabilities of the various genotype states at this site.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
    */
-  array<int> genotypePriors = [];
+  array<float> genotypePriors = [];
+
   /**
-   The Phred scaled posterior probabilities of the various genotype states at this site,
+   The log scaled posterior probabilities of the various genotype states at this site,
    in this sample. The number of elements in this array should be equal to the ploidy at
    this site, plus 1.
    */
-  array<int> genotypePosteriors = [];
+  array<float> genotypePosteriors = [];
 
-  // VQSR: Log-odds ratio of being a true vs false variant under trained
-  // Gaussian mixture model.
-  union { null, float }   vqslod = null;
-  union { null, string }  culprit = null;
-  union { null, boolean } usedForNegativeTrainingSet = null;
-  union { null, boolean } usedForPositiveTrainingSet = null;
+  /**
+    The log-odds ratio of being a true vs. false variant under a trained statistical model.
+    This model can be a multivariate Gaussian mixture, support vector machine, etc.
+    */
+  union { null, float } vqslod = null;
+
+  /**
+   If known, the feature that contributed the most to this variant being classified as
+   a false variant.
+   */
+  union { null, string } culprit = null;
 
   /**
    Additional feature info that doesn't fit into the standard fields above.
@@ -604,22 +654,23 @@ record Genotype {
   union { null, int }     genotypeQuality = null;
 
   /**
-   Phred scaled likelihoods that we have n copies of this alternate allele.
+   Log scaled likelihoods that we have n copies of this alternate allele.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
 
    @note Analogous to VCF's PL.
    */
-  array<int> genotypeLikelihoods = [];
+  array<float> genotypeLikelihoods = [];
   /**
-   Phred scaled likelihoods that we have n non-reference alleles at this site.
+   Log scaled likelihoods that we have n non-reference alleles at this site.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
    */
-  array<int> nonReferenceLikelihoods = [];
+  array<float> nonReferenceLikelihoods = [];
 
   /**
    Component statistics which comprise the Fisher's Exact Test to detect strand bias.
+   If populated, this element should have length 4.
    */
   array<int> strandBiasComponents = [];
 
