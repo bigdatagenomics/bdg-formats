@@ -1,5 +1,13 @@
 # bdg-formats #
 
+### Version 0.6.0 ###
+* ISSUE [51](https://github.com/bigdatagenomics/bdg-formats/pull/51): Clean up VariantCallingAnnotations
+* ISSUE [61](https://github.com/bigdatagenomics/bdg-formats/pull/61): Added fragmentLength field to NucleotideContigFragment
+* ISSUE [59](https://github.com/bigdatagenomics/bdg-formats/pull/59): [FORMATS-58] Remove flat genotype.
+* ISSUE [46](https://github.com/bigdatagenomics/bdg-formats/pull/46): [bdg-formats-45] Removing pileup type.
+* ISSUE [48](https://github.com/bigdatagenomics/bdg-formats/pull/48): Generate UML diagrams from source (issue #47)
+* ISSUE [42](https://github.com/bigdatagenomics/bdg-formats/pull/42): fix artifact/schema publishing
+
 ### Version 0.5.0 ###
 * ISSUE [39](https://github.com/bigdatagenomics/bdg-formats/pull/39): [bdg-formats-38] Add prior/posterior fields, somatic status, and attribute map
 
