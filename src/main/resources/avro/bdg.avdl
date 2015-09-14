@@ -58,7 +58,7 @@ record Contig {
 }
 
 record AlignmentRecord {
- 
+
   /**
    Read number within the array of fragment reads.
    */
@@ -284,8 +284,8 @@ record Sequence {
 }
 
 /**
-   A set of objects that should be physically analyzed/stored together.
-   Typically the result of some type of groupby operation.
+   A set of reads that should be analyzed/stored together physically.
+   Typically the result of a groupby operation.
 */
 record Bucket {
   /**
@@ -523,7 +523,7 @@ record VariantCallingAnnotations {
    * d = The number of negative strand reads covering the alternate allele
 
    This value takes the score:
-   
+
    -10 log((a + b)! * (c + d)! * (a + c)! * (b + d)! / (a! b! c! d! n!)
 
    Where n = a + b + c + d.
@@ -534,7 +534,7 @@ record VariantCallingAnnotations {
    The root mean square of the mapping qualities of reads covering this site.
    */
   union { null, float } rmsMapQ = null;
-  
+
   /**
    The number of reads at this site with mapping quality equal to 0.
    */
