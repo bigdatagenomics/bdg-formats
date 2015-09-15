@@ -295,9 +295,8 @@ record Bucket {
   union { null, string } bucketName = null;
 
   /**
-   The grouped objects.  Only one of these arrays should be non-empty.
+   The array of grouped reads.  They may be unmapped.
    */
-  array<Sequence> sequences = [];
   array<AlignmentRecord> alignments = [];
 }
 
