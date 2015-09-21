@@ -55,6 +55,13 @@ record Contig {
    The species that this assembly is for.
    */
   union { null, string } species = null;
+
+  /**
+   Optional 0-based index of this contig in a SAM file header that it was read
+   from; helps output SAMs/BAMs with headers in the same order as they started
+   with, before a conversion to ADAM.
+   */
+  union { null, int } referenceIndex = null;
 }
 
 record AlignmentRecord {
