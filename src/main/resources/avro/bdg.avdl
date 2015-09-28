@@ -266,11 +266,6 @@ record AlignmentRecord {
   union { null, long } inferredInsertSize = null;
 }
 
-record Sequence {
-  union { null, string } bases = null;
-  union { null, string } qualities = null;
-}
-
 /**
    The DNA fragment that is was targeted by the sequencer, resulting in
    one or more reads.
@@ -293,7 +288,6 @@ record Fragment {
   /**
    The sequences read from this fragment.
    */
-  array<Sequence> sequences = [];
   array<AlignmentRecord> alignments = [];
 }
 
