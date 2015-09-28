@@ -69,7 +69,7 @@ record AlignmentRecord {
   /**
    Read number within the array of fragment reads.
    */
-  union { int, null } readNum = 0;
+  union { int, null } readInFragment = 0;
 
   /**
    The reference sequence details for the reference chromosome that
