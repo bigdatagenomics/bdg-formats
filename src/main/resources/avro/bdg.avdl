@@ -64,6 +64,28 @@ record Contig {
   union { null, int } referenceIndex = null;
 }
 
+record RecordGroupMetadata {
+  /**
+   Record group identifier.
+   */
+  union { null, string } name = null;
+
+  /**
+   Name of the sample that the record group is from.
+   */
+  union { null, string } sample = null;
+
+  union { null, string } sequencingCenter = null;
+  union { null, string } description = null;
+  union { null, long } runDateEpoch = null;
+  union { null, string } flowOrder = null;
+  union { null, string } keySequence = null;
+  union { null, string } library = null;
+  union { null, int } predictedMedianInsertSize = null;
+  union { null, string } platform = null;
+  union { null, string } platformUnit = null;
+}
+
 record AlignmentRecord {
  
   /**
@@ -234,15 +256,6 @@ record AlignmentRecord {
 
   // record group identifer from sequencing run
   union { null, string } recordGroupName = null;
-  union { null, string } recordGroupSequencingCenter = null;
-  union { null, string } recordGroupDescription = null;
-  union { null, long } recordGroupRunDateEpoch = null;
-  union { null, string } recordGroupFlowOrder = null;
-  union { null, string } recordGroupKeySequence = null;
-  union { null, string } recordGroupLibrary = null;
-  union { null, int } recordGroupPredictedMedianInsertSize = null;
-  union { null, string } recordGroupPlatform = null;
-  union { null, string } recordGroupPlatformUnit = null;
   union { null, string } recordGroupSample = null;
 
   /**
