@@ -1,5 +1,13 @@
 # bdg-formats #
 
+### Version 0.7.0 ###
+* ISSUE [70](https://github.com/bigdatagenomics/bdg-formats/pull/70): Move record group metadata out from AlignmentRecord.
+* ISSUE [69](https://github.com/bigdatagenomics/bdg-formats/pull/69): Move to avro 1.7.7.
+* ISSUE [66](https://github.com/bigdatagenomics/bdg-formats/pull/66): Clean up fragment
+
+### Version 0.6.1 ###
+* ISSUE [63](https://github.com/bigdatagenomics/bdg-formats/pull/63): add optional referenceIndex field to Contigs
+
 ### Version 0.6.0 ###
 * ISSUE [51](https://github.com/bigdatagenomics/bdg-formats/pull/51): Clean up VariantCallingAnnotations
 * ISSUE [61](https://github.com/bigdatagenomics/bdg-formats/pull/61): Added fragmentLength field to NucleotideContigFragment
