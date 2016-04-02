@@ -98,7 +98,7 @@ record AlignmentRecord {
    this read is aligned to. If the read is unaligned, this field should
    be null.
    */
-  union { null, Contig } contig = null;
+  union { null, string } contigName = null;
 
   /**
    0 based reference position for the start of this read's alignment.
@@ -272,7 +272,7 @@ record AlignmentRecord {
    The reference contig of the mate of this read. Should be set to null if the
    mate is unaligned, or if the mate does not exist.
    */
-  union { null, Contig } mateContig = null;
+  union { null, string } mateContigName = null;
   /**
    The distance between this read and it's mate as inferred from alignment.
    */
