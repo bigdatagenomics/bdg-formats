@@ -424,7 +424,7 @@ record Variant {
   /**
    The reference contig that this variant exists on.
    */
-  union { null, Contig } contig = null;
+  union { null, string } contigName = null;
   /**
    The 0-based start position of this variant on the reference contig.
    */
