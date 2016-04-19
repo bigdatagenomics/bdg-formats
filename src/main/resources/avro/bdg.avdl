@@ -712,16 +712,6 @@ record Genotype {
 }
 
 /**
- Estimate of putative impact of a variant.
- */
-enum Impact {
-  HIGH,
-  LOW,
-  MODERATE,
-  MODIFIER // no known effect
-}
-
-/**
  Errors, warnings, or informative messages regarding variant annotation accuracy.
  */
 enum VariantAnnotationMessage {
@@ -811,15 +801,8 @@ record TranscriptEffect {
    variant in the context of the feature identified by featureId.  Must be
    Sequence Ontology (SO, see http://www.sequenceontology.org) term names, e.g.
    stop_gained, missense_variant, synonymous_variant, upstream_gene_variant.
-
-   @see featureId
    */
   array<string> effects = [];
-
-  /**
-   Most significant putative impact.
-   */
-  union { null, Impact } impact = null;
 
   /**
    Common gene name (HGNC), e.g. BRCA2.  May be closest gene if annotation
@@ -858,12 +841,15 @@ record TranscriptEffect {
    */
   union { null, int } total = null;
 
-  // (todo:  GA4GH schema includes HGVS.g but the ANN spec does not)
+  /**
+   HGVS.g description of the variant.  See http://www.hgvs.org/mutnomen/recs-DNA.html.
+   */
+  union { null, string } genomicHgvs = null;
 
   /**
    HGVS.c description of the variant.  See http://www.hgvs.org/mutnomen/recs-DNA.html.
    */
-  union { null, string } cdnaHgvs = null;
+  union { null, string } transcriptHgvs = null;
 
   /**
    HGVS.p description of the variant, if coding.  See http://www.hgvs.org/mutnomen/recs-prot.html.
@@ -891,28 +877,17 @@ record TranscriptEffect {
   union { null, int } cdsLength = null;
 
   /**
-   Protein sequence position (one based, including START, but not STOP).
+   Protein sequence position (one based, includes START but not STOP).
    */
   union { null, int } proteinPosition = null;
 
   /**
-   Protein sequence length in amino acids (one based, including START, but not STOP).
+   Protein sequence length in amino acids (one based, includes START but not STOP).
    *
   union { null, int } proteinLength = null;
 
   /**
-   Distance in base pairs to the feature.  For example,
-
-   * Up/Downstream: Distance to first/last codon number
-   * Intergenic: Distance to closest gene
-   * Distance to closest Intron boundary in exon (+/­ up/downstream). If same, use positive
-   * Distance to closest exon boundary in Intron (+/­ up/downstream)
-   * Distance to first base in MOTIF
-   * Distance to first base in miRNA
-   * Distance to exon­intron boundary in splice_site or splice_region
-   * ChipSeq peak: Distance to summit (or peak center)
-   * Histone mark / Histone state: Distance to summit (or peak center)
-
+   Distance in base pairs to the feature.
    */
   union { null, int } distance = null;
 
@@ -936,11 +911,6 @@ record VariantAnnotation {
    Zero or more transcript effects, per alternate allele and transcript (or other feature).
    */
   array<TranscriptEffect> transcriptEffects = [];
-
-  /**
-   Identifiers for variants colocated with the variant for this annotation (todo: this seems oddly placed).
-   */
-  array<string> colocatedVariants = [];
 }
 
 record DatabaseVariantAnnotation {
