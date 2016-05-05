@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # avro verions
-AVRO_VERSION=1.7.7
+AVRO_VERSION=1.8.0
 
 # exit on fail
 set -e
@@ -11,7 +11,7 @@ sha1=$(git log -1 --pretty=format:%H)
 
 # get avrotools jar
 rm -f avro-tools-${AVRO_VERSION}.jar
-wget http://psg.mtu.edu/pub/apache/avro/avro-${AVRO_VERSION}/java/avro-tools-${AVRO_VERSION}.jar
+wget http://mirror.metrocast.net/apache/avro/avro-${AVRO_VERSION}/java/avro-tools-${AVRO_VERSION}.jar
 
 # clone repo
 git clone https://github.com/bigdatagenomics/bigdatagenomics.github.io.git
