@@ -361,6 +361,12 @@ record NucleotideContigFragment {
    */
   union { null, long } fragmentStartPosition = null;
   /**
+   The position of the last base of this fragment in the overall contig. E.g.,
+   if all fragments are 10kbp and this is the third fragment in the contig,
+   the end position would be 29999L.
+   */
+  union { null, long } fragmentEndPosition = null;
+  /**
    The length of this fragment.
    */
   union { null, long } fragmentLength = null;
