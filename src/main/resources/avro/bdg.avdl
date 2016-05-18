@@ -604,6 +604,19 @@ record Genotype {
   union { null, Variant } variant = null;
 
   /**
+   The reference contig that this genotype's variant exists on.
+   */
+  union { null, string } contigName = null;
+  /**
+   The 0-based start position of this genotype's variant on the reference contig.
+   */
+  union { null, long } start = null;
+  /**
+   The 0-based, exclusive end position of this genotype's variant on the reference contig.
+   */
+  union { null, long } end = null;
+
+  /**
    Statistics collected at this site, if available.
    */
   union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
