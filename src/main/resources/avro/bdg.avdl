@@ -737,12 +737,206 @@ record Genotype {
   union { null, int }     phaseQuality = null;
 }
 
-record VariantEffect {
-  union { null, string} hgvs = null;
-  union { null, string } referenceAminoAcid = null;
-  union { null, string } alternateAminoAcid = null;
-  union {null, string} geneId = null;
-  union {null, string} transcriptId = null;
+/**
+ Errors, warnings, or informative messages regarding variant annotation accuracy.
+ */
+enum VariantAnnotationMessage {
+
+  /**
+   Chromosome does not exist in reference genome database. Typically indicates
+   a mismatch between the chromosome names in the input file and the chromosome
+   names used in the reference genome.  Message code E1.
+   */
+  ERROR_CHROMOSOME_NOT_FOUND,
+
+  /**
+   The variant's genomic coordinate is greater than chromosome's length.
+   Message code E2.
+   */
+  ERROR_OUT_OF_CHROMOSOME_RANGE,
+
+  /**
+   The 'REF' field in the input VCF file does not match the reference genome.
+   This warning may indicate a conflict between input data and data from
+   reference genome (for instance is the input VCF was aligned to a different
+   reference genome).  Message code W1.
+   */
+  WARNING_REF_DOES_NOT_MATCH_GENOME,
+
+  /**
+   Reference sequence is not available, thus no inference could be performed.
+   Message code W2.
+   */
+  WARNING_SEQUENCE_NOT_AVAILABLE,
+
+  /**
+   A protein coding transcript having a non­multiple of 3 length. It indicates
+   that the reference genome has missing information about this particular
+   transcript.  Message code W3.
+   */
+  WARNING_TRANSCRIPT_INCOMPLETE,
+
+  /**
+   A protein coding transcript has two or more STOP codons in the middle of
+   the coding sequence (CDS). This should not happen and it usually means the
+   reference genome may have an error in this transcript.  Message code W4.
+   */
+  WARNING_TRANSCRIPT_MULTIPLE_STOP_CODONS,
+
+  /**
+   A protein coding transcript does not have a proper START codon. It is
+   rare that a real transcript does not have a START codon, so this probably
+   indicates an error or missing information in the reference genome.
+   Message code W5.
+   */
+  WARNING_TRANSCRIPT_NO_START_CODON,
+
+  /**
+   Variant has been realigned to the most 3­prime position within the
+   transcript. This is usually done to to comply with HGVS specification
+   to always report the most 3­prime annotation.  Message code I1.
+   */
+  INFO_REALIGN_3_PRIME,
+
+  /**
+   This effect is a result of combining more than one variants (e.g. two
+   consecutive SNPs that conform an MNP, or two consecutive frame_shift
+   variants that compensate frame).  Message code I2.
+   */
+  INFO_COMPOUND_ANNOTATION,
+
+  /**
+   An alternative reference sequence was used to calculate this annotation
+   (e.g. cancer sample comparing somatic vs. germline).  Message code I3.
+   */
+  INFO_NON_REFERENCE_ANNOTATION
+}
+
+/**
+ Annotation of a variant in the context of a feature, typically a transcript.
+ */
+record TranscriptEffect {
+
+  /**
+   Alternate allele for this variant annotation.
+   */
+  union { null, string } alternateAllele = null;
+
+  /**
+   One or more annotations (also referred to as effects or consequences) of the
+   variant in the context of the feature identified by featureId.  Must be
+   Sequence Ontology (SO, see http://www.sequenceontology.org) term names, e.g.
+   stop_gained, missense_variant, synonymous_variant, upstream_gene_variant.
+   */
+  array<string> effects = [];
+
+  /**
+   Common gene name (HGNC), e.g. BRCA2.  May be closest gene if annotation
+   is intergenic.
+   */
+  union { null, string } geneName = null;
+
+  /**
+   Gene identifier, e.g. Ensembl Gene identifier, ENSG00000139618.  May be
+   closest gene if annotation is intergenic.
+   */
+  union { null, string } geneId = null;
+
+  /**
+   Feature type, may use Sequence Ontology term names.  Typically transcript.
+   */
+  union { null, string } featureType = null;
+
+  /**
+   Feature identifier, e.g. Ensembl Transcript identifier and version, ENST00000380152.7.
+   */
+  union { null, string } featureId = null;
+
+  /**
+   Feature biotype, e.g. Protein coding or Non coding.  See http://vega.sanger.ac.uk/info/about/gene_and_transcript_types.html.
+   */
+  union { null, string } biotype = null;
+
+  /**
+   Intron or exon rank.
+   */
+  union { null, int } rank = null;
+
+  /**
+   Total number of introns or exons.
+   */
+  union { null, int } total = null;
+
+  /**
+   HGVS.g description of the variant.  See http://www.hgvs.org/mutnomen/recs-DNA.html.
+   */
+  union { null, string } genomicHgvs = null;
+
+  /**
+   HGVS.c description of the variant.  See http://www.hgvs.org/mutnomen/recs-DNA.html.
+   */
+  union { null, string } transcriptHgvs = null;
+
+  /**
+   HGVS.p description of the variant, if coding.  See http://www.hgvs.org/mutnomen/recs-prot.html.
+   */
+  union { null, string } proteinHgvs = null;
+
+  /**
+   cDNA sequence position (one based).
+   */
+  union { null, int } cdnaPosition = null;
+
+  /**
+   cDNA sequence length in base pairs (one based).
+   */
+  union { null, int } cdnaLength = null;
+
+  /**
+   Coding sequence position (one based, includes START and STOP codons).
+   */
+  union { null, int } cdsPosition = null;
+
+  /**
+   Coding sequence length in base pairs (one based, includes START and STOP codons).
+   */
+  union { null, int } cdsLength = null;
+
+  /**
+   Protein sequence position (one based, includes START but not STOP).
+   */
+  union { null, int } proteinPosition = null;
+
+  /**
+   Protein sequence length in amino acids (one based, includes START but not STOP).
+   *
+  union { null, int } proteinLength = null;
+
+  /**
+   Distance in base pairs to the feature.
+   */
+  union { null, int } distance = null;
+
+  /**
+   Zero or more errors, warnings, or informative messages regarding variant annotation accuracy.
+   */
+  array<VariantAnnotationMessage> messages = [];
+}
+
+/**
+ Annotations of a variant, as produced by a tool such as SnpEff or Ensembl VEP.
+ */
+record VariantAnnotation {
+
+  /**
+   Variant for this annotation.
+   */
+  union { null, Variant } variant;
+
+  /**
+   Zero or more transcript effects, per alternate allele and transcript (or other feature).
+   */
+  array<TranscriptEffect> transcriptEffects = [];
 }
 
 record DatabaseVariantAnnotation {
@@ -768,10 +962,6 @@ record DatabaseVariantAnnotation {
   //population statistics
   union {null, int} thousandGenomesAlleleCount = null;
   union {null, float} thousandGenomesAlleleFrequency = null;
-
-  //effect
-  //TODO(arahuja): Parse into array
-  //array<VariantEffect> effects = [];
 
   //predicted effects
   union { null, float } siftScore = null;
