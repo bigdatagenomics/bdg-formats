@@ -1045,18 +1045,21 @@ record Feature {
   union { null, string } id;
 
   /**
-   Display name for this feature.  Name tag in GFF3, optional column 4 "name"
+   Display name for this feature, e.g. DVL1.  Name tag in GFF3, optional column 4 "name"
    in BED format.
    */
   union { null, string } name;
 
   /**
-   Source of this feature.  Column 2 "source" in GFF3.
+   Source of this feature, typically the algorithm or operating procedure that generated
+   this feature, e.g. GeneWise.  Column 2 "source" in GFF3.
    */
   union { null, string } source;
 
   /**
-   Feature type.  Column 3 "type" in GFF3.
+   Feature type, constrained by some formats to a term from the Sequence Ontology (SO),
+   e.g. gene, mRNA, exon, or a SO accession number (SO:0000704, SO:0000234, SO:0000147,
+   respectively).  Column 3 "type" in GFF3.
    */
   union { null, string } type;
 
@@ -1068,14 +1071,14 @@ record Feature {
 
   /**
    Start position for this feature, in 0-based coordinate system with closed-open
-   intervals. This may require conversion from the coordinate system of the native
+   intervals.  This may require conversion from the coordinate system of the native
    file format.  Column 4 "start" in GFF3, column 2 "chromStart" in BED format.
    */
   union { null, long } start;
 
   /**
    End position for this feature, in 0-based coordinate system with closed-open
-   intervals. This may require conversion from the coordinate system of the native
+   intervals.  This may require conversion from the coordinate system of the native
    file format.  Column 5 "end" in GFF3, column 3 "chromEnd" in BED format.
    */
   union { null, long } end;
@@ -1106,6 +1109,21 @@ record Feature {
    "score" in BED format.
    */
   union { null, double } score;
+
+  /**
+   Gene identifier, e.g. ENSG00000107404.  gene_id tag in GFF2/GTF.
+   */
+  union { null, string } geneId;
+
+  /**
+   Transcript identifier, e.g. ENST00000378891.  transcript_id tag in GFF2/GTF.
+   */
+  union { null, string } transcriptId;
+
+  /**
+   Exon identifier, e.g. ENSE00001479184.  exon_id tag in GFF2/GTF.
+   */
+  union { null, string } exonId;
 
   /**
    Secondary names or identifiers for this feature.  Alias tag in GFF3.
