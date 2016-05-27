@@ -1196,7 +1196,7 @@ record Feature {
 
 /**
  Sample.
-*/
+ */
 record Sample {
 
   /**
@@ -1220,5 +1220,168 @@ record Sample {
    Mixture, and Description from sample meta-information lines in VCF files.
    */
   map<string> attributes = {};
+}
+
+/**
+ Alphabet.
+ */
+enum Alphabet {
+
+  /**
+   DNA alphabet.
+   */
+  DNA,
+
+  /**
+   RNA alphabet.
+   */
+  RNA,
+
+  /**
+   Protein alphabet.
+   */
+  PROTEIN
+}
+
+/**
+ Contiguous sequence from an alphabet, e.g. a DNA contig, an RNA transcript,
+ or a protein translation.
+ */
+record Sequence {
+
+  /**
+   Name of this sequence.
+   */
+  union { null, string } name = null;
+
+  /**
+   Description for this sequence.
+   */
+  union { null, string } description = null;
+
+  /**
+   Alphabet for this sequence, defaults to Alphabet.DNA.
+   */
+  union { Alphabet, null } alphabet = "DNA";
+
+  /**
+   Sequence.
+   */
+  union { null, string } sequence = null;
+
+  /**
+   Length of this sequence.
+   */
+  union { null, long } length = null;
+}
+
+/**
+ View of a contiguous region of a sequence.
+ */
+record Slice { // extends Sequence
+
+  /**
+   Name of the sequence this slice views.
+   */
+  union { null, string } name = null;
+
+  /**
+   Description for the sequence this slice views.
+   */
+  union { null, string } description = null;
+
+  /**
+   Alphabet for the sequence this slice views, defaults to Alphabet.DNA.
+   */
+  union { Alphabet, null } alphabet = "DNA";
+
+  /**
+   Sequence for this slice.
+   */
+  union { null, string } sequence = null;
+
+  /**
+   Start position for this slice on the sequence this slice views, in 0-based coordinate
+   system with closed-open intervals.
+   */
+  union { null, long } start = null;
+
+  /**
+   End position for this slice on the sequence this slice views, in 0-based coordinate
+   system with closed-open intervals.
+   */
+  union { null, long } end = null;
+
+  /**
+   Strand for this slice, if any, defaults to Strand.Independent.
+   */
+  union { Strand, null } strand = "Independent";
+
+  /**
+   Length of this slice.
+   */
+  union { null, long } length = null;
+}
+
+/**
+ Quality score variant.
+ */
+enum QualityScoreVariant {
+
+  /**
+   Sanger and Illumina version &gt;= 1.8 FASTQ quality score variant.
+   */
+  FASTQ_SANGER,
+
+  /**
+   Solexa and Illumina version 1.0 FASTQ quality score variant.
+   */
+  FASTQ_SOLEXA,
+
+  /**
+   Illumina version &gt;= 1.3 and &lt; 1.8 FASTQ quality score variant.
+   */
+  FASTQ_ILLUMINA
+}
+
+/**
+ Sequence with quality scores.
+ */
+record Read { // extends Sequence
+
+  /**
+   Name of this read.
+   */
+  union { null, string } name = null;
+
+  /**
+   Description for this read.
+   */
+  union { null, string } description = null;
+
+  /**
+   Alphabet for this read, defaults to Alphabet.DNA.
+   */
+  union { Alphabet, null } alphabet = "DNA";
+
+  /**
+   Sequence for this read.
+   */
+  union { null, string } sequence = null;
+
+  /**
+   Length of this read.
+   */
+  union { null, long } length = null;
+
+  /**
+   Quality scores for this read.
+   */
+  union { null, string } qualityScores = null;
+
+  /**
+   Quality score variant for this read, defaults to QualityScoreVariant.FASTQ_SANGER.
+   */
+  union { QualityScoreVariant, null } qualityScoreVariant = "FASTQ_SANGER";
 }
 }
