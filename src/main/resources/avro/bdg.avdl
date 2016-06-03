@@ -1008,12 +1008,12 @@ record Dbxref {
   /**
    Database tag in GFF3 style DBTAG:ID format, e.g. EMBL in EMBL:AA816246.
    */
-  union { null, string } db;
+  union { null, string } db = null;
 
   /**
    Accession number in GFF3 style DBTAG:ID format, e.g. AA816246 in EMBL:AA816246.
    */
-  union { null, string } accession;
+  union { null, string } accession = null;
 }
 
 /**
@@ -1024,13 +1024,13 @@ record OntologyTerm {
   /**
    Ontology abbreviation in GFF3 style DBTAG:ID format, e.g. GO in GO:0046703.
    */
-  union { null, string } db;
+  union { null, string } db = null;
 
   /**
    Ontology term accession number or identifer in GFF3 style DBTAG:ID format,
    e.g. 0046703 in GO:0046703.
    */
-  union { null, string } accession;
+  union { null, string } accession = null;
 }
 
 /**
@@ -1042,52 +1042,52 @@ record Feature {
   /**
    Identifier for this feature.  ID tag in GFF3.
    */
-  union { null, string } id;
+  union { null, string } featureId = null;
 
   /**
    Display name for this feature, e.g. DVL1.  Name tag in GFF3, optional column 4 "name"
    in BED format.
    */
-  union { null, string } name;
+  union { null, string } name = null;
 
   /**
    Source of this feature, typically the algorithm or operating procedure that generated
    this feature, e.g. GeneWise.  Column 2 "source" in GFF3.
    */
-  union { null, string } source;
+  union { null, string } source = null;
 
   /**
    Feature type, constrained by some formats to a term from the Sequence Ontology (SO),
    e.g. gene, mRNA, exon, or a SO accession number (SO:0000704, SO:0000234, SO:0000147,
    respectively).  Column 3 "type" in GFF3.
    */
-  union { null, string } type;
+  union { null, string } featureType = null;
 
   /**
    Contig this feature is located on.  Column 1 "seqid" in GFF3, column 1 "chrom"
    in BED format.
    */
-  union { null, string } contigName;
+  union { null, string } contigName = null;
 
   /**
    Start position for this feature, in 0-based coordinate system with closed-open
    intervals.  This may require conversion from the coordinate system of the native
    file format.  Column 4 "start" in GFF3, column 2 "chromStart" in BED format.
    */
-  union { null, long } start;
+  union { null, long } start = null;
 
   /**
    End position for this feature, in 0-based coordinate system with closed-open
    intervals.  This may require conversion from the coordinate system of the native
    file format.  Column 5 "end" in GFF3, column 3 "chromEnd" in BED format.
    */
-  union { null, long } end;
+  union { null, long } end = null;
 
   /**
    Strand for this feature.  Column 7 "strand" in GFF3, optional column 6 "strand"
    in BED format.
    */
-  union { null, Strand } strand;
+  union { null, Strand } strand = null;
 
   /**
    For features of type "CDS", the phase indicates where the feature begins with reference
@@ -1095,35 +1095,35 @@ record Feature {
    of bases that should be removed from the beginning of this feature to reach the first base
    of the next codon.  Column 8 "phase" in GFF3.
    */
-  union { null, int } phase;
+  union { null, int } phase = null;
 
   /**
    For features of type "CDS", the frame indicates whether the first base of the CDS segment is
    the first (frame 0), second (frame 1) or third (frame 2) in the codon of the ORF.  Column 8
    "frame" in GFF2/GTF format.
    */
-  union { null, int } frame;
+  union { null, int } frame = null;
 
   /**
    Score for this feature.  Column 6 "score" in GFF3, optional column 5
    "score" in BED format.
    */
-  union { null, double } score;
+  union { null, double } score = null;
 
   /**
    Gene identifier, e.g. ENSG00000107404.  gene_id tag in GFF2/GTF.
    */
-  union { null, string } geneId;
+  union { null, string } geneId = null;
 
   /**
    Transcript identifier, e.g. ENST00000378891.  transcript_id tag in GFF2/GTF.
    */
-  union { null, string } transcriptId;
+  union { null, string } transcriptId = null;
 
   /**
    Exon identifier, e.g. ENSE00001479184.  exon_id tag in GFF2/GTF.
    */
-  union { null, string } exonId;
+  union { null, string } exonId = null;
 
   /**
    Secondary names or identifiers for this feature.  Alias tag in GFF3.
@@ -1140,19 +1140,19 @@ record Feature {
    feature.  The format of the value is "target_id start end [strand]", where
    strand is optional and may be "+" or "-".  Target tag in GFF3.
    */
-  union { null, string } target;
+  union { null, string } target = null;
 
   /**
    Alignment of the feature to the target in CIGAR format.  Gap tag in GFF3.
    */
-  union { null, string } gap;
+  union { null, string } gap = null;
 
   /**
    Used to disambiguate the relationship between one feature and another when
    the relationship is a temporal one rather than a purely structural "part of"
    one.  Derives_from tag in GFF3.
    */
-  union { null, string } derivesFrom;
+  union { null, string } derivesFrom = null;
 
   /**
    Notes or comments for this feature.  Note tag in GFF3.
@@ -1172,7 +1172,7 @@ record Feature {
   /**
    True if this feature is circular.  Is_circular tag in GFF3.
    */
-  union { null, boolean } isCircular;
+  union { null, boolean } isCircular = null;
 
   /**
    Additional feature attributes.  Column 9 "attributes" in GFF3, excepting those
