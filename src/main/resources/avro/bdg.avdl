@@ -974,78 +974,210 @@ record DatabaseVariantAnnotation {
 
 }
 
+/**
+ Strand of an alignment or feature.
+ */
 enum Strand {
-  Forward,
-  Reverse,
-  Independent
-}
 
-record Dbxref {
-  string accession;
-  string db;
-}
-
-record Feature {
   /**
-   Preferably unique ID for this Feature object
+   Forward ("+") strand.
+   */
+  FORWARD,
+
+  /**
+   Reverse ("-") strand.
+   */
+  REVERSE,
+
+  /**
+   Independent or not stranded (".").
+   */
+  INDEPENDENT,
+
+  /**
+   Strandedness is relevant, but unknown ("?").
+   */
+  UNKNOWN
+}
+
+/**
+ Database cross reference in GFF3 style DBTAG:ID format.
+ */
+record Dbxref {
+
+  /**
+   Database tag in GFF3 style DBTAG:ID format, e.g. EMBL in EMBL:AA816246.
+   */
+  union { null, string } db = null;
+
+  /**
+   Accession number in GFF3 style DBTAG:ID format, e.g. AA816246 in EMBL:AA816246.
+   */
+  union { null, string } accession = null;
+}
+
+/**
+ Ontology term cross reference in GFF3 style DBTAG:ID format.
+ */
+record OntologyTerm {
+
+  /**
+   Ontology abbreviation in GFF3 style DBTAG:ID format, e.g. GO in GO:0046703.
+   */
+  union { null, string } db = null;
+
+  /**
+   Ontology term accession number or identifer in GFF3 style DBTAG:ID format,
+   e.g. 0046703 in GO:0046703.
+   */
+  union { null, string } accession = null;
+}
+
+/**
+ Feature, such as those represented in native file formats BED, GFF2/GTF,
+ GFF3, IntervalList, and NarrowPeak.
+ */
+record Feature {
+
+  /**
+   Identifier for this feature.  ID tag in GFF3.
    */
   union { null, string } featureId = null;
 
   /**
-   The type of feature this is (aka, "track").
-
-   Examples are "conservation", "centipede", "gene"
+   Display name for this feature, e.g. DVL1.  Name tag in GFF3, optional column 4 "name"
+   in BED format.
    */
-  union { null, string } featureType = null;
+  union { null, string } name = null;
 
   /**
-   The original source for this feature.
-
-   Path/filename/URL and/or the file type (e.g., BED, GFF, etc.)
+   Source of this feature, typically the algorithm or operating procedure that generated
+   this feature, e.g. GeneWise.  Column 2 "source" in GFF3.
    */
   union { null, string } source = null;
 
   /**
-   The contig this feature is located on
+   Feature type, constrained by some formats to a term from the Sequence Ontology (SO),
+   e.g. gene, mRNA, exon, or a SO accession number (SO:0000704, SO:0000234, SO:0000147,
+   respectively).  Column 3 "type" in GFF3.
    */
-  union { null, Contig } contig = null;
+  union { null, string } featureType = null;
 
   /**
-   Start coordinate on the contig
+   Contig this feature is located on.  Column 1 "seqid" in GFF3, column 1 "chrom"
+   in BED format.
+   */
+  union { null, string } contigName = null;
+
+  /**
+   Start position for this feature, in 0-based coordinate system with closed-open
+   intervals.  This may require conversion from the coordinate system of the native
+   file format.  Column 4 "start" in GFF3, column 2 "chromStart" in BED format.
    */
   union { null, long } start = null;
 
   /**
-   End coordinate on the contig
+   End position for this feature, in 0-based coordinate system with closed-open
+   intervals.  This may require conversion from the coordinate system of the native
+   file format.  Column 5 "end" in GFF3, column 3 "chromEnd" in BED format.
    */
   union { null, long } end = null;
 
   /**
-   Strand information for this feature
+   Strand for this feature.  Column 7 "strand" in GFF3, optional column 6 "strand"
+   in BED format.
    */
   union { null, Strand } strand = null;
 
   /**
-   The value associated with this feature (if double)
+   For features of type "CDS", the phase indicates where the feature begins with reference
+   to the reading frame.  The phase is one of the integers 0, 1, or 2, indicating the number
+   of bases that should be removed from the beginning of this feature to reach the first base
+   of the next codon.  Column 8 "phase" in GFF3.
    */
-  union { null, double } value = null;
+  union { null, int } phase = null;
 
   /**
-   Cross-references into other databases.
+   For features of type "CDS", the frame indicates whether the first base of the CDS segment is
+   the first (frame 0), second (frame 1) or third (frame 2) in the codon of the ORF.  Column 8
+   "frame" in GFF2/GTF format.
    */
-  array<Dbxref> dbxrefs = [];
+  union { null, int } frame = null;
 
   /**
-   List of parent featureIds, for implementing feature hierachies/graphs.
+   Score for this feature.  Column 6 "score" in GFF3, optional column 5
+   "score" in BED format.
+   */
+  union { null, double } score = null;
+
+  /**
+   Gene identifier, e.g. ENSG00000107404.  gene_id tag in GFF2/GTF.
+   */
+  union { null, string } geneId = null;
+
+  /**
+   Transcript identifier, e.g. ENST00000378891.  transcript_id tag in GFF2/GTF.
+   */
+  union { null, string } transcriptId = null;
+
+  /**
+   Exon identifier, e.g. ENSE00001479184.  exon_id tag in GFF2/GTF.
+   */
+  union { null, string } exonId = null;
+
+  /**
+   Secondary names or identifiers for this feature.  Alias tag in GFF3.
+   */
+  array<string> aliases = [];
+
+  /**
+   Parent feature identifiers.  Parent tag in GFF3.
    */
   array<string> parentIds = [];
 
   /**
-   Additional feature info that doesn't fit into the standard fields above.
+   Target of a nucleotide-to-nucleotide or protein-to-nucleotide alignment
+   feature.  The format of the value is "target_id start end [strand]", where
+   strand is optional and may be "+" or "-".  Target tag in GFF3.
+   */
+  union { null, string } target = null;
 
-   They are all encoded as (string, string) key-value pairs.
+  /**
+   Alignment of the feature to the target in CIGAR format.  Gap tag in GFF3.
+   */
+  union { null, string } gap = null;
+
+  /**
+   Used to disambiguate the relationship between one feature and another when
+   the relationship is a temporal one rather than a purely structural "part of"
+   one.  Derives_from tag in GFF3.
+   */
+  union { null, string } derivesFrom = null;
+
+  /**
+   Notes or comments for this feature.  Note tag in GFF3.
+   */
+  array<string> notes = [];
+
+  /**
+   Database cross references for this feature.  Dbxref tag in GFF3.
+   */
+  array<Dbxref> dbxrefs = [];
+
+  /**
+   Ontology term cross references for this feature.  Ontology_term tag in GFF3.
+   */
+  array<OntologyTerm> ontologyTerms = [];
+
+  /**
+   True if this feature is circular.  Is_circular tag in GFF3.
+   */
+  union { null, boolean } isCircular = null;
+
+  /**
+   Additional feature attributes.  Column 9 "attributes" in GFF3, excepting those
+   reserved tags parsed into other fields, such as parentIds, dbxrefs, and ontologyTerms.
    */
   map<string> attributes = {};
 }
-
 }
