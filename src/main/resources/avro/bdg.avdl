@@ -909,7 +909,7 @@ record TranscriptEffect {
 
   /**
    Protein sequence length in amino acids (one based, includes START but not STOP).
-   *
+   */
   union { null, int } proteinLength = null;
 
   /**
