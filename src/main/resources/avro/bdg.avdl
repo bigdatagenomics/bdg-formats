@@ -1180,4 +1180,32 @@ record Feature {
    */
   map<string> attributes = {};
 }
+
+/**
+ Sample.
+*/
+record Sample {
+
+  /**
+   Identifier for this sample, e.g. IDENTIFIERS &rarr; PRIMARY_ID or other
+   subelements of IDENTIFERS in SRA metadata, sample tag SM in read group @RG header lines
+   in SAM/BAM files, or sample ID from the header or ##SAMPLE=&lt;ID=S_ID meta-information
+   lines in VCF files.
+   */
+  union { null, string } sampleId = null;
+
+  /**
+   Descriptive name for this sample, e.g. SAMPLE_NAME &rarr; TAXON_ID, COMMON_NAME,
+   INDIVIDUAL_NAME, or other subelements of SAMPLE_NAME in SRA metadata.
+   */
+  union { null, string } name = null;
+
+  /**
+   Map of attributes.  Common attributes may include: SRA metadata not mentioned above,
+   e.g. SAMPLE &rarr; TITLE, SAMPLE &rarr; DESCRIPTION, and SAMPLE_ATTRIBUTES; ENA default
+   sample checklist attributes such as cell_type, dev_stage, and germline; and Genomes,
+   Mixture, and Description from sample meta-information lines in VCF files.
+   */
+  map<string> attributes = {};
+}
 }
