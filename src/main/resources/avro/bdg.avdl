@@ -505,11 +505,16 @@ enum GenotypeType {
 // stat computed from all samples and stored inside the INFO line.
 record VariantCallingAnnotations {
 
-  // FILTER: True or false implies that filters were applied and this variant PASSed or not.
-  // While 'null' implies not filters were applied.
-  union { null, boolean } variantIsPassing = null;
-  array <string> variantFilters = [];
+  /**
+   A list of filters (normally quality filters) this variant has failed.
+   */
+  array<string> filtersFailed = [];
 
+  /**
+   A list of filters (normally quality filters) this variant has passed.
+   */
+  array<string> filtersPassed = [];
+ 
   /**
    True if the reads covering this site were randomly downsampled to reduce coverage.
    */
