@@ -22,6 +22,8 @@ protocol BDG {
 /**
  Record for describing a reference assembly. Not used for storing the contents
  of said assembly.
+
+ @see NucleotideContigFragment
  */
 record Contig {
   /**
@@ -32,7 +34,7 @@ record Contig {
   /**
    The length of this contig.
    */
-  union { null, long } contigLength = null;
+  union { null, long }   contigLength = null;
 
   /**
    The MD5 checksum of the assembly for this contig.
@@ -128,21 +130,20 @@ record AlignmentRecord {
    are derived from a single fragment.
    */
   union { null, string } readName = null;
-
   /**
    The bases in this alignment. If the read has been hard clipped, this may
    not represent all the bases in the original read.
    */
   union { null, string } sequence = null;
-
   /**
    The per-base quality scores in this alignment. If the read has been hard
    clipped, this may not represent all the bases in the original read.
    Additionally, if the error scores have been recalibrated, this field
    will not contain the original base quality scores.
+
+   @see origQual
    */
   union { null, string } qual = null;
-
   /**
    The Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
    describes the local alignment of this read. Contains {length, operator}
@@ -177,26 +178,29 @@ record AlignmentRecord {
      aligned sequence is an alignment match to the reference, but a sequence
      mismatch (e.g., the bases are not equal to the reference). This can
      indicate a SNP or a read error.
-   */
+    */
   union { null, string } cigar = null;
-
   /**
    Stores the CIGAR string present before local indel realignment.
    Stores the same data as the OC field in the SAM format.
-   */
-  union { null, string } oldCigar = null;
 
+   @see cigar
+    */
+  union { null, string } oldCigar = null;
   /**
    The number of bases in this read/alignment that have been trimmed from the
    start of the read. By default, this is equal to 0. If the value is non-zero,
    that means that the start of the read has been hard-clipped.
+
+   @see cigar
    */
   union { int, null } basesTrimmedFromStart = 0;
-
   /**
    The number of bases in this read/alignment that have been trimmed from the
    end of the read. By default, this is equal to 0. If the value is non-zero,
    that means that the end of the read has been hard-clipped.
+
+   @see cigar
    */
   union { int, null } basesTrimmedFromEnd = 0;
 
@@ -213,28 +217,33 @@ record AlignmentRecord {
    defaults to false.
    */
   union { boolean, null } readNegativeStrand = false;
-
   /**
    True if the mate pair of this alignment is mapped as a reverse compliment.
    This field defaults to false.
    */
   union { boolean, null } mateNegativeStrand = false;
-
   /**
-   True if this alignment is either the best linear alignment,
+   This field is true if this alignment is either the best linear alignment,
    or the first linear alignment in a chimeric alignment. Defaults to false.
+
+   @see secondaryAlignment
+   @see supplementaryAlignment
    */
   union { boolean, null } primaryAlignment = false;
-
   /**
-   True if this alignment is a lower quality linear alignment
+   This field is true if this alignment is a lower quality linear alignment
    for a multiply-mapped read. Defaults to false.
+
+   @see primaryAlignment
+   @see supplementaryAlignment
    */
   union { boolean, null } secondaryAlignment = false;
-
   /**
-   True if this alignment is a non-primary linear alignment in
+   This field is true if this alignment is a non-primary linear alignment in
    a chimeric alignment. Defaults to false.
+
+   @see primaryAlignment
+   @see secondaryAlignment
    */
   union { boolean, null } supplementaryAlignment = false;
 
@@ -254,19 +263,16 @@ record AlignmentRecord {
    mate is unaligned, or if the mate does not exist.
    */
   union { null, long } mateAlignmentStart = null;
-
   /**
    The end position of the mate of this read. Should be set to null if the
    mate is unaligned, or if the mate does not exist.
    */
   union { null, long } mateAlignmentEnd = null;
-
   /**
    The reference contig of the mate of this read. Should be set to null if the
    mate is unaligned, or if the mate does not exist.
    */
   union { null, string } mateContigName = null;
-
   /**
    The distance between this read and it's mate as inferred from alignment.
    */
@@ -299,6 +305,30 @@ record Fragment {
 }
 
 /**
+ Enumeration for DNA/RNA bases. For codes outside of ACTGU, see the IUPAC
+ resolution codes (http://www.bioinformatics.org/sms/iupac.html).
+ */
+enum Base {
+  A,
+  C,
+  T,
+  G,
+  U,
+  N, // any
+  X, // any
+  K, // keto: G/T
+  M, // aMino: A/C
+  R, // puRine: A/G
+  Y, // pYriminidine: C/T
+  S, // Strong: C/G
+  W, // Weak: A/T
+  B, // not A
+  V, // not T
+  H, // not G
+  D  // not C
+}
+
+/**
  Stores a contig of nucleotides; this may be a reference chromosome, may be an
  assembly, may be a BAC. Very long contigs (>1Mbp) need to be split into fragments.
  It seems that they are too long to load in a single go. For best performance,
@@ -306,48 +336,40 @@ record Fragment {
  fragments.
  */
 record NucleotideContigFragment {
-
   /**
    The contig identification descriptor for this contig.
    */
   union { null, Contig } contig = null;
-
   /**
    A description for this contig. When importing from FASTA, the FASTA header
    description line should be stored here.
    */
   union { null, string } description = null;
-
   /**
    The sequence of bases in this fragment.
    */
   union { null, string } fragmentSequence = null;
-
   /**
    In a fragmented contig, the position of this fragment in the set of fragments.
    Can be null if the contig is not fragmented.
    */
   union { null, int } fragmentNumber = null;
-
   /**
    The position of the first base of this fragment in the overall contig. E.g.,
    if all fragments are 10kbp and this is the third fragment in the contig,
    the start position would be 20000L.
    */
   union { null, long } fragmentStartPosition = null;
-
   /**
    The position of the last base of this fragment in the overall contig. E.g.,
    if all fragments are 10kbp and this is the third fragment in the contig,
    the end position would be 29999L.
    */
   union { null, long } fragmentEndPosition = null;
-
   /**
    The length of this fragment.
    */
   union { null, long } fragmentLength = null;
-
   /**
    The total count of fragments that this contig has been broken into. Can be
    null if the contig is not fragmented.
@@ -363,213 +385,131 @@ record NucleotideContigFragment {
  duplicated sequence.
  */
 enum StructuralVariantType {
-
-  /**
-   Breakend.  VCF INFO reserved key "SVTYPE" value "BND".
-   */
-  BREAKEND,
-
-  /**
-   Copy number variable region (may be both deletion and duplication).
-   VCF INFO reserved key "SVTYPE" value "CNV".
-   */
-  COPY_NUMBER_VARIABLE,
-
-  /**
-   Deletion relative to the reference. VCF INFO reserved key "SVTYPE" value "DEL".
-   */
   DELETION,
-
-  /**
-   Region of elevated copy number relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DUP".
-   */
-  DUPLICATION,
-
-  /**
-   Insertion of novel sequence relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS".
-   */
   INSERTION,
-
-  /**
-   Inversion of reference sequence. VCF INFO reserved key "SVTYPE" value "INV".
-   */
   INVERSION,
-
-  /**
-   Insertion of a mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS:ME".
-   */
   MOBILE_INSERTION,
-
-  /**
-   Deletion of mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DEL:ME".
-   */
   MOBILE_DELETION,
-
-  /**
-   Tandem duplication. VCF INFO reserved key "SVTYPE" value "DUP:TANDEM".
-   */
+  DUPLICATION,
   TANDEM_DUPLICATION
 }
 
-/**
- Structural variant.
- */
 record StructuralVariant {
-
   /**
-   The type of this structural variant.  VCF INFO reserved key "SVTYPE".
+   The type of this structural variant.
    */
   union { null, StructuralVariantType } type = null;
+  /**
+   The URL of the FASTA/NucleotideContig assembly for this structural variant,
+   if one is available.
+   */
+  union { null, string } assembly = null;
 
   /**
    Whether this structural variant call has precise breakpoints or not. Default
    value is true. If the call is imprecise, confidence intervals should be provided.
-   Negation of VCF INFO reserved key "IMPRECISE".
    */
   union { boolean, null } precise = true;
-
   /**
    The size of the confidence window around the start of the structural variant.
    */
   union { null, int } startWindow = null;
-
   /**
    The size of the confidence window around the end of the structural variant.
    */
   union { null, int } endWindow = null;
 }
 
-/**
- Variant.
- */
 record Variant {
+  /**
+   The Phred scaled error probability of a variant, given the probabilities of
+   the variant in a population.
+   */
+  union { null, int } variantErrorProbability = null;
 
   /**
-   The reference contig that this variant exists on.  VCF column 1 "CONTIG".
+   The reference contig that this variant exists on.
    */
   union { null, string } contigName = null;
-
   /**
    The 0-based start position of this variant on the reference contig.
-   VCF column 2 "POS" converted to zero-based coordinate system, closed-open intervals.
    */
   union { null, long } start = null;
-
   /**
    The 0-based, exclusive end position of this variant on the reference contig.
-   Calculated by start + referenceAllele.length().
    */
   union { null, long } end = null;
 
   /**
-   Zero or more of unique names or identifiers for this variant. If this is a dbSNP variant it is
-   encouraged to use the rs number(s).  VCF column 3 "ID".
-   */
-  array<string> names = [];
-
-  /**
-   A string describing the reference allele at this site.  VCF column 4 "REF".
+   A string describing the reference allele at this site.
    */
   union { null, string } referenceAllele = null;
-
   /**
    A string describing the variant allele at this site. Should be left null if
-   the site is a structural variant.  VCF column 5 "ALT".
+   the site is a structural variant.
    */
   union { null, string } alternateAllele = null;
-
   /**
    The structural variant at this site, if the alternate allele is a structural
    variant. If the site is not a structural variant, this field should be left
    null.
    */
-  union { null, StructuralVariant } structuralVariant = null;
+  union { null, StructuralVariant } svAllele = null;
 
   /**
    A boolean describing whether this variant call is somatic; in this case, the
-   `referenceAllele` will have been observed in another sample.  VCF INFO reserved
-   key "SOMATIC".
+   `referenceAllele` will have been observed in another sample.
    */
-  union { boolean, null } somatic = false;
+  union { boolean, null } isSomatic = false;
 }
 
 /**
- An enumeration that describes the allele that corresponds to a genotype.
+ An enumeration that describes the allele that corresponds to a genotype. Can take
+ the following values:
+
+ * Ref: The genotype is the reference allele
+ * Alt: The genotype is the alternate allele
+ * OtherAlt: The genotype is an unspecified other alternate allele. This occurs
+   in our schema when we have split a multi-allelic genotype into two genotype
+   records.
+ * NoCall: The genotype could not be called.
  */
 enum GenotypeAllele {
-
-  /**
-   The genotype is the reference allele.
-   */
-  REF,
-
-  /**
-   The genotype is the alternate allele.
-   */
-  ALT,
-
-  /**
-   The genotype is an unspecified other alternate allele.  This occurs in our schema
-   when we have split a multi-allelic genotype into two genotype records.
-   */
-  OTHER_ALT,
-
-  /**
-   The genotype could not be called.
-   */
-  NO_CALL
+  Ref,
+  Alt,
+  OtherAlt,
+  NoCall
 }
 
 /**
- An enumeration that describes the characteristics of a genotype at a site.
- */
-enum GenotypeType {
+ An enumeration that describes the characteristics of a genotype at a site. Can
+ take the following values:
 
-  /**
-   All genotypes at this site were called as the reference allele.
-   */
-  HOM_REF,
-
-  /**
-   Genotypes at this site were called as multiple different alleles. This
+ * HOM_REF: All genotypes at this site were called as the reference allele.
+ * HET: Genotypes at this site were called as multiple different alleles. This
    most commonly occurs if a diploid sample's genotype contains one reference
    and one variant allele, but can also occur if the genotype contains multiple
    alternate alleles.
-   */
+ * HOM_ALT: All genotypes at this site were called as a single alternate allele.
+ * NO_CALL: The genotype could not be called at this site.
+ */
+enum GenotypeType {
+  HOM_REF,
   HET,
-
-  /**
-   All genotypes at this site were called as a single alternate allele.
-   */
   HOM_ALT,
-
-  /**
-   The genotype could not be called at this site.
-   */
   NO_CALL
 }
 
-/**
- Genotype annotation; all stats that, inside a VCF, are stored outside of the
- sample but are computed based on the samples.  For instance,  MAPQ0 is an aggregate
- stat computed from all samples and stored inside the INFO line.
- */
-record GenotypeAnnotation {
+// This record represents all stats that, inside a VCF, are stored outside of the
+// sample but are computed based on the samples.  For instance,  MAPQ0 is an aggregate
+// stat computed from all samples and stored inside the INFO line.
+record VariantCallingAnnotations {
 
-  /**
-   A list of filters (normally quality filters) this variant has failed.
-   */
-  array<string> filtersFailed = [];
+  // FILTER: True or false implies that filters were applied and this variant PASSed or not.
+  // While 'null' implies not filters were applied.
+  union { null, boolean } variantIsPassing = null;
+  array <string> variantFilters = [];
 
-  /**
-   A list of filters (normally quality filters) this variant has passed.
-   */
-  array<string> filtersPassed = [];
- 
   /**
    True if the reads covering this site were randomly downsampled to reduce coverage.
    */
@@ -580,7 +520,7 @@ record GenotypeAnnotation {
    scores are separated by whether or not the base supports the reference or the
    alternate allele.
    */
-  union { null, float } baseQualityRankSum = null;
+  union { null, float } baseQRankSum = null;
 
   /**
    The Fisher's exact test score for the strand bias of the reference and alternate
@@ -602,19 +542,19 @@ record GenotypeAnnotation {
   /**
    The root mean square of the mapping qualities of reads covering this site.
    */
-  union { null, float } rmsMappingQuality = null;
-
+  union { null, float } rmsMapQ = null;
+  
   /**
    The number of reads at this site with mapping quality equal to 0.
    */
-  union { null, int } mappingQualityZeroReads = null;
+  union { null, int } mapq0Reads = null;
 
   /**
    The Wilcoxon rank-sum test statistic of the mapping quality scores. The mapping
    quality scores are separated by whether or not the read supported the reference or the
    alternate allele.
    */
-  union { null, float } mappingQualityRankSum = null;
+  union { null, float } mqRankSum = null;
 
   /**
    The Wilcoxon rank-sum test statistic of the position of the base in the read at this site.
@@ -638,9 +578,9 @@ record GenotypeAnnotation {
   array<float> genotypePosteriors = [];
 
   /**
-   The log-odds ratio of being a true vs. false variant under a trained statistical model.
-   This model can be a multivariate Gaussian mixture, support vector machine, etc.
-   */
+    The log-odds ratio of being a true vs. false variant under a trained statistical model.
+    This model can be a multivariate Gaussian mixture, support vector machine, etc.
+    */
   union { null, float } vqslod = null;
 
   /**
@@ -650,16 +590,14 @@ record GenotypeAnnotation {
   union { null, string } culprit = null;
 
   /**
-   Additional genotype attributes that do not fit into the standard fields above.
+   Additional feature info that doesn't fit into the standard fields above.
+
+   They are all encoded as (string, string) key-value pairs.
    */
   map<string> attributes = {};
 }
 
-/**
- Genotype.
- */
 record Genotype {
-
   /**
    The variant called at this site.
    */
@@ -669,12 +607,10 @@ record Genotype {
    The reference contig that this genotype's variant exists on.
    */
   union { null, string } contigName = null;
-
   /**
    The 0-based start position of this genotype's variant on the reference contig.
    */
   union { null, long } start = null;
-
   /**
    The 0-based, exclusive end position of this genotype's variant on the reference contig.
    */
@@ -683,13 +619,23 @@ record Genotype {
   /**
    Statistics collected at this site, if available.
    */
-  union { null, GenotypeAnnotation } genotypeAnnotation = null;
+  union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
 
   /**
    The unique identifier for this sample.
    */
-  union { null, string } sampleId = null;
+  union { null, string }  sampleId = null;
+  /**
+   A description of this sample.
+   */
+  union { null, string }  sampleDescription = null;
+  /**
+   A string describing the provenance of this sample and the processing applied
+   in genotyping this sample.
+   */
+  union { null, string }  processingDescription = null;
 
+  // Length is equal to the ploidy
   /**
    An array describing the genotype called at this site. The length of this
    array is equal to the ploidy of the sample at this site. This array may
@@ -704,46 +650,50 @@ record Genotype {
 
   /**
    The number of reads that show evidence for the reference at this site.
-   */
-  union { null, int } referenceReadDepth = null;
 
+   @see alternateReadDepth
+   @see readDepth
+   */
+  union { null, int }     referenceReadDepth = null;
   /**
    The number of reads that show evidence for this alternate allele at this site.
-   */
-  union { null, int } alternateReadDepth = null;
 
+   @see referenceReadDepth
+   @see readDepth
+   */
+  union { null, int }     alternateReadDepth = null;
   /**
    The total number of reads at this site. May not equal (alternateReadDepth +
    referenceReadDepth) if this site shows evidence of multiple alternate alleles.
 
-   Analogous to VCF's DP.
-   */
-  union { null, int } readDepth = null;
+   @see referenceReadDepth
+   @see alternateReadDepth
 
+   @note Analogous to VCF's DP.
+   */
+  union { null, int }     readDepth = null;
   /**
    The minimum number of reads seen at this site across samples when joint
    calling variants.
 
-   Analogous to VCF's MIN_DP.
+   @note Analogous to VCF's MIN_DP.
    */
-  union { null, int } minReadDepth = null;
-
+  union { null, int }     minReadDepth = null;
   /**
    The phred-scaled probability that we're correct for this genotype call.
 
-   Analogous to VCF's GQ.
+   @note Analogous to VCF's GQ.
    */
-  union { null, int } genotypeQuality = null;
+  union { null, int }     genotypeQuality = null;
 
   /**
    Log scaled likelihoods that we have n copies of this alternate allele.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
 
-   Analogous to VCF's PL.
+   @note Analogous to VCF's PL.
    */
   array<float> genotypeLikelihoods = [];
-
   /**
    Log scaled likelihoods that we have n non-reference alleles at this site.
    The number of elements in this array should be equal to the ploidy at this
@@ -766,20 +716,25 @@ record Genotype {
 
   /**
    True if this genotype is phased.
-   */
-  union { boolean, null } phased = false;
 
+   @see phaseSetId
+   @see phaseQuality
+   */
+  union { boolean, null } isPhased = false;
   /**
    The ID of this phase set, if this genotype is phased. Should only be populated
    if isPhased == true; else should be null.
-   */
-  union { null, int } phaseSetId = null;
 
+   @see isPhased
+   */
+  union { null, int }     phaseSetId = null;
   /**
    Phred scaled quality score for the phasing of this genotype, if this genotype
    is phased. Should only be populated if isPhased == true; else should be null.
+
+   @see isPhased
    */
-  union { null, int } phaseQuality = null;
+  union { null, int }     phaseQuality = null;
 }
 
 /**
@@ -861,6 +816,11 @@ enum VariantAnnotationMessage {
  Annotation of a variant in the context of a feature, typically a transcript.
  */
 record TranscriptEffect {
+
+  /**
+   Alternate allele for this variant annotation.
+   */
+  union { null, string } alternateAllele = null;
 
   /**
    One or more annotations (also referred to as effects or consequences) of the
@@ -964,116 +924,54 @@ record TranscriptEffect {
 }
 
 /**
- Variant annotation.
+ Annotations of a variant, as produced by a tool such as SnpEff or Ensembl VEP.
  */
 record VariantAnnotation {
 
   /**
    Variant for this annotation.
    */
-  union { null, Variant } variant = null;
+  union { null, Variant } variant;
 
   /**
-   Ancestral allele, VCF INFO header line reserved key AA.
-   */
-  union { null, string } ancestralAllele = null;
-
-  /**
-   Allele count, VCF INFO header line reserved key AC.
-   */
-  union { null, string } alleleCount = null;
-
-  /**
-   Total read depth, VCF INFO header line reserved key AD.
-   */
-  union { null, int } readDepth = null;
-
-  /**
-   Forward strand read depth, VCF INFO header line reserved key ADF.
-   */
-  union { null, int } forwardReadDepth = null;
-
-  /**
-   Reverse strand read depth, VCF INFO header line reserved key ADR.
-   */
-  union { null, int } reverseReadDepth = null;
-
-  /**
-   Minor allele frequency, VCF INFO header line reserved key AF.
-   */
-  union { null, string } alleleFrequency = null;
-
-  /**
-   RMS base quality, VCF INFO header line reserved key BQ.
-   */
-  union { null, float } rmsBaseQuality = null;
-
-  /**
-   CIGAR string describing how to align an alternate allele to the reference
-   allele, VCF INFO header line reserved key CIGAR.
-   */
-  union { null, string } cigar = null;
-
-  /**
-   Membership in dbSNP, VCF info header line reserved key DB.
-   */
-  union { null, boolean } dbSnp = null;
-
-  /**
-   Combined depth across samples, VCF INFO header line reserved key DP.
-   */
-  union { null, int } combinedDepth = null;
-
-  /**
-   Membership in HapMap2, VCF INFO header line reserved key H2.
-   */
-  union { null, boolean } hapMap2 = null;
-
-  /**
-   Membership in HapMap3, VCF INFO header line reserved key H3.
-   */
-  union { null, boolean } hapMap3 = null;
-
-  /**
-   RMS mapping quality, VCF INFO header line reserved key MQ.
-   */
-  union { null, float } rmsMappingQuality = null;
-
-  /**
-   Number of MAPQ == 0 reads covering this record, VCF INFO header line reserved key MQ0.
-   */
-  union { null, int } mappingQualityZeroReads = null;
-
-  /**
-   Number of samples with data, VCF INFO header line reserved key NS.
-   */
-  union { null, int } samplesWithData = null;
-
-  /**
-   Strand bias, VCF INFO header line reserved key SB.
-   */
-  union { null, float } strandBias = null;
-
-  /**
-   Validated by follow up experiment, VCF INFO header line reserved key VALIDATED.
-   */
-  union { null, boolean } validated = null;
-
-  /**
-   Membership in 1000 Genomes, VCF INFO header line reserved key 1000G.
-   */
-  union { null, boolean } thousandGenomes = null;
-
-  /**
-   Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
-   one per transcript (or other feature).
+   Zero or more transcript effects, per alternate allele and transcript (or other feature).
    */
   array<TranscriptEffect> transcriptEffects = [];
+}
 
-  /**
-   Additional variant attributes that do not fit into the standard fields above.
-   */
-  map<string> attributes = {};
+record DatabaseVariantAnnotation {
+  union { null, Variant } variant;
+
+  union { null, int } dbSnpId = null;
+
+  //domain information
+  union {null, string} geneSymbol = null;
+
+  //clinical fields
+  union {null, string} omimId  = null;
+  union {null, string} cosmicId = null;
+  union {null, string} clinvarId  = null;
+  union {null, string} clinicalSignificance  = null;
+
+  //conservation
+  union { null, string } gerpNr  = null;
+  union { null, string } gerpRs  = null;
+  union { null, float } phylop  = null;
+  union { null, string } ancestralAllele  = null;
+
+  //population statistics
+  union {null, int} thousandGenomesAlleleCount = null;
+  union {null, float} thousandGenomesAlleleFrequency = null;
+
+  //predicted effects
+  union { null, float } siftScore = null;
+  union { null, float } siftScoreConverted = null;
+  union { null, string } siftPred = null;
+
+  union { null, float } mutationTasterScore = null;
+  union { null, float } mutationTasterScoreConverted = null;
+  union { null, string } mutationTasterPred = null;
+
 }
 
 /**
@@ -1274,7 +1172,7 @@ record Feature {
   /**
    True if this feature is circular.  Is_circular tag in GFF3.
    */
-  union { null, boolean } circular = null;
+  union { null, boolean } isCircular = null;
 
   /**
    Additional feature attributes.  Column 9 "attributes" in GFF3, excepting those
