@@ -363,55 +363,12 @@ record NucleotideContigFragment {
  duplicated sequence.
  */
 enum StructuralVariantType {
-
-  /**
-   Breakend.  VCF INFO reserved key "SVTYPE" value "BND".
-   */
-  BREAKEND,
-
-  /**
-   Copy number variable region (may be both deletion and duplication).
-   VCF INFO reserved key "SVTYPE" value "CNV".
-   */
-  COPY_NUMBER_VARIABLE,
-
-  /**
-   Deletion relative to the reference. VCF INFO reserved key "SVTYPE" value "DEL".
-   */
   DELETION,
-
-  /**
-   Region of elevated copy number relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DUP".
-   */
-  DUPLICATION,
-
-  /**
-   Insertion of novel sequence relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS".
-   */
   INSERTION,
-
-  /**
-   Inversion of reference sequence. VCF INFO reserved key "SVTYPE" value "INV".
-   */
   INVERSION,
-
-  /**
-   Insertion of a mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS:ME".
-   */
   MOBILE_INSERTION,
-
-  /**
-   Deletion of mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DEL:ME".
-   */
   MOBILE_DELETION,
-
-  /**
-   Tandem duplication. VCF INFO reserved key "SVTYPE" value "DUP:TANDEM".
-   */
+  DUPLICATION,
   TANDEM_DUPLICATION
 }
 
@@ -421,14 +378,19 @@ enum StructuralVariantType {
 record StructuralVariant {
 
   /**
-   The type of this structural variant.  VCF INFO reserved key "SVTYPE".
+   The type of this structural variant.
    */
   union { null, StructuralVariantType } type = null;
 
   /**
+   The URL of the FASTA/NucleotideContig assembly for this structural variant,
+   if one is available.
+   */
+  union { null, string } assembly = null;
+
+  /**
    Whether this structural variant call has precise breakpoints or not. Default
    value is true. If the call is imprecise, confidence intervals should be provided.
-   Negation of VCF INFO reserved key "IMPRECISE".
    */
   union { boolean, null } precise = true;
 
@@ -449,36 +411,34 @@ record StructuralVariant {
 record Variant {
 
   /**
-   The reference contig that this variant exists on.  VCF column 1 "CONTIG".
+   The Phred scaled error probability of a variant, given the probabilities of
+   the variant in a population.
+   */
+  union { null, int } variantErrorProbability = null;
+
+  /**
+   The reference contig that this variant exists on.
    */
   union { null, string } contigName = null;
 
   /**
    The 0-based start position of this variant on the reference contig.
-   VCF column 2 "POS" converted to zero-based coordinate system, closed-open intervals.
    */
   union { null, long } start = null;
 
   /**
    The 0-based, exclusive end position of this variant on the reference contig.
-   Calculated by start + referenceAllele.length().
    */
   union { null, long } end = null;
 
   /**
-   Zero or more of unique names or identifiers for this variant. If this is a dbSNP variant it is
-   encouraged to use the rs number(s).  VCF column 3 "ID".
-   */
-  array<string> names = [];
-
-  /**
-   A string describing the reference allele at this site.  VCF column 4 "REF".
+   A string describing the reference allele at this site.
    */
   union { null, string } referenceAllele = null;
 
   /**
    A string describing the variant allele at this site. Should be left null if
-   the site is a structural variant.  VCF column 5 "ALT".
+   the site is a structural variant.
    */
   union { null, string } alternateAllele = null;
 
@@ -491,65 +451,46 @@ record Variant {
 
   /**
    A boolean describing whether this variant call is somatic; in this case, the
-   `referenceAllele` will have been observed in another sample.  VCF INFO reserved
-   key "SOMATIC".
+   `referenceAllele` will have been observed in another sample.  VCF INFO header line
+   key SOMATIC.
    */
   union { boolean, null } somatic = false;
 }
 
 /**
- An enumeration that describes the allele that corresponds to a genotype.
+ An enumeration that describes the allele that corresponds to a genotype. Can take
+ the following values:
+
+ * REF: The genotype is the reference allele
+ * ALT: The genotype is the alternate allele
+ * OTHER_ALT: The genotype is an unspecified other alternate allele. This occurs
+   in our schema when we have split a multi-allelic genotype into two genotype
+   records.
+ * NO_CALL: The genotype could not be called.
  */
 enum GenotypeAllele {
-
-  /**
-   The genotype is the reference allele.
-   */
   REF,
-
-  /**
-   The genotype is the alternate allele.
-   */
   ALT,
-
-  /**
-   The genotype is an unspecified other alternate allele.  This occurs in our schema
-   when we have split a multi-allelic genotype into two genotype records.
-   */
   OTHER_ALT,
-
-  /**
-   The genotype could not be called.
-   */
   NO_CALL
 }
 
 /**
- An enumeration that describes the characteristics of a genotype at a site.
- */
-enum GenotypeType {
+ An enumeration that describes the characteristics of a genotype at a site. Can
+ take the following values:
 
-  /**
-   All genotypes at this site were called as the reference allele.
-   */
-  HOM_REF,
-
-  /**
-   Genotypes at this site were called as multiple different alleles. This
+ * HOM_REF: All genotypes at this site were called as the reference allele.
+ * HET: Genotypes at this site were called as multiple different alleles. This
    most commonly occurs if a diploid sample's genotype contains one reference
    and one variant allele, but can also occur if the genotype contains multiple
    alternate alleles.
-   */
+ * HOM_ALT: All genotypes at this site were called as a single alternate allele.
+ * NO_CALL: The genotype could not be called at this site.
+ */
+enum GenotypeType {
+  HOM_REF,
   HET,
-
-  /**
-   All genotypes at this site were called as a single alternate allele.
-   */
   HOM_ALT,
-
-  /**
-   The genotype could not be called at this site.
-   */
   NO_CALL
 }
 
