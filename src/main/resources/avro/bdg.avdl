@@ -364,145 +364,49 @@ record NucleotideContigFragment {
 }
 
 /**
- Descriptors for the type of a structural variant. The most specific descriptor
- should be used, if possible. E.g., duplication should be used instead of
- insertion if the inserted sequence is not novel. Tandem duplication should
- be used instead of duplication if the duplication is known to follow the
- duplicated sequence.
- */
-enum StructuralVariantType {
-
-  /**
-   Breakend.  VCF INFO reserved key "SVTYPE" value "BND".
-   */
-  BREAKEND,
-
-  /**
-   Copy number variable region (may be both deletion and duplication).
-   VCF INFO reserved key "SVTYPE" value "CNV".
-   */
-  COPY_NUMBER_VARIABLE,
-
-  /**
-   Deletion relative to the reference. VCF INFO reserved key "SVTYPE" value "DEL".
-   */
-  DELETION,
-
-  /**
-   Region of elevated copy number relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DUP".
-   */
-  DUPLICATION,
-
-  /**
-   Insertion of novel sequence relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS".
-   */
-  INSERTION,
-
-  /**
-   Inversion of reference sequence. VCF INFO reserved key "SVTYPE" value "INV".
-   */
-  INVERSION,
-
-  /**
-   Insertion of a mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "INS:ME".
-   */
-  MOBILE_INSERTION,
-
-  /**
-   Deletion of mobile element relative to the reference.
-   VCF INFO reserved key "SVTYPE" value "DEL:ME".
-   */
-  MOBILE_DELETION,
-
-  /**
-   Tandem duplication. VCF INFO reserved key "SVTYPE" value "DUP:TANDEM".
-   */
-  TANDEM_DUPLICATION
-}
-
-/**
- Structural variant.
- */
-record StructuralVariant {
-
-  /**
-   The type of this structural variant.
-   */
-  union { null, StructuralVariantType } type = null;
-
-  /**
-   The URL of the FASTA/NucleotideContig assembly for this structural variant,
-   if one is available.
-   */
-  union { null, string } assembly = null;
-
-  /**
-   Whether this structural variant call has precise breakpoints or not. Default
-   value is true. If the call is imprecise, confidence intervals should be provided.
-   */
-  union { boolean, null } precise = true;
-
-  /**
-   The size of the confidence window around the start of the structural variant.
-   */
-  union { null, int } startWindow = null;
-
-  /**
-   The size of the confidence window around the end of the structural variant.
-   */
-  union { null, int } endWindow = null;
-}
-
-/**
  Variant.
  */
 record Variant {
 
   /**
-   The Phred scaled error probability of a variant, given the probabilities of
-   the variant in a population.
-   */
-  union { null, int } variantErrorProbability = null;
-
-  /**
-   The reference contig that this variant exists on.
+   The reference contig this variant exists on. VCF column 1 "CONTIG".
    */
   union { null, string } contigName = null;
 
   /**
-   The 0-based start position of this variant on the reference contig.
+   The zero-based start position of this variant on the reference contig.
+   VCF column 2 "POS" converted to zero-based coordinate system, closed-open intervals.
    */
   union { null, long } start = null;
 
   /**
-   The 0-based, exclusive end position of this variant on the reference contig.
+   The zero-based, exclusive end position of this variant on the reference contig.
+   Calculated by start + referenceAllele.length().
    */
   union { null, long } end = null;
 
   /**
-   A string describing the reference allele at this site.
+   Zero or more unique names or identifiers for this variant. If this is a dbSNP
+   variant it is encouraged to use the rs number(s). VCF column 3 "ID" copied for
+   multi-allelic sites.
+   */
+  array<string> names = [];
+
+  /**
+   A string describing the reference allele at this site. VCF column 4 "REF".
    */
   union { null, string } referenceAllele = null;
 
   /**
-   A string describing the variant allele at this site. Should be left null if
-   the site is a structural variant.
+   A string describing the alternate allele at this site. VCF column 5 "ALT" split
+   for multi-allelic sites.
    */
   union { null, string } alternateAllele = null;
 
   /**
-   The structural variant at this site, if the alternate allele is a structural
-   variant. If the site is not a structural variant, this field should be left
-   null.
-   */
-  union { null, StructuralVariant } svAllele = null;
-
-  /**
-   A boolean describing whether this variant call is somatic; in this case, the
-   referenceAllele will have been observed in another sample.
+   True if this variant call is somatic; in this case, the referenceAllele will
+   have been observed in another sample. VCF INFO reserved key "SOMATIC" copied
+   for multi-allelic sites.
    */
   union { boolean, null } somatic = false;
 }
