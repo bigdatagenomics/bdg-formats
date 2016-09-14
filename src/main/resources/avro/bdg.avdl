@@ -387,8 +387,8 @@ record Variant {
 
   /**
    Zero or more unique names or identifiers for this variant. If this is a dbSNP
-   variant it is encouraged to use the rs number(s). VCF column 3 "ID" copied for
-   multi-allelic sites.
+   variant it is encouraged to use the rs number(s). VCF column 3 "ID" shared across
+   all alleles in the same VCF record.
    */
   array<string> names = [];
 
@@ -405,8 +405,9 @@ record Variant {
 
   /**
    True if this variant call is somatic; in this case, the referenceAllele will
-   have been observed in another sample. VCF INFO reserved key "SOMATIC" copied
-   for multi-allelic sites.
+   have been observed in another sample. VCF INFO reserved key "SOMATIC", Number=0.
+   Until Number=A and Number=R flags are supported by the VCF specification, this value
+   is shared across all alleles in the same VCF record.
    */
   union { boolean, null } somatic = false;
 }
@@ -883,57 +884,107 @@ record TranscriptEffect {
 }
 
 /**
- Annotations of a variant, as produced by a tool such as SnpEff or Ensembl VEP.
+ Variant annotation.
  */
 record VariantAnnotation {
 
   /**
    Variant for this annotation.
    */
-  union { null, Variant } variant;
+  union { null, Variant } variant = null;
 
   /**
-   Zero or more transcript effects, per alternate allele and transcript (or other feature).
+   Ancestral allele, VCF INFO reserved key AA, Number=1, shared across all alleles
+   in the same VCF record.
+   */
+  union { null, string } ancestralAllele = null;
+
+  /**
+   Allele count, VCF INFO reserved key AC, Number=A, split for multi-allelic sites.
+   */
+  union { null, int } alleleCount = null;
+
+  /**
+   Total read depth, VCF INFO reserved key AD, Number=R, split for multi-allelic
+   sites.
+   */
+  union { null, int } readDepth = null;
+
+  /**
+   Forward strand read depth, VCF INFO reserved key ADF, Number=R, split for
+   multi-allelic sites.
+   */
+  union { null, int } forwardReadDepth = null;
+
+  /**
+   Reverse strand read depth, VCF INFO reserved key ADR, Number=R, split for
+   multi-allelic sites.
+   */
+  union { null, int } reverseReadDepth = null;
+
+  /**
+   Minor allele frequency, VCF INFO reserved key AF, Number=A, split for multi-allelic
+   sites. Use this when frequencies are estimated from primary data, not calculated
+   from called genotypes.
+   */
+  union { null, float } alleleFrequency = null;
+
+  /**
+   CIGAR string describing how to align an alternate allele to the reference
+   allele, VCF INFO reserved key CIGAR, Number=A, split for multi-allelic sites.
+   */
+  union { null, string } cigar = null;
+
+  /**
+   Membership in dbSNP, VCF INFO reserved key DB, Number=0. Until Number=A and
+   Number=R flags are supported by the VCF specification, this value is shared
+   across all alleles in the same VCF record.
+   */
+  union { null, boolean } dbSnp = null;
+
+  /**
+   Membership in HapMap2, VCF INFO reserved key H2, Number=0. Until Number=A and
+   Number=R flags are supported by the VCF specification, this value is shared
+   across all alleles in the same VCF record.
+   */
+  union { null, boolean } hapMap2 = null;
+
+  /**
+   Membership in HapMap3, VCF INFO reserved key H3, Number=0. Until Number=A and
+   Number=R flags are supported by the VCF specification, this value is shared
+   across all alleles in the same VCF record.
+   */
+  union { null, boolean } hapMap3 = null;
+
+  /**
+   Validated by follow up experiment, VCF INFO reserved key VALIDATED, Number=0.
+   Until Number=A and Number=R flags are supported by the VCF specification, this
+   value is shared across all alleles in the same VCF record.
+   */
+  union { null, boolean } validated = null;
+
+  /**
+   Membership in 1000 Genomes, VCF INFO reserved key 1000G, Number=0. Until
+   Number=A and Number=R flags are supported by the VCF specification, this
+   value is shared across all alleles in the same VCF record.
+   */
+  union { null, boolean } thousandGenomes = null;
+
+  /**
+   Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
+   one per transcript (or other feature).  VCF INFO header key ANN, split for multi-allelic
+   sites.  See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
    */
   array<TranscriptEffect> transcriptEffects = [];
-}
 
-/**
- Database variant annotations.
- */
-record DatabaseVariantAnnotation {
-  union { null, Variant } variant;
-
-  union { null, int } dbSnpId = null;
-
-  //domain information
-  union {null, string} geneSymbol = null;
-
-  //clinical fields
-  union {null, string} omimId  = null;
-  union {null, string} cosmicId = null;
-  union {null, string} clinvarId  = null;
-  union {null, string} clinicalSignificance  = null;
-
-  //conservation
-  union { null, string } gerpNr  = null;
-  union { null, string } gerpRs  = null;
-  union { null, float } phylop  = null;
-  union { null, string } ancestralAllele  = null;
-
-  //population statistics
-  union {null, int} thousandGenomesAlleleCount = null;
-  union {null, float} thousandGenomesAlleleFrequency = null;
-
-  //predicted effects
-  union { null, float } siftScore = null;
-  union { null, float } siftScoreConverted = null;
-  union { null, string } siftPred = null;
-
-  union { null, float } mutationTasterScore = null;
-  union { null, float } mutationTasterScoreConverted = null;
-  union { null, string } mutationTasterPred = null;
-
+  /**
+   Additional variant attributes that do not fit into the standard fields above.
+   The values are stored as strings, even for flag, integer, and float types.  VCF
+   INFO key values with Number=., Number=0, Number=1, and Number=[n] are shared across
+   all alleles in the same VCF record. VCF INFO key values with Number=A and Number=R
+   are split for multi-allelic sites.
+   */
+  map<string> attributes = {};
 }
 
 /**
