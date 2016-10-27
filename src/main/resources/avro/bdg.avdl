@@ -587,17 +587,6 @@ record Genotype {
   union { null, string }  sampleId = null;
 
   /**
-   A description of this sample.
-   */
-  union { null, string }  sampleDescription = null;
-
-  /**
-   A string describing the provenance of this sample and the processing applied
-   in genotyping this sample.
-   */
-  union { null, string }  processingDescription = null;
-
-  /**
    An array describing the genotype called at this site. The length of this
    array is equal to the ploidy of the sample at this site. This array may
    reference OTHER_ALT alleles if this site is multi-allelic in this sample.
