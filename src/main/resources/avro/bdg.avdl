@@ -475,11 +475,6 @@ enum GenotypeType {
  */
 record GenotypeAnnotation {
 
-  // FILTER: True or false implies that filters were applied and this variant PASSed or not.
-  // While 'null' implies not filters were applied.
-  union { null, boolean } variantIsPassing = null;
-  array <string> variantFilters = [];
-
   /**
    True if the reads covering this site were randomly downsampled to reduce coverage.
    */
@@ -631,6 +626,17 @@ record Genotype {
    is phased. Should only be populated if phased == true; else should be null.
    */
   union { null, int } phaseQuality = null;
+
+  /**
+   True or false implies that filters were applied and this genotype PASSed or not.
+   While 'null' implies not filters were applied.
+   */
+  union { null, boolean } genotypeIsPassing = null;
+
+  /**
+   The filters that this genotype failed.
+   */
+  array <string> genotypeFilters = [];
 }
 
 /**
@@ -912,6 +918,17 @@ record VariantAnnotation {
    sites.  See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
    */
   array<TranscriptEffect> transcriptEffects = [];
+
+  /**
+   True or false implies that filters were applied and this variant PASSed or not.
+   While 'null' implies not filters were applied.
+   */
+  union { null, boolean } variantIsPassing = null;
+
+  /**
+   The filters that this variant failed.
+   */
+  array <string> variantFilters = [];
 
   /**
    Additional variant attributes that do not fit into the standard fields above.
