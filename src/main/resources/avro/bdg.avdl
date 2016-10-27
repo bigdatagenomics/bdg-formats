@@ -486,13 +486,6 @@ record GenotypeAnnotation {
   union { null, boolean } downsampled = null;
 
   /**
-   The Wilcoxon rank-sum test statistic of the base quality scores. The base quality
-   scores are separated by whether or not the base supports the reference or the
-   alternate allele.
-   */
-  union { null, float } baseQRankSum = null;
-
-  /**
    The Fisher's exact test score for the strand bias of the reference and alternate
    alleles. Stored as a phred scaled probability. Thus, if:
 
@@ -518,20 +511,6 @@ record GenotypeAnnotation {
    The number of reads at this site with mapping quality equal to 0.
    */
   union { null, int } mapq0Reads = null;
-
-  /**
-   The Wilcoxon rank-sum test statistic of the mapping quality scores. The mapping
-   quality scores are separated by whether or not the read supported the reference or the
-   alternate allele.
-   */
-  union { null, float } mqRankSum = null;
-
-  /**
-   The Wilcoxon rank-sum test statistic of the position of the base in the read at this site.
-   The positions are separated by whether or not the base supports the reference or the
-   alternate allele.
-   */
-  union { null, float } readPositionRankSum = null;
 
   /**
    The minimum number of reads seen at this site across samples when joint
@@ -574,18 +553,6 @@ record GenotypeAnnotation {
   array<float> genotypePosteriors = [];
 
   /**
-   The log-odds ratio of being a true vs. false variant under a trained statistical model.
-   This model can be a multivariate Gaussian mixture, support vector machine, etc.
-   */
-  union { null, float } vqslod = null;
-
-  /**
-   If known, the feature that contributed the most to this variant being classified as
-   a false variant.
-   */
-  union { null, string } culprit = null;
-
-  /**
    Additional feature info that doesn't fit into the standard fields above.
    They are all encoded as (string, string) key-value pairs.
    */
@@ -618,11 +585,6 @@ record Genotype {
    reference OTHER_ALT alleles if this site is multi-allelic in this sample.
    */
   array<CalledAllele> alleles = [];
-
-  /**
-   The expected dosage of the alternate allele in this sample.
-   */
-  union { null, float } expectedAlleleDosage = null;
 
   /**
    The number of reads that show evidence for the reference at this site.
