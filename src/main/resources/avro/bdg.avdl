@@ -473,7 +473,7 @@ enum GenotypeType {
  sample but are computed based on the samples. For instance, MAPQ0 is an aggregate
  stat computed from all samples and stored inside the INFO line.
  */
-record VariantCallingAnnotations {
+record GenotypeAnnotation {
 
   // FILTER: True or false implies that filters were applied and this variant PASSed or not.
   // While 'null' implies not filters were applied.
@@ -594,7 +594,7 @@ record Genotype {
   /**
    Statistics collected at this site, if available.
    */
-  union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
+  union { null, GenotypeAnnotation } genotypeAnnotations = null;
 
   /**
    The unique identifier for this sample.
