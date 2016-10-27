@@ -415,7 +415,7 @@ record Variant {
 /**
  An enumeration that describes the allele that corresponds to a genotype.
  */
-enum GenotypeAllele {
+enum CalledAllele {
 
   /**
    The genotype is the reference allele.
@@ -617,7 +617,7 @@ record Genotype {
    array is equal to the ploidy of the sample at this site. This array may
    reference OTHER_ALT alleles if this site is multi-allelic in this sample.
    */
-  array<GenotypeAllele> alleles = [];
+  array<CalledAllele> alleles = [];
 
   /**
    The expected dosage of the alternate allele in this sample.
