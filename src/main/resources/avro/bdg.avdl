@@ -534,6 +534,32 @@ record GenotypeAnnotation {
   union { null, float } readPositionRankSum = null;
 
   /**
+   The minimum number of reads seen at this site across samples when joint
+   calling variants. Analogous to VCF's MIN_DP.
+   */
+  union { null, int } minReadDepth = null;
+
+  /**
+   Component statistics which comprise the Fisher's Exact Test to detect strand bias.
+   If populated, this element should have length 4.
+   */
+  array<int> strandBiasComponents = [];
+
+  /**
+   Log scaled likelihoods that we have n copies of this alternate allele.
+   The number of elements in this array should be equal to the ploidy at this
+   site, plus 1. Analogous to VCF's PL.
+   */
+  array<float> genotypeLikelihoods = [];
+
+  /**
+   Log scaled likelihoods that we have n non-reference alleles at this site.
+   The number of elements in this array should be equal to the ploidy at this
+   site, plus 1.
+   */
+  array<float> nonReferenceLikelihoods = [];
+
+  /**
    The log scale prior probabilities of the various genotype states at this site.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
@@ -616,36 +642,10 @@ record Genotype {
   union { null, int } readDepth = null;
 
   /**
-   The minimum number of reads seen at this site across samples when joint
-   calling variants. Analogous to VCF's MIN_DP.
-   */
-  union { null, int } minReadDepth = null;
-
-  /**
    The phred-scaled probability that we're correct for this genotype call.
    Analogous to VCF's GQ.
    */
   union { null, int } genotypeQuality = null;
-
-  /**
-   Log scaled likelihoods that we have n copies of this alternate allele.
-   The number of elements in this array should be equal to the ploidy at this
-   site, plus 1. Analogous to VCF's PL.
-   */
-  array<float> genotypeLikelihoods = [];
-
-  /**
-   Log scaled likelihoods that we have n non-reference alleles at this site.
-   The number of elements in this array should be equal to the ploidy at this
-   site, plus 1.
-   */
-  array<float> nonReferenceLikelihoods = [];
-
-  /**
-   Component statistics which comprise the Fisher's Exact Test to detect strand bias.
-   If populated, this element should have length 4.
-   */
-  array<int> strandBiasComponents = [];
 
   /**
    We split multi-allelic VCF lines into multiple single-alternate records.
