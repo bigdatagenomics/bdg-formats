@@ -404,6 +404,23 @@ record Variant {
   union { null, string } alternateAllele = null;
 
   /**
+   True if filters were applied for this variant. VCF column 7 "FILTER" any value other
+   than the missing value.
+   */
+  union { null, boolean } filtersApplied = null;
+
+  /**
+   True if all filters for this variant passed. VCF column 7 "FILTER" value PASS.
+   */
+  union { null, boolean } filtersPassed = null;
+
+  /**
+   Zero or more filters that failed for this variant. VCF column 7 "FILTER" shared across
+   all alleles in the same VCF record.
+   */
+  array<string> filtersFailed = [];
+
+  /**
    True if this variant call is somatic; in this case, the referenceAllele will
    have been observed in another sample. VCF INFO reserved key "SOMATIC", Number=0.
    Until Number=A and Number=R flags are supported by the VCF specification, this value
