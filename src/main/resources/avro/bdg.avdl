@@ -911,8 +911,8 @@ record VariantAnnotation {
   union { null, Variant } variant = null;
 
   /**
-   Ancestral allele, VCF INFO reserved key AA, Number=1, shared across all alleles
-   in the same VCF record.
+   Ancestral allele, VCF INFO reserved key AA, Number=1, shared across all alternate
+   alleles in the same VCF record.
    */
   union { null, string } ancestralAllele = null;
 
@@ -955,51 +955,51 @@ record VariantAnnotation {
   /**
    Membership in dbSNP, VCF INFO reserved key DB, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
-   across all alleles in the same VCF record.
+   across all alternate alleles in the same VCF record.
    */
   union { null, boolean } dbSnp = null;
 
   /**
    Membership in HapMap2, VCF INFO reserved key H2, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
-   across all alleles in the same VCF record.
+   across all alternate alleles in the same VCF record.
    */
   union { null, boolean } hapMap2 = null;
 
   /**
    Membership in HapMap3, VCF INFO reserved key H3, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
-   across all alleles in the same VCF record.
+   across all alternate alleles in the same VCF record.
    */
   union { null, boolean } hapMap3 = null;
 
   /**
    Validated by follow up experiment, VCF INFO reserved key VALIDATED, Number=0.
    Until Number=A and Number=R flags are supported by the VCF specification, this
-   value is shared across all alleles in the same VCF record.
+   value is shared across all alternate alleles in the same VCF record.
    */
   union { null, boolean } validated = null;
 
   /**
    Membership in 1000 Genomes, VCF INFO reserved key 1000G, Number=0. Until
    Number=A and Number=R flags are supported by the VCF specification, this
-   value is shared across all alleles in the same VCF record.
+   value is shared across all alternate alleles in the same VCF record.
    */
   union { null, boolean } thousandGenomes = null;
 
   /**
    Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
-   one per transcript (or other feature).  VCF INFO header key ANN, split for multi-allelic
+   one per transcript (or other feature). VCF INFO header key ANN, split for multi-allelic
    sites.  See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
    */
   array<TranscriptEffect> transcriptEffects = [];
 
   /**
    Additional variant attributes that do not fit into the standard fields above.
-   The values are stored as strings, even for flag, integer, and float types.  VCF
+   The values are stored as strings, even for flag, integer, and float types. VCF
    INFO key values with Number=., Number=0, Number=1, and Number=[n] are shared across
-   all alleles in the same VCF record. VCF INFO key values with Number=A and Number=R
-   are split for multi-allelic sites.
+   all alternate alleles in the same VCF record. VCF INFO key values with Number=A and
+   Number=R are split for multi-allelic sites.
    */
   map<string> attributes = {};
 }
