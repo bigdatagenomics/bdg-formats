@@ -1,5 +1,39 @@
 # bdg-formats #
 
+### Version 0.10.0 ###
+
+* ISSUE [113](https://github.com/bigdatagenomics/bdg-formats/pull/113): Harmonize filter representation between Variant and VariantCallingAnnotations
+* ISSUE [111](https://github.com/bigdatagenomics/bdg-formats/pull/111): Improve doc for VariantAnnotation
+* ISSUE [110](https://github.com/bigdatagenomics/bdg-formats/pull/110): Add variant filters for VCF column 7 FILTER
+* ISSUE [105](https://github.com/bigdatagenomics/bdg-formats/pull/105): Merge VariantAnnotation and DatabaseVariantAnnotation records
+* ISSUE [103](https://github.com/bigdatagenomics/bdg-formats/pull/103): Remove StructuralVariant and StructuralVariantType, add names field to Variant
+* ISSUE [101](https://github.com/bigdatagenomics/bdg-formats/pull/101): Code style and doc fixes
+* ISSUE [99](https://github.com/bigdatagenomics/bdg-formats/pull/99): Revert back to 0.9.0
+* ISSUE [97](https://github.com/bigdatagenomics/bdg-formats/pull/97): Complete refactoring of variant and related annotation records
+* ISSUE [94](https://github.com/bigdatagenomics/bdg-formats/pull/94): Add readme
+* ISSUE [90](https://github.com/bigdatagenomics/bdg-formats/pull/90): Refactor variant and genotype annotations
+* ISSUE [88](https://github.com/bigdatagenomics/bdg-formats/pull/88): Use separate filtersFailed and filtersPassed arrays for variant quality filters
+
+### Version 0.9.0 ###
+
+* ISSUE [84](https://github.com/bigdatagenomics/bdg-formats/pull/84): Add schema for sample
+* ISSUE [86](https://github.com/bigdatagenomics/bdg-formats/pull/86): Adding key signatures for artifact signers.
+* ISSUE [85](https://github.com/bigdatagenomics/bdg-formats/pull/85): Fix transcript effect protein length field
+* ISSUE [82](https://github.com/bigdatagenomics/bdg-formats/pull/82): Update feature and related records to support GFF3
+* ISSUE [81](https://github.com/bigdatagenomics/bdg-formats/pull/81): Update maven-javadoc-plugin configuration to not fail build on JDK8
+
+### Version 0.8.0 ###
+
+* ISSUE [67](https://github.com/bigdatagenomics/bdg-formats/pull/67): Adding schema for variant annotations
+* ISSUE [77](https://github.com/bigdatagenomics/bdg-formats/pull/77): Flatten Variant into Genotype
+* ISSUE [76](https://github.com/bigdatagenomics/bdg-formats/pull/76): Replace contig with contigName in Variant.
+* ISSUE [79](https://github.com/bigdatagenomics/bdg-formats/pull/79): add fragmentEndPosition to NucleotideContigFragment
+* ISSUE [78](https://github.com/bigdatagenomics/bdg-formats/pull/78): Increase Avro dependency version to 1.8.0
+
+### Version 0.7.1 ###
+
+* ISSUE [72](https://github.com/bigdatagenomics/bdg-formats/pull/72): Replaced Contig with ContigName in AlignmentRecord
+
 ### Version 0.7.0 ###
 * ISSUE [70](https://github.com/bigdatagenomics/bdg-formats/pull/70): Move record group metadata out from AlignmentRecord.
 * ISSUE [69](https://github.com/bigdatagenomics/bdg-formats/pull/69): Move to avro 1.7.7.
