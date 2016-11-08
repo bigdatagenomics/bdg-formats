@@ -492,10 +492,21 @@ enum GenotypeType {
  */
 record VariantCallingAnnotations {
 
-  // FILTER: True or false implies that filters were applied and this variant PASSed or not.
-  // While 'null' implies not filters were applied.
-  union { null, boolean } variantIsPassing = null;
-  array <string> variantFilters = [];
+  /**
+   True if filters were applied for this genotype call. FORMAT field "FT" any value other
+   than the missing value.
+   */
+  union { null, boolean } filtersApplied = null;
+
+  /**
+   True if all filters for this genotype call passed. FORMAT field "FT" value PASS.
+   */
+  union { null, boolean } filtersPassed = null;
+
+  /**
+   Zero or more filters that failed for this genotype call from FORMAT field "FT".
+   */
+  array<string> filtersFailed = [];
 
   /**
    True if the reads covering this site were randomly downsampled to reduce coverage.
