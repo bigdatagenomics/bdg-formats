@@ -381,7 +381,9 @@ record Variant {
 
   /**
    The zero-based, exclusive end position of this variant on the reference contig.
-   Calculated by start + referenceAllele.length().
+   If this variant is non-symbolic, this is calculated by start + referenceAllele.length().
+   If this variant is symbolic, this is populated from the VCF INFO reserved
+   key "END".
    */
   union { null, long } end = null;
 
@@ -427,6 +429,19 @@ record Variant {
    is shared across all alleles in the same VCF record.
    */
   union { boolean, null } somatic = false;
+
+  /**
+  True if this site/block represents a gVCF line where no alternate allele was
+  called. This includes both gVCF modes (ERC and BP_RESOLUTION).
+   */
+  union { boolean, null } isGvcfReferenceModel = false;
+
+  /**
+   True if this variant is symbolic. If a variant is symbolic, end is populated
+   from the VCF INFO reserved key "END". Symbolic alleles encompass structural
+   variants, as well as the "any alt" allele from the gVCF reference model.
+   */
+  union { boolean, null } isSymbolic = false;
 }
 
 /**
@@ -680,6 +695,18 @@ record Genotype {
    Analogous to VCF's GQ.
    */
   union { null, int } genotypeQuality = null;
+
+  /**
+   For a gVCF block, this is the minimum phred-scaled probability of the reference
+   genotype call for all bases merged into this block. Analogous to VCF's minGQ.
+   */
+  union { null, int } minGenotypeQuality = null;
+
+  /**
+   For a gVCF block, this is the maximum phred-scaled probability of the reference
+   genotype call for all bases merged into this block. Analogous to VCF's minGQ.
+   */
+  union { null, int } maxGenotypeQuality = null;
 
   /**
    Log scaled likelihoods that we have n copies of this alternate allele.
