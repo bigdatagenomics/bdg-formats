@@ -421,12 +421,9 @@ record Variant {
   array<string> filtersFailed = [];
 
   /**
-   True if this variant call is somatic; in this case, the referenceAllele will
-   have been observed in another sample. VCF INFO reserved key "SOMATIC", Number=0.
-   Until Number=A and Number=R flags are supported by the VCF specification, this value
-   is shared across all alleles in the same VCF record.
+   Annotation for this variant, if any.
    */
-  union { boolean, null } somatic = false;
+  union { null, VariantAnnotation } annotation = null;
 }
 
 /**
@@ -917,11 +914,6 @@ record TranscriptEffect {
 record VariantAnnotation {
 
   /**
-   Variant for this annotation.
-   */
-  union { null, Variant } variant = null;
-
-  /**
    Ancestral allele, VCF INFO reserved key AA, Number=1, shared across all alternate
    alleles in the same VCF record.
    */
@@ -999,9 +991,17 @@ record VariantAnnotation {
   union { null, boolean } thousandGenomes = null;
 
   /**
+   True if this variant call is somatic; in this case, the reference allele will
+   have been observed in another sample. VCF INFO reserved key "SOMATIC", Number=0.
+   Until Number=A and Number=R flags are supported by the VCF specification, this value
+   is shared across all alleles in the same VCF record.
+   */
+  union { boolean, null } somatic = false;
+
+  /**
    Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
    one per transcript (or other feature). VCF INFO header key ANN, split for multi-allelic
-   sites.  See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
+   sites. See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
    */
   array<TranscriptEffect> transcriptEffects = [];
 
