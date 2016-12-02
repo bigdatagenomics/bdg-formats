@@ -561,38 +561,43 @@ record VariantAnnotation {
   union { null, string } ancestralAllele = null;
 
   /**
-   Allele count, VCF INFO reserved key AC, Number=A, split for multi-allelic sites.
+   Allele count, VCF INFO reserved key AC, Number=A, split for multi-allelic sites into
+   a single value.
    */
   union { null, int } alleleCount = null;
 
   /**
    Total read depth, VCF INFO reserved key AD, Number=R, split for multi-allelic
-   sites.
+   sites. If specified, the array will contain two integer values, [reference allele,
+   alternate allele].
    */
-  union { null, int } readDepth = null;
+  array<int> readDepth = [];
 
   /**
    Forward strand read depth, VCF INFO reserved key ADF, Number=R, split for
-   multi-allelic sites.
+   multi-allelic sites. If specified, the array will contain two integer values,
+   [reference allele, alternate allele].
    */
-  union { null, int } forwardReadDepth = null;
+  array<int> forwardReadDepth = [];
 
   /**
    Reverse strand read depth, VCF INFO reserved key ADR, Number=R, split for
-   multi-allelic sites.
+   multi-allelic sites. If specified, the array will contain two integer values,
+   [reference allele, alternate allele].
    */
-  union { null, int } reverseReadDepth = null;
+  array<int> reverseReadDepth = [];
 
   /**
    Minor allele frequency, VCF INFO reserved key AF, Number=A, split for multi-allelic
-   sites. Use this when frequencies are estimated from primary data, not calculated
-   from called genotypes.
+   sites into a single value. Use this when frequencies are estimated from primary data,
+   not calculated from called genotypes.
    */
   union { null, float } alleleFrequency = null;
 
   /**
    CIGAR string describing how to align an alternate allele to the reference
-   allele, VCF INFO reserved key CIGAR, Number=A, split for multi-allelic sites.
+   allele, VCF INFO reserved key CIGAR, Number=A, split for multi-allelic sites
+   into a single value.
    */
   union { null, string } cigar = null;
 
@@ -641,7 +646,7 @@ record VariantAnnotation {
 
   /**
    Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
-   one per transcript (or other feature). VCF INFO header key ANN, split for multi-allelic
+   one per transcript (or other feature). VCF INFO key ANN, split for multi-allelic
    sites. See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
    */
   array<TranscriptEffect> transcriptEffects = [];
@@ -650,8 +655,10 @@ record VariantAnnotation {
    Additional variant attributes that do not fit into the standard fields above.
    The values are stored as strings, even for flag, integer, and float types. VCF
    INFO key values with Number=., Number=0, Number=1, and Number=[n] are shared across
-   all alternate alleles in the same VCF record. VCF INFO key values with Number=A and
-   Number=R are split for multi-allelic sites.
+   all alternate alleles in the same VCF record. VCF INFO key values with Number=A are
+   split for multi-allelic sites into a single value. VCF INFO key values with Number=R
+   are split into an array of two values, [reference allele, alternate allele], separated
+   by commas, e.g. "0,1".
    */
   map<string> attributes = {};
 }
