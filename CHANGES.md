@@ -2,6 +2,11 @@
 
 ### Version 0.10.0 ###
 
+* ISSUE [118](https://github.com/bigdatagenomics/bdg-formats/issues/118): Use separate fields for Number=R VCF INFO attributes
+* ISSUE [116](https://github.com/bigdatagenomics/bdg-formats/issues/116): Add forward reference between Variant and VariantAnnotation
+
+### Version 0.10.0 ###
+
 * ISSUE [113](https://github.com/bigdatagenomics/bdg-formats/pull/113): Harmonize filter representation between Variant and VariantCallingAnnotations
 * ISSUE [111](https://github.com/bigdatagenomics/bdg-formats/pull/111): Improve doc for VariantAnnotation
 * ISSUE [110](https://github.com/bigdatagenomics/bdg-formats/pull/110): Add variant filters for VCF column 7 FILTER
