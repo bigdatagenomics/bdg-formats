@@ -1329,6 +1329,11 @@ record Sequence {
    Length of this sequence.
    */
   union { null, long } length = null;
+
+  /**
+   Map of attributes.
+   */
+  map<string> attributes = {};
 }
 
 /**
@@ -1377,6 +1382,11 @@ record Slice { // extends Sequence
    Length of this slice.
    */
   union { null, long } length = null;
+
+  /**
+   Map of attributes.
+   */
+  map<string> attributes = {};
 }
 
 /**
@@ -1439,5 +1449,10 @@ record Read { // extends Sequence
    Quality score variant for this read, defaults to QualityScoreVariant.FASTQ_SANGER.
    */
   union { QualityScoreVariant, null } qualityScoreVariant = "FASTQ_SANGER";
+
+  /**
+   Map of attributes.
+   */
+  map<string> attributes = {};
 }
 }
