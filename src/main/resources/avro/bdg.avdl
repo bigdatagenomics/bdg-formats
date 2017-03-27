@@ -1374,9 +1374,9 @@ record Slice { // extends Sequence
   union { null, long } end = null;
 
   /**
-   Strand for this slice, if any, defaults to Strand.Independent.
+   Strand for this slice, if any, defaults to Strand.INDEPENDENT.
    */
-  union { Strand, null } strand = "Independent";
+  union { Strand, null } strand = "INDEPENDENT";
 
   /**
    Length of this slice.
