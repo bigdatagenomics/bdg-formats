@@ -263,12 +263,6 @@ record AlignmentRecord {
   union { null, long } mateAlignmentStart = null;
 
   /**
-   The end position of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
-   */
-  union { null, long } mateAlignmentEnd = null;
-
-  /**
    The reference contig of the mate of this read. Should be set to null if the
    mate is unaligned, or if the mate does not exist.
    */
