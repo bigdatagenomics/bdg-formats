@@ -26,7 +26,7 @@ protocol BDG {
 record Contig {
 
   /**
-   The name of this contig in the assembly (e.g., "chr1").
+   The name of this contig in the assembly (e.g., "1").
    */
   union { null, string } contigName = null;
 
@@ -316,9 +316,9 @@ record Fragment {
 record NucleotideContigFragment {
 
   /**
-   The contig identification descriptor for this contig.
+   The name of this contig in the assembly (e.g., "1").
    */
-  union { null, Contig } contig = null;
+  union { null, string } contigName = null;
 
   /**
    A description for this contig. When importing from FASTA, the FASTA header
