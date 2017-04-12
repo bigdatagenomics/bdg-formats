@@ -595,61 +595,61 @@ record TranscriptEffect {
 record VariantAnnotation {
 
   /**
-   Ancestral allele, VCF INFO reserved key AA, Number=1, shared across all alternate
+   Ancestral allele. VCF INFO reserved key AA, Number=1, shared across all alternate
    alleles in the same VCF record.
    */
   union { null, string } ancestralAllele = null;
 
   /**
-   Allele count, VCF INFO reserved key AC, Number=A, split for multi-allelic sites into
+   Allele count. VCF INFO reserved key AC, Number=A, split for multi-allelic sites into
    a single integer value.
    */
   union { null, int } alleleCount = null;
 
   /**
-   Total read depth, VCF INFO reserved key AD, Number=R, split for multi-allelic
+   Total alternate read depth. VCF INFO reserved key AD, Number=R, split for multi-allelic
    sites into single integer values for the reference allele (referenceReadDepth) and
-   the alternate allele (readDepth, this field).
+   the alternate allele (alternateReadDepth, this field).
    */
-  union { null, int } readDepth = null;
+  union { null, int } alternateReadDepth = null;
 
   /**
-   Forward strand read depth, VCF INFO reserved key ADF, Number=R, split for
+   Forward strand alternate read depth. VCF INFO reserved key ADF, Number=R, split for
    multi-allelic sites into single integer values for the reference allele
-   (referenceForwardReadDepth) and the alternate allele (forwardReadDepth, this field).
+   (referenceForwardReadDepth) and the alternate allele (alternateForwardReadDepth, this field).
    */
-  union { null, int } forwardReadDepth = null;
+  union { null, int } alternateForwardReadDepth = null;
 
   /**
-   Reverse strand read depth, VCF INFO reserved key ADR, Number=R, split for
+   Reverse strand alternate read depth. VCF INFO reserved key ADR, Number=R, split for
    multi-allelic sites into single integer values for the reference allele
-   (referenceReverseReadDepth) and the alternate allele (reverseReadDepth, this field).
+   (referenceReverseReadDepth) and the alternate allele (alternateReverseReadDepth, this field).
    */
-  union { null, int } reverseReadDepth = null;
+  union { null, int } alternateReverseReadDepth = null;
 
   /**
-   Total read depth, VCF INFO reserved key AD, Number=R, split for multi-allelic
+   Total reference read depth. VCF INFO reserved key AD, Number=R, split for multi-allelic
    sites into single integer values for the reference allele (referenceReadDepth, this field)
-   and the alternate allele (readDepth).
+   and the alternate allele (alternateReadDepth).
    */
   union { null, int } referenceReadDepth = null;
 
   /**
-   Forward strand read depth, VCF INFO reserved key ADF, Number=R, split for
+   Forward strand reference read depth. VCF INFO reserved key ADF, Number=R, split for
    multi-allelic sites into single integer values for the reference allele
-   (referenceForwardReadDepth, this field) and the alternate allele (forwardReadDepth).
+   (referenceForwardReadDepth, this field) and the alternate allele (alternateForwardReadDepth).
    */
   union { null, int } referenceForwardReadDepth = null;
 
   /**
-   Reverse strand read depth, VCF INFO reserved key ADR, Number=R, split for
+   Reverse strand reference read depth. VCF INFO reserved key ADR, Number=R, split for
    multi-allelic sites into single integer values for the reference allele
-   (referenceReverseReadDepth, this field) and the alternate allele (reverseReadDepth).
+   (referenceReverseReadDepth, this field) and the alternate allele (alternateReverseReadDepth).
    */
   union { null, int } referenceReverseReadDepth = null;
 
   /**
-   Minor allele frequency, VCF INFO reserved key AF, Number=A, split for multi-allelic
+   Minor allele frequency. VCF INFO reserved key AF, Number=A, split for multi-allelic
    sites into a single float value. Use this when frequencies are estimated from primary
    data, not calculated from called genotypes.
    */
@@ -657,41 +657,41 @@ record VariantAnnotation {
 
   /**
    CIGAR string describing how to align an alternate allele to the reference
-   allele, VCF INFO reserved key CIGAR, Number=A, split for multi-allelic sites into
+   allele. VCF INFO reserved key CIGAR, Number=A, split for multi-allelic sites into
    a single string value.
    */
   union { null, string } cigar = null;
 
   /**
-   Membership in dbSNP, VCF INFO reserved key DB, Number=0. Until Number=A and
+   Membership in dbSNP. VCF INFO reserved key DB, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
    across all alternate alleles in the same VCF record.
    */
   union { null, boolean } dbSnp = null;
 
   /**
-   Membership in HapMap2, VCF INFO reserved key H2, Number=0. Until Number=A and
+   Membership in HapMap2. VCF INFO reserved key H2, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
    across all alternate alleles in the same VCF record.
    */
   union { null, boolean } hapMap2 = null;
 
   /**
-   Membership in HapMap3, VCF INFO reserved key H3, Number=0. Until Number=A and
+   Membership in HapMap3. VCF INFO reserved key H3, Number=0. Until Number=A and
    Number=R flags are supported by the VCF specification, this value is shared
    across all alternate alleles in the same VCF record.
    */
   union { null, boolean } hapMap3 = null;
 
   /**
-   Validated by follow up experiment, VCF INFO reserved key VALIDATED, Number=0.
+   Validated by follow up experiment. VCF INFO reserved key VALIDATED, Number=0.
    Until Number=A and Number=R flags are supported by the VCF specification, this
    value is shared across all alternate alleles in the same VCF record.
    */
   union { null, boolean } validated = null;
 
   /**
-   Membership in 1000 Genomes, VCF INFO reserved key 1000G, Number=0. Until
+   Membership in 1000 Genomes. VCF INFO reserved key 1000G, Number=0. Until
    Number=A and Number=R flags are supported by the VCF specification, this
    value is shared across all alternate alleles in the same VCF record.
    */
@@ -832,39 +832,189 @@ enum Allele {
 record GenotypeAnnotation {
 
   /**
+   Per-sample total alternate read depth. VCF genotype reserved key AD, Number=R, split for
+   multi-allelic sites into single integer values for the reference allele
+   (referenceReadDepth) and the alternate allele (alternateReadDepth, this field).
+   */
+  union { null, int } alternateReadDepth = null;
+
+  /**
+   Per-sample forward strand alternate read depth. VCF genotype reserved key ADF, Number=R,
+   split for multi-allelic sites into single integer values for the reference allele
+   (referenceForwardReadDepth) and the alternate allele (alternateForwardReadDepth, this field).
+   */
+  union { null, int } alternateForwardReadDepth = null;
+
+  /**
+   Per-sample reverse strand alternate read depth. VCF genotype reserved key ADR, Number=R,
+   split for multi-allelic sites into single integer values for the reference allele
+   (referenceReverseReadDepth) and the alternate allele (alternateReverseReadDepth, this field).
+   */
+  union { null, int } alternateReverseReadDepth = null;
+
+  /**
+   Per-sample total reference read depth. VCF genotype reserved key AD, Number=R, split for
+   multi-allelic sites into single integer values for the reference allele (referenceReadDepth,
+   this field) and the alternate allele (alternateReadDepth).
+   */
+  union { null, int } referenceReadDepth = null;
+
+  /**
+   Per-sample forward strand reference read depth. VCF genotype reserved key ADF, Number=R,
+   split for multi-allelic sites into single integer values for the reference allele
+   (referenceForwardReadDepth, this field) and the alternate allele (alternateForwardReadDepth).
+   */
+  union { null, int } referenceForwardReadDepth = null;
+
+  /**
+   Per-sample reverse strand reference read depth. VCF genotype reserved key ADR, Number=R,
+   split for multi-allelic sites into single integer values for the reference allele
+   (referenceReverseReadDepth, this field) and the alternate allele (alternateReverseReadDepth).
+   */
+  union { null, int } referenceReverseReadDepth = null;
+
+  // DP Number=1 Type=Integer
+  /**
+   Read depth at this position for this sample. VCF genotype field reserved key DP.
+   */
+  union { null, int } readDepth = null;
+
+  // EC Number=A Type=Integer
+  // Comma separated list of expected alternate allele counts for each alternate allele in the same
+  // order as listed in the ALT field. Typically used in association analyses.
+  /**
+   The expected dosage of the alternate allele in this sample. VCF genotype reserved key EC,
+   Number=A, split for multi-allelic sites into a single float value.
+   */
+  union { null, float } expectedAlleleDosage = null; // or expectedAlleleCount? see Variant.alleleCount
+
+  // GL Number=G Type=Float
+  /**
+   Genotype likelihoods comprised of floating point log10-scaled likelihoods for all possible
+   genotypes given [the set of alleles defined in the REF and ALT fields]. VCF genotype field
+   reserved key GL, Number=G.
+   */
+  array<float> likelihoods = [];
+
+  // GLE Number=1 Type=String
+  // Genotype likelihoods of heterogeneous ploidy, used in presence of uncertain copy number.
+  // Reserved genotype field key in VCF v4.2, dropped in VCF v4.3
+
+  // GP Number=G Type=Float
+  /**
+   Genotype posterior probabilities in the range 0.0 to 1.0 using the same ordering as the
+   genotype likelihood field; one use can be to store imputed genotype probabilities. VCF genotype
+   field reserved key GP, Number=G.
+   */
+  array<float> posteriorProbabilities = [];
+
+  // GQ Number=1 Type=Integer
+  /**
    Conditional genotype quality, encoded as a phred quality −10log10 p(genotype call is wrong
    conditioned on the site being variant). VCF genotype field reserved key GQ.
    */
-  union { null, int } genotypeQuality = null;
+  union { null, int } quality = null;
 
+  // HQ Number=2 Type=Integer
   /**
-   Haplotype quality, encoded as two phred qualities. VCF genotype field reserved key HQ.
+   Haplotype quality, encoded as two phred qualities. VCF genotype field reserved key HQ, Number=2.
    */
   array<int> haplotypeQuality = [];
 
-  /**
-   Phred-scaled probability that alleles are ordered incorrectly, against all other members in
-   the same phase set. VCF genotype field reserved key PQ.
-   */
-  union { null, int } phaseSetQuality = null;
-
+  // MQ Number=1 Type=Integer
   /**
    Root Mean Square (RMS) of the mapping quality of reads for this genotype. VCF genotype field
    reserved key MQ.
    */
   union { null, int } rmsMappingQuality = null;
 
+  // PL Number=G Type=Integer
+  /**
+   Phred-scaled genotype likelihoods rounded to the closest integer, and otherwise defined precisely
+   as the genotype likelihoods field. VCF genotype field reserved key PL, Number=G.
+   */
+  array<int> phredScaledLikelihoods = [];
+
+  // PQ Number=1 Type=Integer
+  /**
+   Phred-scaled probability that alleles are ordered incorrectly, against all other members in
+   the same phase set. VCF genotype field reserved key PQ.
+   */
+  union { null, int } phaseSetQuality = null;
+
+
+  // SB is not a reserved key in VCF v4.2 or v4.3
   /**
    Per-sample component statistics which comprise the Fisher's Exact Test to detect strand bias.
    If set, the array should contain the number of reads that support the reference allele on the
    forward strand, the reference allele on the reverse strand, the alternate allele on the forward
    strand, and the alternate allele on the reverse strand, in that order. VCF genotype field key SB.
    */
-  array<int> strandBias = [];
+  //array<int> strandBias = [];  Genotype.strandBiasComponents previously
+
+
+  //
+  // Not present in VCF specification yet present in Genotype
+
+  // The minimum number of reads seen at this site across samples when joint calling variants.
+  // Analogous to VCF's MIN_DP.
+  //union { null, int } minReadDepth = null;
+
+  // Log scaled likelihoods that we have n non-reference alleles at this site. The number of
+  // elements in this array should be equal to the ploidy at this site, plus 1.
+  //array<float> nonReferenceLikelihoods = [];
+
+  // We split multi-allelic VCF lines into multiple single-alternate records. This bit is set
+  // if that happened for this record.
+  //union { boolean, null } splitFromMultiAllelic = false;
+
+
+  //
+  // Not present in VCF specification yet present in VariantCallingAnnotations
+
+  // True if the reads covering this site were randomly downsampled to reduce coverage.
+  //union { null, boolean } downsampled = null;
+
+  // The Wilcoxon rank-sum test statistic of the base quality scores. The base quality
+  // scores are separated by whether or not the base supports the reference or the
+  // alternate allele.
+  //union { null, float } baseQRankSum = null;
+
+  // The Fisher's exact test score for the strand bias of the reference and alternate
+  // alleles.
+  //union { null, float } fisherStrandBiasPValue = null;
+
+  // The number of reads at this site with mapping quality equal to 0.
+  //union { null, int } mapq0Reads = null;
+
+  // The Wilcoxon rank-sum test statistic of the mapping quality scores.
+  //union { null, float } mqRankSum = null;
+
+  // The Wilcoxon rank-sum test statistic of the position of the base in the read at this site.
+  //union { null, float } readPositionRankSum = null;
+
+  // The log scale prior probabilities of the various genotype states at this site.
+  //array<float> genotypePriors = [];
+
+  // The log scaled posterior probabilities of the various genotype states at this site,
+  // in this sample.
+  //array<float> genotypePosteriors = [];  Does this map to GP in the VariantContextConverter?
+
+  // The log-odds ratio of being a true vs. false variant under a trained statistical model.
+  //union { null, float } vqslod = null;
+
+  // If known, the feature that contributed the most to this variant being classified as
+  // a false variant.
+  //union { null, string } culprit = null;
 
   /**
    Additional genotype attributes that do not fit into the standard fields above.
-   The values are stored as strings, even for flag, integer, and float types.
+   The values are stored as strings, even for flag, integer, and float types. VCF
+   genotype key values with Number=., Number=0, Number=1, and Number=[n] are shared across
+   all alternate alleles in the same VCF record. VCF genotype key values with Number=A are
+   split for multi-allelic sites into a single value. VCF genotype key values with Number=R
+   are split into an array of two values, [reference allele, alternate allele], separated
+   by commas, e.g. "0,1".
    */
   map<string> attributes = {};
 }
@@ -875,7 +1025,7 @@ record GenotypeAnnotation {
 record Genotype {
 
   /**
-   The variant for this genotype.
+   The variant for this genotype. May be left unset or set to null for performance reasons.
    */
   union { null, Variant } variant = null;
 
@@ -905,6 +1055,7 @@ record Genotype {
    */
   union { null, string } sampleId = null;
 
+  // GT Number=1 Type=String
   /**
    One or more allele values encoding this genotype. If this genotype is phased, the order of
    the allele values is significant. VCF genotype field reserved key GT mapped to Allele enum
@@ -918,13 +1069,15 @@ record Genotype {
    */
   union { boolean, null } phased = false;
 
+  // PS Number=1 Type=(non-negative 32-bit Integer)
   /**
-   Phase set identifier, if any. Phased genotypes on the same contig with the same phaseSetId
-   are in the same phased set. All phased genotypes that do not have a phaseSetId are assumed to
+   Phase set, if any. Phased genotypes on the same contig with the same phaseSet
+   are in the same phased set. All phased genotypes that do not have a phaseSet are assumed to
    belong to the same phased set. VCF genotype field reserved key PS.
    */
-  union { null, int } phaseSetId = null;
+  union { null, int } phaseSet = null;
 
+  // FT Number=1 Type=String
   /**
    True if filters were applied for this genotype. VCF genotype field reserved key FT any
    value other than the missing value.
