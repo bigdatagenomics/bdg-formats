@@ -879,15 +879,6 @@ record GenotypeAnnotation {
    */
   union { null, int } readDepth = null;
 
-  // EC Number=A Type=Integer
-  // Comma separated list of expected alternate allele counts for each alternate allele in the same
-  // order as listed in the ALT field. Typically used in association analyses.
-  /**
-   The expected dosage of the alternate allele in this sample. VCF genotype reserved key EC,
-   Number=A, split for multi-allelic sites into a single float value.
-   */
-  union { null, float } expectedAlleleDosage = null; // or expectedAlleleCount? see Variant.alleleCount
-
   // GL Number=G Type=Float
   /**
    Genotype likelihoods comprised of floating point log10-scaled likelihoods for all possible
@@ -895,10 +886,6 @@ record GenotypeAnnotation {
    reserved key GL, Number=G.
    */
   array<float> likelihoods = [];
-
-  // GLE Number=1 Type=String
-  // Genotype likelihoods of heterogeneous ploidy, used in presence of uncertain copy number.
-  // Reserved genotype field key in VCF v4.2, dropped in VCF v4.3
 
   // GP Number=G Type=Float
   /**
@@ -915,25 +902,12 @@ record GenotypeAnnotation {
    */
   union { null, int } quality = null;
 
-  // HQ Number=2 Type=Integer
-  /**
-   Haplotype quality, encoded as two phred qualities. VCF genotype field reserved key HQ, Number=2.
-   */
-  array<int> haplotypeQuality = [];
-
   // MQ Number=1 Type=Integer
   /**
    Root Mean Square (RMS) of the mapping quality of reads for this genotype. VCF genotype field
    reserved key MQ.
    */
   union { null, int } rmsMappingQuality = null;
-
-  // PL Number=G Type=Integer
-  /**
-   Phred-scaled genotype likelihoods rounded to the closest integer, and otherwise defined precisely
-   as the genotype likelihoods field. VCF genotype field reserved key PL, Number=G.
-   */
-  array<int> phredScaledLikelihoods = [];
 
   // PQ Number=1 Type=Integer
   /**
@@ -942,47 +916,39 @@ record GenotypeAnnotation {
    */
   union { null, int } phaseSetQuality = null;
 
-
-  // SB is not a reserved key in VCF v4.2 or v4.3
-  /**
-   Per-sample component statistics which comprise the Fisher's Exact Test to detect strand bias.
-   If set, the array should contain the number of reads that support the reference allele on the
-   forward strand, the reference allele on the reverse strand, the alternate allele on the forward
-   strand, and the alternate allele on the reverse strand, in that order. VCF genotype field key SB.
-   */
-  //array<int> strandBias = [];  Genotype.strandBiasComponents previously
-
-
   //
   // Not present in VCF specification yet present in Genotype
 
-  // The minimum number of reads seen at this site across samples when joint calling variants.
-  // Analogous to VCF's MIN_DP.
-  //union { null, int } minReadDepth = null;
+  /**
+   Minimum number of reads seen at this site across samples when joint calling variants.
+   VCF genotype field key MIN_DP.
+   */
+  union { null, int } minimumReadDepth = null;
 
-  // Log scaled likelihoods that we have n non-reference alleles at this site. The number of
-  // elements in this array should be equal to the ploidy at this site, plus 1.
-  //array<float> nonReferenceLikelihoods = [];
-
-  // We split multi-allelic VCF lines into multiple single-alternate records. This bit is set
-  // if that happened for this record.
-  //union { boolean, null } splitFromMultiAllelic = false;
+  /**
+   Log scaled likelihoods that we have n non-reference alleles at this site. The number of
+   elements in this array should be equal to the ploidy at this site, plus 1.
+   */
+  array<float> nonReferenceLikelihoods = [];
 
 
   //
   // Not present in VCF specification yet present in VariantCallingAnnotations
 
-  // True if the reads covering this site were randomly downsampled to reduce coverage.
-  //union { null, boolean } downsampled = null;
+  /**
+   True if the reads covering this site were randomly downsampled to reduce coverage.
+   */
+  union { null, boolean } downsampled = null;
 
   // The Wilcoxon rank-sum test statistic of the base quality scores. The base quality
   // scores are separated by whether or not the base supports the reference or the
   // alternate allele.
   //union { null, float } baseQRankSum = null;
 
-  // The Fisher's exact test score for the strand bias of the reference and alternate
-  // alleles.
-  //union { null, float } fisherStrandBiasPValue = null;
+  /**
+   Fisher's exact test score for the strand bias of the reference and alternate alleles.
+   */
+  union { null, float } fisherStrandBiasPValue = null;
 
   // The number of reads at this site with mapping quality equal to 0.
   //union { null, int } mapq0Reads = null;
@@ -1093,6 +1059,11 @@ record Genotype {
    Zero or more filters that failed for this genotype. VCF genotype field reserved key FT.
    */
   array<string> filtersFailed = [];
+
+  /**
+   True if this genotype was split from a multi-allelic site in VCF.
+   */
+  union { boolean, null } splitFromMultiAllelic = false;
 
   /**
    Annotation for this genotype, if any.
