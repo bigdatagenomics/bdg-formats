@@ -315,6 +315,11 @@ record NucleotideContigFragment {
   union { null, string } contigName = null;
 
   /**
+   The total length of the contig this fragment is from.
+   */
+  union { null, long } contigLength = null;
+
+  /**
    A description for this contig. When importing from FASTA, the FASTA header
    description line should be stored here.
    */
