@@ -102,7 +102,7 @@ record ProcessingStep {
 /**
  Record group metadata.
  */
-record RecordGroupMetadata {
+record RecordGroup {
 
   /**
    Record group identifier.
