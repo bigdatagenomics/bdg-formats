@@ -64,6 +64,42 @@ record Contig {
 }
 
 /**
+ Description of a computational processing step.
+ */
+record ProcessingStep {
+
+  /**
+   The ID of this processing step.
+   */
+  union { null, string } id = null;
+
+  /**
+   The name of the program used to run this step.
+   */
+  union { null, string } programName = null;
+
+  /**
+   The command line used to run this step.
+   */
+  union { null, string } commandLine = null;
+
+  /**
+   Previous processing step ID. Omit if this is the first step.
+   */
+  union { null, string } previousId = null;
+
+  /**
+   The description of this processing step.
+   */
+  union { null, string } description = null;
+
+  /**
+   The version of the tool that was run.
+   */
+  union { null, string } version = null;
+}
+
+/**
  Record group metadata.
  */
 record RecordGroupMetadata {
@@ -87,6 +123,11 @@ record RecordGroupMetadata {
   union { null, int } predictedMedianInsertSize = null;
   union { null, string } platform = null;
   union { null, string } platformUnit = null;
+
+  /**
+   The processing steps that have been applied to this record group.
+   */
+  array<ProcessingStep> processingSteps = [];
 }
 
 /**
@@ -1275,6 +1316,11 @@ record Sample {
    Mixture, and Description from sample meta-information lines in VCF files.
    */
   map<string> attributes = {};
+
+  /**
+   The processing steps that have been applied to this sample.
+   */
+  array<ProcessingStep> processingSteps = [];
 }
 
 /**
