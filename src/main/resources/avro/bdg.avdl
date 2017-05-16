@@ -706,6 +706,12 @@ record VariantAnnotation {
   union { boolean, null } somatic = false;
 
   /**
+   True if this variant call represents a site or gVCF block where no alternate
+   allele was called. This includes both gVCF modes (ERC and BP_RESOLUTION).
+   */
+  union { boolean, null } reference = false;
+
+  /**
    Zero or more transcript effects, predicted by a tool such as SnpEff or Ensembl VEP,
    one per transcript (or other feature). VCF INFO key ANN, split for multi-allelic
    sites. See http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf.
@@ -792,6 +798,20 @@ record Variant {
    all alleles in the same VCF record.
    */
   array<string> filtersFailed = [];
+
+  /**
+   True if this variant is symbolic. If a variant is symbolic, symbolicEnd is populated
+   from the VCF INFO reserved key END. Symbolic alleles encompass structural variants, as
+   well as the "any alt" allele from the gVCF reference model.
+   */
+  union { null, boolean } symbolic = false;
+
+  /**
+   The zero-based, exclusive end position of this symbolic variant on the reference contig.
+   VCF INFO reserved key END, Number=1, shared across all alternate alleles in the same
+   VCF record. Only populated if symbolic is true.
+   */
+  union { null, long } symbolicEnd = null;
 
   /**
    Annotation for this variant, if any.
@@ -901,6 +921,20 @@ record GenotypeAnnotation {
    conditioned on the site being variant). VCF genotype field reserved key GQ.
    */
   union { null, int } quality = null;
+
+  /**
+   For a gVCF block, the minimum phred-scaled probability of the reference genotype call for
+   all bases merged into this block. minGQ in the gVCF block header line, e.g. 0 in
+   ##GVCFBlock=minGQ=0(inclusive),maxGQ=5(exclusive).
+   */
+  union { null, int } minimumQuality = null;
+
+  /**
+   For a gVCF block, the maximum phred-scaled probability of the reference genotype call for
+   all bases merged into this block. maxGQ in the gVCF block header line, e.g. 5 in
+   ##GVCFBlock=minGQ=0(inclusive),maxGQ=5(exclusive).
+   */
+  union { null, int } maximumQuality = null;
 
   // MQ Number=1 Type=Integer
   /**
