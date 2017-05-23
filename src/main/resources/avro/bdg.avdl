@@ -369,38 +369,38 @@ record NucleotideContigFragment {
   /**
    The sequence of bases in this fragment.
    */
-  union { null, string } fragmentSequence = null;
+  union { null, string } sequence = null;
 
   /**
-   In a fragmented contig, the position of this fragment in the set of fragments.
+   In a fragmented contig, the index of this fragment in the set of fragments.
    Can be null if the contig is not fragmented.
    */
-  union { null, int } fragmentNumber = null;
+  union { null, int } index = null;
 
   /**
    The position of the first base of this fragment in the overall contig. E.g.,
    if all fragments are 10kbp and this is the third fragment in the contig,
    the start position would be 20000L.
    */
-  union { null, long } fragmentStartPosition = null;
+  union { null, long } start = null;
 
   /**
    The position of the last base of this fragment in the overall contig. E.g.,
    if all fragments are 10kbp and this is the third fragment in the contig,
    the end position would be 29999L.
    */
-  union { null, long } fragmentEndPosition = null;
+  union { null, long } end = null;
 
   /**
    The length of this fragment.
    */
-  union { null, long } fragmentLength = null;
+  union { null, long } length = null;
 
   /**
    The total count of fragments that this contig has been broken into. Can be
    null if the contig is not fragmented.
    */
-  union { null, int } numberOfFragmentsInContig = null;
+  union { null, int } fragments = null;
 }
 
 /**
