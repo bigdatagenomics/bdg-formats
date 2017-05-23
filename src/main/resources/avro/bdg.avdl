@@ -1429,6 +1429,21 @@ record Slice { // extends Sequence
   union { null, long } length = null;
 
   /**
+   Length of the sequence this slice views.
+   */
+  union { null, long } totalLength = null;
+
+  /**
+   Index of this slice in a set of slices that covers the sequence this slice views, if any.
+   */
+  union { null, int } index = null;
+
+  /**
+   Number of slices in a set of slices that covers the sequence this slice views, if any.
+   */
+  union { null, int } slices = null;
+
+  /**
    Map of attributes.
    */
   map<string> attributes = {};
