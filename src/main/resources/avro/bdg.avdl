@@ -115,11 +115,23 @@ record RecordGroup {
   union { null, string } sample = null;
 
   union { null, string } sequencingCenter = null;
+  /**
+  Description for the group of records.
+  */
   union { null, string } description = null;
+  /**
+  Date when the run was performed.
+  */
   union { null, long } runDateEpoch = null;
   union { null, string } flowOrder = null;
   union { null, string } keySequence = null;
+  /**
+  Identifier for the library.
+  */
   union { null, string } library = null;
+  /**
+  Calculate median for the length of records inserts in the group.
+  */
   union { null, int } predictedMedianInsertSize = null;
   union { null, string } platform = null;
   union { null, string } platformUnit = null;
@@ -148,19 +160,19 @@ record AlignmentRecord {
   union { null, string } contigName = null;
 
   /**
-   0 based reference position for the start of this read's alignment.
+   The zero-based reference position for the start of this read's alignment.
    Should be null if the read is unaligned.
    */
   union { null, long } start = null;
 
   /**
-   0 based reference position where this read used to start before
+   The zero-based reference position where this read used to start before
    local realignment. Stores the same data as the OP field in the SAM format.
    */
-  union { null, long } oldPosition = null;
+  union { null, long } originalPosition = null;
 
   /**
-   0 based reference position for the end of this read's alignment.
+   The zero-based reference position for the end of this read's alignment.
    Should be null if the read is unaligned.
    */
   union { null, long } end = null;
@@ -168,7 +180,7 @@ record AlignmentRecord {
   /**
    The global mapping quality of this read.
    */
-  union { null, int } mapq = null;
+  union { null, int } mappingQuality = null;
 
   /**
    The name of this read. This should be unique within the read group
@@ -189,7 +201,7 @@ record AlignmentRecord {
    Additionally, if the error scores have been recalibrated, this field
    will not contain the original base quality scores.
    */
-  union { null, string } qual = null;
+  union { null, string } quality = null;
 
   /**
    The Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
@@ -232,7 +244,7 @@ record AlignmentRecord {
    Stores the CIGAR string present before local indel realignment.
    Stores the same data as the OC field in the SAM format.
    */
-  union { null, string } oldCigar = null;
+  union { null, string } originalCigar = null;
 
   /**
    The number of bases in this read/alignment that have been trimmed from the
@@ -269,26 +281,26 @@ record AlignmentRecord {
   union { boolean, null } mateNegativeStrand = false;
 
   /**
-   This field is true if this alignment is either the best linear alignment,
+   True if this alignment is either the best linear alignment,
    or the first linear alignment in a chimeric alignment. Defaults to false.
    */
   union { boolean, null } primaryAlignment = false;
 
   /**
-   This field is true if this alignment is a lower quality linear alignment
+   True if this alignment is a lower quality linear alignment
    for a multiply-mapped read. Defaults to false.
    */
   union { boolean, null } secondaryAlignment = false;
 
   /**
-   This field is true if this alignment is a non-primary linear alignment in
+   True if this alignment is a non-primary linear alignment in
    a chimeric alignment. Defaults to false.
    */
   union { boolean, null } supplementaryAlignment = false;
 
   // Commonly used optional attributes
   union { null, string } mismatchingPositions = null;
-  union { null, string } origQual = null;
+  union { null, string } originalQuality = null;
 
   // Remaining optional attributes flattened into a string
   union { null, string } attributes = null;
@@ -316,7 +328,7 @@ record AlignmentRecord {
 }
 
 /**
- The DNA fragment that is was targeted by the sequencer, resulting in
+ The DNA fragment that was targeted by the sequencer, resulting in
  one or more reads.
  */
 record Fragment {
@@ -326,7 +338,13 @@ record Fragment {
    */
   union { null, string } readName = null;
 
+  /**
+  The sequencer used for the experiment.
+  */
   union { null, string } instrument = null;
+  /**
+  Identifier for the run.
+  */
   union { null, string } runId = null;
 
   /**
