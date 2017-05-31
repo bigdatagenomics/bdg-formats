@@ -1,6 +1,6 @@
 # bdg-formats #
 
-### Version 0.10.0 ###
+### Version 0.10.1 ###
 
 * ISSUE [118](https://github.com/bigdatagenomics/bdg-formats/issues/118): Use separate fields for Number=R VCF INFO attributes
 * ISSUE [116](https://github.com/bigdatagenomics/bdg-formats/issues/116): Add forward reference between Variant and VariantAnnotation
