@@ -765,6 +765,12 @@ record Variant {
   union { null, string } alternateAllele = null;
 
   /**
+   True if this variant is the gVCF symbolic "<NON_REF>" allele. This allele models the
+   presence of a generic, unknown non-reference allele.
+   */
+  union { boolean, null } isNonReferenceModel = false;
+
+  /**
    True if filters were applied for this variant. VCF column 7 "FILTER" any value other
    than the missing value.
    */
