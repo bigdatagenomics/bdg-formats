@@ -1044,14 +1044,14 @@ record Genotype {
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1. Analogous to VCF's PL.
    */
-  array<float> genotypeLikelihoods = [];
+  array<double> genotypeLikelihoods = [];
 
   /**
    Log scaled likelihoods that we have n non-reference alleles at this site.
    The number of elements in this array should be equal to the ploidy at this
    site, plus 1.
    */
-  array<float> nonReferenceLikelihoods = [];
+  array<double> nonReferenceLikelihoods = [];
 
   /**
    Component statistics which comprise the Fisher's Exact Test to detect strand bias.
