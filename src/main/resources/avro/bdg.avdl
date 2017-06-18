@@ -901,11 +901,11 @@ record GenotypeAnnotation {
 
   // GL Number=G Type=Float
   /**
-   Genotype likelihoods comprised of floating point log10-scaled likelihoods for all possible
+   Genotype likelihoods comprised of double floating point log10-scaled likelihoods for all possible
    genotypes given [the set of alleles defined in the REF and ALT fields]. VCF genotype field
    reserved key GL, Number=G.
    */
-  array<float> likelihoods = [];
+  array<double> likelihoods = [];
 
   // GP Number=G Type=Float
   /**
@@ -963,7 +963,7 @@ record GenotypeAnnotation {
    Log scaled likelihoods that we have n non-reference alleles at this site. The number of
    elements in this array should be equal to the ploidy at this site, plus 1.
    */
-  array<float> nonReferenceLikelihoods = [];
+  array<double> nonReferenceLikelihoods = [];
 
 
   //
