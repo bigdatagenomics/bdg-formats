@@ -765,6 +765,12 @@ record Variant {
   union { null, string } alternateAllele = null;
 
   /**
+   The Phred scaled probability that this allele is variant. VCF column 6 "QUAL".
+   If this record is multi-allelic, this value may be incorrect.
+   */
+  union { null, double } quality = null;
+
+  /**
    True if filters were applied for this variant. VCF column 7 "FILTER" any value other
    than the missing value.
    */
