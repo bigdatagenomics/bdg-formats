@@ -754,6 +754,12 @@ record Variant {
   array<string> names = [];
 
   /**
+   We split multi-allelic VCF lines into multiple single-alternate records.
+   This bit is set if that happened for this record.
+   */
+  union { boolean, null } splitFromMultiAllelic = false;
+
+  /**
    A string describing the reference allele at this site. VCF column 4 "REF".
    */
   union { null, string } referenceAllele = null;
