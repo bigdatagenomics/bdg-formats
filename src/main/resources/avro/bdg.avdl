@@ -20,47 +20,51 @@
 protocol BDG {
 
 /**
- Record for describing a reference assembly. Not used for storing the contents
- of said assembly.
+ A reference is a canonical assembled contig, intended to act as a
+ reference coordinate space for other genomic annotations. A single
+ reference might represent the human chromosome 1, for instance.
  */
-record Contig {
+record Reference {
 
   /**
-   The name of this contig in the assembly (e.g., "1").
+   The name of this reference in the assembly (e.g., "1").
    */
-  union { null, string } contigName = null;
+  union { null, string } name = null;
 
   /**
-   The length of this contig.
+   The length of the sequence for this reference.
    */
-  union { null, long } contigLength = null;
+  union { null, long } length = null;
 
   /**
-   The MD5 checksum of the assembly for this contig.
+   The MD5 checksum uniquely representing this reference as a lower-case
+   hexadecimal string, calculated as the MD5 of the upper-case sequence
+   excluding all whitespace characters (equivalent to SQ:M5 in SAM).
    */
-  union { null, string } contigMD5 = null;
+  union { null, string } md5 = null;
 
   /**
-   The URL at which this reference assembly can be found.
+   The URI from which the reference sequence was obtained.
    */
-  union { null, string } referenceURL = null;
+  union { null, string } sourceUri = null;
 
   /**
-   The name of this assembly (e.g., "hg19").
+   All known corresponding accession IDs for this reference in INSDC
+   (GenBank/ENA/DDBJ), which must include a version number, e.g. GCF_000001405.26.
    */
-  union { null, string } assembly = null;
+  array<string> sourceAccessions = [];
 
   /**
-   The species that this assembly is for.
+   The species that this reference is for.
    */
   union { null, string } species = null;
 
   /**
-   Optional 0-based index of this contig in a SAM file header that it was read
+   Optional 0-based index of this reference in a SAM file header that it was read
    from; helps output SAMs/BAMs with headers in the same order as they started
    with, before a conversion to ADAM.
    */
-  union { null, int } referenceIndex = null;
+  union { null, int } index = null;
 }
 
 /**
@@ -141,11 +145,10 @@ record AlignmentRecord {
   union { int, null } readInFragment = 0;
 
   /**
-   The reference sequence details for the reference chromosome that
-   this read is aligned to. If the read is unaligned, this field should
-   be null.
+   The reference this read is aligned to. If the read is unaligned, this
+   field should be null.
    */
-  union { null, string } contigName = null;
+  union { null, string } referenceName = null;
 
   /**
    0 based reference position for the start of this read's alignment.
@@ -304,10 +307,10 @@ record AlignmentRecord {
   union { null, long } mateAlignmentStart = null;
 
   /**
-   The reference contig of the mate of this read. Should be set to null if the
+   The reference of the mate of this read. Should be set to null if the
    mate is unaligned, or if the mate does not exist.
    */
-  union { null, string } mateContigName = null;
+  union { null, string } mateReferenceName = null;
 
   /**
    The distance between this read and it's mate as inferred from alignment.
@@ -732,18 +735,18 @@ record VariantAnnotation {
 record Variant {
 
   /**
-   The reference contig this variant exists on. VCF column 1 "CONTIG".
+   The reference this variant exists on. VCF column 1 "CONTIG".
    */
-  union { null, string } contigName = null;
+  union { null, string } referenceName = null;
 
   /**
-   The zero-based start position of this variant on the reference contig.
+   The zero-based start position of this variant on the reference.
    VCF column 2 "POS" converted to zero-based coordinate system, closed-open intervals.
    */
   union { null, long } start = null;
 
   /**
-   The zero-based, exclusive end position of this variant on the reference contig.
+   The zero-based, exclusive end position of this variant on the reference.
    Calculated by start + referenceAllele.length().
    */
   union { null, long } end = null;
@@ -977,17 +980,17 @@ record Genotype {
   union { null, Variant } variant = null;
 
   /**
-   The reference contig that this genotype's variant exists on.
+   The reference that this genotype's variant exists on.
    */
-  union { null, string } contigName = null;
+  union { null, string } referenceName = null;
 
   /**
-   The 0-based start position of this genotype's variant on the reference contig.
+   The 0-based start position of this genotype's variant on the reference.
    */
   union { null, long } start = null;
 
   /**
-   The 0-based, exclusive end position of this genotype's variant on the reference contig.
+   The 0-based, exclusive end position of this genotype's variant on the reference.
    */
   union { null, long } end = null;
 
@@ -1194,10 +1197,10 @@ record Feature {
   union { null, string } featureType = null;
 
   /**
-   Contig this feature is located on. Column 1 "seqid" in GFF3, column 1 "chrom"
+   Reference this feature is located on. Column 1 "seqid" in GFF3, column 1 "chrom"
    in BED format.
    */
-  union { null, string } contigName = null;
+  union { null, string } referenceName = null;
 
   /**
    Start position for this feature, in 0-based coordinate system with closed-open
