@@ -893,32 +893,39 @@ record GenotypeAnnotation {
    */
   union { null, int } referenceReverseReadDepth = null;
 
-  // DP Number=1 Type=Integer
   /**
-   Read depth at this position for this sample. VCF genotype field reserved key DP.
+   Read depth at this position for this sample. VCF genotype field reserved key DP, Number=1.
    */
   union { null, int } readDepth = null;
 
-  // GL Number=G Type=Float
   /**
-   Genotype likelihoods comprised of double floating point log10-scaled likelihoods for all possible
-   genotypes given [the set of alleles defined in the REF and ALT fields]. VCF genotype field
-   reserved key GL, Number=G.
+   Log scaled genotype likelihoods. VCF genotype field reserved key GL, Number=G, converted
+   from log10 scale to natural log scale, or VCF genotype field reserved key PL, Number=G,
+   converted from phred scale to natural log scale.
    */
   array<double> likelihoods = [];
 
-  // GP Number=G Type=Float
   /**
-   Genotype posterior probabilities in the range 0.0 to 1.0 using the same ordering as the
-   genotype likelihood field; one use can be to store imputed genotype probabilities. VCF genotype
-   field reserved key GP, Number=G.
+   Log scaled likelihoods that we have n non-reference alleles at this site. The number of
+   elements in this array should be equal to the ploidy at this site, plus 1.  VCF genotype
+   field key nonReferenceLikelihoods, Number=..
    */
-  array<float> posteriorProbabilities = [];
+  array<double> nonReferenceLikelihoods = [];
 
-  // GQ Number=1 Type=Integer
+  /**
+   Log scaled prior probabilities. VCF genotype field key priors, Number=G.
+   */
+  array<float> priors = [];
+
+  /**
+   Log scaled posterior probabilities. VCF genotype field reserved key GP, Number=G, converted
+   from log10 scale to natural log scale.
+   */
+  array<float> posteriors = [];
+
   /**
    Conditional genotype quality, encoded as a phred quality −10log10 p(genotype call is wrong
-   conditioned on the site being variant). VCF genotype field reserved key GQ.
+   conditioned on the site being variant). VCF genotype field reserved key GQ, Number=1.
    */
   union { null, int } quality = null;
 
@@ -936,76 +943,34 @@ record GenotypeAnnotation {
    */
   union { null, int } maximumQuality = null;
 
-  // MQ Number=1 Type=Integer
   /**
    Root Mean Square (RMS) of the mapping quality of reads for this genotype. VCF genotype field
-   reserved key MQ.
+   reserved key MQ, Number=1.
    */
   union { null, int } rmsMappingQuality = null;
 
-  // PQ Number=1 Type=Integer
   /**
    Phred-scaled probability that alleles are ordered incorrectly, against all other members in
-   the same phase set. VCF genotype field reserved key PQ.
+   the same phase set. VCF genotype field reserved key PQ, Number=1.
    */
   union { null, int } phaseSetQuality = null;
 
-  //
-  // Not present in VCF specification yet present in Genotype
-
   /**
    Minimum number of reads seen at this site across samples when joint calling variants.
-   VCF genotype field key MIN_DP.
+   VCF genotype field key MIN_DP, Number=1.
    */
   union { null, int } minimumReadDepth = null;
-
-  /**
-   Log scaled likelihoods that we have n non-reference alleles at this site. The number of
-   elements in this array should be equal to the ploidy at this site, plus 1.
-   */
-  array<double> nonReferenceLikelihoods = [];
-
-
-  //
-  // Not present in VCF specification yet present in VariantCallingAnnotations
 
   /**
    True if the reads covering this site were randomly downsampled to reduce coverage.
    */
   union { null, boolean } downsampled = null;
 
-  // The Wilcoxon rank-sum test statistic of the base quality scores. The base quality
-  // scores are separated by whether or not the base supports the reference or the
-  // alternate allele.
-  //union { null, float } baseQRankSum = null;
-
   /**
    Fisher's exact test score for the strand bias of the reference and alternate alleles.
+   VCF genotype field key fisherStrandBiasPValue, Number=1 Type=Float.
    */
   union { null, float } fisherStrandBiasPValue = null;
-
-  // The number of reads at this site with mapping quality equal to 0.
-  //union { null, int } mapq0Reads = null;
-
-  // The Wilcoxon rank-sum test statistic of the mapping quality scores.
-  //union { null, float } mqRankSum = null;
-
-  // The Wilcoxon rank-sum test statistic of the position of the base in the read at this site.
-  //union { null, float } readPositionRankSum = null;
-
-  // The log scale prior probabilities of the various genotype states at this site.
-  //array<float> genotypePriors = [];
-
-  // The log scaled posterior probabilities of the various genotype states at this site,
-  // in this sample.
-  //array<float> genotypePosteriors = [];  Does this map to GP in the VariantContextConverter?
-
-  // The log-odds ratio of being a true vs. false variant under a trained statistical model.
-  //union { null, float } vqslod = null;
-
-  // If known, the feature that contributed the most to this variant being classified as
-  // a false variant.
-  //union { null, string } culprit = null;
 
   /**
    Additional genotype attributes that do not fit into the standard fields above.
@@ -1055,7 +1020,6 @@ record Genotype {
    */
   union { null, string } sampleId = null;
 
-  // GT Number=1 Type=String
   /**
    One or more allele values encoding this genotype. If this genotype is phased, the order of
    the allele values is significant. VCF genotype field reserved key GT mapped to Allele enum
@@ -1069,15 +1033,13 @@ record Genotype {
    */
   union { boolean, null } phased = false;
 
-  // PS Number=1 Type=(non-negative 32-bit Integer)
   /**
    Phase set, if any. Phased genotypes on the same contig with the same phaseSet
    are in the same phased set. All phased genotypes that do not have a phaseSet are assumed to
-   belong to the same phased set. VCF genotype field reserved key PS.
+   belong to the same phased set. VCF genotype field reserved key PS, Number=1.
    */
   union { null, int } phaseSet = null;
 
-  // FT Number=1 Type=String
   /**
    True if filters were applied for this genotype. VCF genotype field reserved key FT any
    value other than the missing value.
