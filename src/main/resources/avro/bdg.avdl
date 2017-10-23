@@ -990,29 +990,33 @@ record GenotypeAnnotation {
 record Genotype {
 
   /**
-   The variant for this genotype. May be left unset or set to null for performance reasons.
-   */
-  union { null, Variant } variant = null;
-
-  /**
    The reference contig the variant for this genotype exists on. VCF column 1 "CONTIG".
-   Used when the variant field has been left unset or set to null for performance reasons.
    */
   union { null, string } contigName = null;
 
   /**
    The zero-based start position of the variant for this genotype on the reference contig.
    VCF column 2 "POS" converted to zero-based coordinate system, closed-open intervals.
-   Used when the variant field has been left unset or set to null for performance reasons.
    */
   union { null, long } start = null;
 
   /**
    The zero-based, exclusive end position of the variant for this genotype on the reference
-   contig. Calculated by Variant.start + Variant.referenceAllele.length(). Used when the
-   variant field has been left unset or set to null for performance reasons.
+   contig. Calculated by start + referenceAllele.length().
    */
   union { null, long } end = null;
+
+  /**
+   A string describing the reference allele of the variant for this genotype.
+   VCF column 4 "REF".
+   */
+  union { null, string } referenceAllele = null;
+
+  /**
+   A string describing the alternate allele of the variant for this genotype.
+   VCF column 5 "ALT" split for multi-allelic sites.
+   */
+  union { null, string } alternateAllele = null;
 
   /**
    Sample identifier for this genotype. Join with Sample.sampleId for sample metadata.
