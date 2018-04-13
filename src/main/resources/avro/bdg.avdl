@@ -324,19 +324,21 @@ record Fragment {
   /**
    The name of this fragment.
    */
-  union { null, string } readName = null;
-
-  union { null, string } instrument = null;
-  union { null, string } runId = null;
+  union { null, string } name = null;
 
   /**
-   Fragment's insert size derived from alignment, if the reads have been
+   Record group name for this fragment.
+   */
+  union { null, string } recordGroupName = null;
+
+  /**
+   Insert size for this fragment, derived from alignment, if the reads have been
    aligned.
    */
-  union { null, int } fragmentSize = null;
+  union { null, int } insertSize = null;
 
   /**
-   The sequences read from this fragment.
+   The reads from this fragment.
    */
   array<AlignmentRecord> alignments = [];
 }
