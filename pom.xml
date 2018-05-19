@@ -11,7 +11,7 @@
 
   <groupId>org.bdgenomics.bdg-formats</groupId>
   <artifactId>bdg-formats</artifactId>
-  <version>0.12.0-SNAPSHOT</version>
+  <version>0.13.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Big Data Genomics: Avro Formats</name>
 
@@ -53,7 +53,7 @@
   </issueManagement>
 
   <properties>
-    <avro.version>1.8.1</avro.version>
+    <avro.version>1.8.2</avro.version>
   </properties>
   
   <build>
@@ -67,7 +67,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.3</version>
+          <version>3.0.0-M1</version>
           <configuration>
             <additionalparam>-Xdoclint:none</additionalparam>
           </configuration>
@@ -78,6 +78,7 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
+	    <version>1.8.2</version>
         <executions>
           <execution>
             <id>schemas</id>
@@ -94,6 +95,15 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-compiler-plugin</artifactId>
+	    <version>3.7.0</version>
+	    <configuration>
+		  <source>9</source>
+		  <target>9</target>
+	    </configuration>
+      </plugin>
     </plugins>
   </build>
   
@@ -106,7 +116,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -119,7 +129,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.3</version>
+            <version>3.0.0-M1</version>
             <configuration>
               <additionalparam>-Xdoclint:none</additionalparam>
             </configuration>
@@ -170,8 +180,9 @@
       <build>
         <plugins>
           <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9.1</version>
+            <version>3.0.0-M1</version>
             <configuration>
               <aggregate>true</aggregate>
               <show>private</show>
