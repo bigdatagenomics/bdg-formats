@@ -1165,6 +1165,12 @@ record Feature {
    */
   union { null, string } featureId = null;
 
+
+  /**
+   Identifier for this sample.
+   */
+  union { null, string } sampleId = null;
+
   /**
    Display name for this feature, e.g. DVL1. Name tag in GFF3, optional column 4 "name"
    in BED format.
