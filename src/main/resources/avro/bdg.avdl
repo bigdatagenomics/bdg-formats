@@ -1167,8 +1167,9 @@ record Feature {
 
 
   /**
-   Identifier for this sample.
-   */
+   Sample identifier for this feature. Join with Sample.sampleId for sample metadata.
+   sampleId tag in GFF3.
+  */
   union { null, string } sampleId = null;
 
   /**
