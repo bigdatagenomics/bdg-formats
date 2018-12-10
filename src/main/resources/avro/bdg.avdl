@@ -49,6 +49,11 @@ record Reference {
   union { null, string } sourceUri = null;
 
   /**
+   The name of the assembly for this reference (e.g., "hg19").
+   */
+  union { null, string } assembly = null;
+
+  /**
    All known corresponding accession IDs for this reference in INSDC
    (GenBank/ENA/DDBJ), which must include a version number, e.g. GCF_000001405.26.
    */
