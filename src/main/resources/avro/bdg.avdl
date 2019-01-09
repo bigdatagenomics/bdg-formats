@@ -65,88 +65,140 @@ record Reference {
   union { null, string } species = null;
 
   /**
-   Optional 0-based index of this reference in a SAM file header that it was read
-   from; helps output SAMs/BAMs with headers in the same order as they started
-   with, before a conversion to ADAM.
+   Optional zero-based index of this reference in a SAM file header that it was
+   read from; helps output SAMs/BAMs with headers in the same order as they
+   started with, before a conversion to ADAM.
    */
   union { null, int } index = null;
 }
 
 /**
- Description of a computational processing step.
+ Description of a computational processing step. SAM header record type @PG.
  */
 record ProcessingStep {
 
   /**
-   The ID of this processing step.
+   The identifier of this processing step. SAM tag ID for header record type
+   @PG.
    */
   union { null, string } id = null;
 
   /**
-   The name of the program used to run this step.
+   The name of the program used to run this processing step. SAM tag PN for
+   header record type @PG.
    */
   union { null, string } programName = null;
 
   /**
-   The command line used to run this step.
+   The command line used to run this processing step. SAM tag CL for header
+   record type @PG.
    */
   union { null, string } commandLine = null;
 
   /**
-   Previous processing step ID. Omit if this is the first step.
+   Previous processing step identifier. Omit if this is the first step. SAM
+   tag PP for header record type @PG.
    */
   union { null, string } previousId = null;
 
   /**
-   The description of this processing step.
+   The description of this processing step. SAM tag DS for header record type
+   @PG.
    */
   union { null, string } description = null;
 
   /**
-   The version of the program that was run.
+   The version of the program that was run in this processing step. SAM tag VN
+   for header record type @PG.
    */
   union { null, string } version = null;
 }
 
 /**
- Record group metadata.
+ Read group. SAM header record type @RG.
  */
-record RecordGroup {
+record ReadGroup {
 
   /**
-   Record group identifier.
+   Read group identifier. SAM tag ID for header record type @RG.
    */
-  union { null, string } name = null;
+  union { null, string } id = null;
 
   /**
-   Name of the sample that the record group is from.
+   Name of sequencing center producing the reads in this read group. SAM tag
+   CN for header record type @RG.
    */
-  union { null, string } sample = null;
-
   union { null, string } sequencingCenter = null;
+
   /**
-  Description for the group of records.
-  */
+   Description for this read group. SAM tag DS for header record type @RG.
+   */
   union { null, string } description = null;
+
   /**
-  Date when the run was performed.
-  */
+   Date when the sequencing run for this read group was performed. SAM tag DT
+   for header record type @RG.
+   */
   union { null, long } runDateEpoch = null;
+
+  /**
+   Flow order for the reads in this read group. The array of nucleotide bases
+   that correspond to the nucleotides used for each flow of each read. Multi-base
+   flows are encoded in IUPAC format, and non-nucleotide flows by various other
+   characters. SAM tag FO for header record type @RG.
+
+   Format (not enforced here): /\*|[ACMGRSVTWYHKDBN]+/
+   */
   union { null, string } flowOrder = null;
+
+  /**
+   The array of nucleotide bases that correspond to the key sequence of each
+   read in this read group. SAM tag KS for header record type @RG.
+   */
   union { null, string } keySequence = null;
+
   /**
-  Identifier for the library.
-  */
+   Library for this read group. SAM tag LB for header record type @RG.
+   */
   union { null, string } library = null;
+
   /**
-  Calculate median for the length of records inserts in the group.
-  */
+   Predicted median insert size for this read group. SAM tag PI for header
+   record type @RG.
+   */
   union { null, int } predictedMedianInsertSize = null;
+
+  /**
+   Platform or technology used to produce the reads in this read group. SAM
+   tag PL for header record type @RG.
+
+   Valid values from the SAM specification (not enforced here):
+   CAPILLARY, LS454, ILLUMINA, SOLID, HELICOS, IONTORRENT, ONT, and PACBIO.
+   */
   union { null, string } platform = null;
+
+  /**
+   Platform model for this read group, further details of the platform or
+   technology used. SAM tag PM for header record type @RG.
+   */
+  union { null, string } platformModel = null;
+
+  /**
+   Platform unit (e.g. flowcell-barcode.lane for Illumina or slide for SOLiD)
+   for this read group. SAM tag PU for header record type @RG.
+   */
   union { null, string } platformUnit = null;
 
   /**
-   The processing steps that have been applied to this record group.
+   Sample identifier for this read group. Use pool name where a pool is being
+   sequenced. Join with Sample.id for sample metadata. SAM tag SM for
+   header record type @RG.
+   */
+  union { null, string } sampleId = null;
+
+  /**
+   Processing steps that have been applied to this read group. SAM tag PG for
+   header record type @RG.
    */
   array<ProcessingStep> processingSteps = [];
 }
@@ -155,66 +207,69 @@ record RecordGroup {
  Alignment record.
  */
 record AlignmentRecord {
- 
-  /**
-   Read number within the array of fragment reads.
-   */
-  union { int, null } readInFragment = 0;
 
   /**
-   The reference this read is aligned to. If the read is unaligned, this
-   field should be null.
+   The reference for this alignment. If the read is unaligned, this
+   field should be null. SAM column 3 field RNAME.
    */
   union { null, string } referenceName = null;
 
   /**
-   The zero-based reference position for the start of this read's alignment.
-   Should be null if the read is unaligned.
+   Start position for this alignment, in zero-based coordinate system
+   with closed-open intervals. Should be null if the read is unaligned.
+   SAM column 4 field POS converted to zero-based coordinate system,
+   closed-open intervals.
    */
   union { null, long } start = null;
 
   /**
-   The zero-based reference position where this read used to start before
-   local realignment. Stores the same data as the OP field in the SAM format.
+   Original start position for this alignment, before local realignment,
+   in zero-based coordinate system with closed-open intervals. Should be
+   null if the read is unaligned. SAM optional field reserved tag OP
+   converted to zero-based coordinate system, closed-open intervals.
    */
-  union { null, long } originalPosition = null;
+  union { null, long } originalStart = null;
 
   /**
-   The zero-based reference position for the end of this read's alignment.
-   Should be null if the read is unaligned.
+   End position for this alignment, in zero-based coordinate system with
+   closed-open intervals. Should be null if the read is unaligned.
    */
   union { null, long } end = null;
 
   /**
-   The global mapping quality of this read.
+   Global mapping quality for this alignment. SAM column 5 field MAPQ.
    */
   union { null, int } mappingQuality = null;
 
   /**
-   The name of this read. This should be unique within the read group
-   that this read is from, and can be used to identify other reads that
-   are derived from a single fragment.
+   Name of the read for this alignment. This should be unique within the read
+   group that the read is from, and can be used to identify other reads that
+   are derived from a single fragment. SAM column 5 field QNAME.
    */
   union { null, string } readName = null;
 
   /**
-   The bases in this alignment. If the read has been hard clipped, this may
-   not represent all the bases in the original read.
+   Sequence of the read for this alignment. If the read has been hard clipped,
+   this may not represent all the bases in the original read. SAM column 10
+   field SEQ.
    */
   union { null, string } sequence = null;
 
   /**
-   The per-base quality scores in this alignment. If the read has been hard
-   clipped, this may not represent all the bases in the original read.
-   Additionally, if the error scores have been recalibrated, this field
-   will not contain the original base quality scores.
+   Per-base quality scores of the read for this alignment. If the read has
+   been hard clipped, this may not represent all the bases in the original
+   read. Additionally, if the error scores have been recalibrated, this field
+   will not contain the original base quality scores. SAM column 11 field QUAL.
    */
   union { null, string } quality = null;
 
   /**
-   The Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
-   describes the local alignment of this read. Contains {length, operator}
-   pairs for all contiguous alignment operations. The operators include:
+   Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
+   describes the local alignment of the read for this alignment. SAM column
+   6 field CIGAR.
+
+   Contains {length, operator} pairs for all contiguous alignment operations.
+   The operators include:
 
    * M, ALIGNMENT_MATCH: An alignment match indicates that a sequence can be
      aligned to the reference without evidence of an INDEL. Unlike the
@@ -249,90 +304,149 @@ record AlignmentRecord {
   union { null, string } cigar = null;
 
   /**
-   Stores the CIGAR string present before local indel realignment.
-   Stores the same data as the OC field in the SAM format.
+   Original CIGAR string that describes the local alignment of the read for
+   this alignment, before local realignment. SAM optional field reserved tag
+   OC.
    */
   union { null, string } originalCigar = null;
 
   /**
-   The number of bases in this read/alignment that have been trimmed from the
-   start of the read. By default, this is equal to 0. If the value is non-zero,
-   that means that the start of the read has been hard-clipped.
+   Number of bases in the read for this alignment that have been trimmed from
+   the start of the read. By default, this is equal to 0. If the value is
+   non-zero, that means that the start of the read has been hard-clipped.
    */
   union { int, null } basesTrimmedFromStart = 0;
 
   /**
-   The number of bases in this read/alignment that have been trimmed from the
-   end of the read. By default, this is equal to 0. If the value is non-zero,
-   that means that the end of the read has been hard-clipped.
+   Number of bases in the read for this alignment that have been trimmed from
+   the end of the read. By default, this is equal to 0. If the value is
+   non-zero, that means that the end of the read has been hard-clipped.
    */
   union { int, null } basesTrimmedFromEnd = 0;
 
-  // Read flags (all default to false)
+  /**
+   True if the read for this alignment has a mate. Defaults to false.
+   */
   union { boolean, null } readPaired = false;
+
+  /**
+   True if the read for this alignment and its mate are a proper pair.
+   Defaults to false.
+   */
   union { boolean, null } properPair = false;
+
+  /**
+   True if the read for this alignment has been mapped. Defaults to false.
+   */
   union { boolean, null } readMapped = false;
+
+  /**
+   True if the mate of the read for this alignment has been mapped.
+   Defaults to false.
+   */
   union { boolean, null } mateMapped = false;
+
+  /**
+   True if the read for this alignent failed vendor quality checks.
+   Defaults to false.
+   */
   union { boolean, null } failedVendorQualityChecks = false;
+
+  /**
+   True if the read for this alignment has been marked as duplicate.
+   Defaults to false.
+   */
   union { boolean, null } duplicateRead = false;
 
   /**
-   True if this alignment is mapped as a reverse compliment. This field
-   defaults to false.
+   True if this alignment is mapped as a reverse compliment.
+   Defaults to false.
    */
   union { boolean, null } readNegativeStrand = false;
 
   /**
-   True if the mate pair of this alignment is mapped as a reverse compliment.
-   This field defaults to false.
+   True if the mate pair for this alignment is mapped as a reverse
+   compliment. Defaults to false.
    */
   union { boolean, null } mateNegativeStrand = false;
 
   /**
-   True if this alignment is either the best linear alignment,
-   or the first linear alignment in a chimeric alignment. Defaults to false.
+   True if this alignment is either the best linear alignment, or the first
+   linear alignment in a chimeric alignment. Defaults to false.
    */
   union { boolean, null } primaryAlignment = false;
 
   /**
-   True if this alignment is a lower quality linear alignment
-   for a multiply-mapped read. Defaults to false.
+   True if this alignment is a lower quality linear alignment for a
+   multiply-mapped read. Defaults to false.
    */
   union { boolean, null } secondaryAlignment = false;
 
   /**
-   True if this alignment is a non-primary linear alignment in
-   a chimeric alignment. Defaults to false.
+   True if this alignment is a non-primary linear alignment in a chimeric
+   alignment. Defaults to false.
    */
   union { boolean, null } supplementaryAlignment = false;
 
-  // Commonly used optional attributes
+  /**
+   Mismatching positions for this alignment. SAM optional field reserved tag
+   MD.
+
+   Format (not enforced here): [0-9]+(([A-Z]|\^[A-Z]+)[0-9]+)*
+   */
   union { null, string } mismatchingPositions = null;
-  union { null, string } originalQuality = null;
-
-  // Remaining optional attributes flattened into a string
-  union { null, string } attributes = null;
-
-  // record group identifer from sequencing run
-  union { null, string } recordGroupName = null;
-  union { null, string } recordGroupSample = null;
 
   /**
-   The start position of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
+   Original per-base quality scores of the read for this alignment, before
+   recalibration. SAM optional field reserved tag OQ.
+   */
+  union { null, string } originalQuality = null;
+
+  /**
+   Read group identifier for the read for this alignment. Join with
+   ReadGroup.id for read group metadata.
+   */
+  union { null, string } readGroupId = null;
+
+  /**
+   Read group sample identifier for the read for this alignment. Join with
+   ReadGroup.sampleId for read group metadata or Sample.id for sample metadata.
+   */
+  union { null, string } readGroupSampleId = null;
+
+  /**
+   Start position of the mate of the read for this alignment, in zero-based
+   coordinate system with closed-open intervals. Should be set to null if the
+   mate is unaligned, or if the mate does not exist. SAM column 8 field PNEXT
+   converted to zero-based coordinate system, closed-open intervals.
    */
   union { null, long } mateAlignmentStart = null;
 
   /**
-   The reference of the mate of this read. Should be set to null if the
-   mate is unaligned, or if the mate does not exist.
+   Reference for the mate of the read for this alignment. Should be set to
+   null if the mate is unaligned, or if the mate does not exist. SAM column 7
+   field RNEXT.
    */
   union { null, string } mateReferenceName = null;
 
   /**
-   The distance between this read and it's mate as inferred from alignment.
+   Insert size between the read for this alignment and its mate, derived from
+   alignment, if the reads have been aligned. Should be set to null if the mate
+   is unaligned, or if the mate does not exist.
    */
-  union { null, long } inferredInsertSize = null;
+  union { null, long } insertSize = null;
+
+  /**
+   Index of the read for this alignment within an array of fragments.
+   Defaults to zero.
+   */
+  union { int, null } readInFragment = 0;
+
+  /**
+   Additional alignment attributes that do not fit into the standard fields
+   above, flattened into a string.
+   */
+  union { null, string } attributes = null;
 }
 
 /**
@@ -342,23 +456,24 @@ record AlignmentRecord {
 record Fragment {
 
   /**
-   The name of this fragment.
+   Name of this fragment.
    */
   union { null, string } name = null;
 
   /**
-   Record group name for this fragment.
+   Read group identifier for this fragment. Join with ReadGroup.id for read
+   group metadata.
    */
-  union { null, string } recordGroupName = null;
+  union { null, string } readGroupId = null;
 
   /**
-   Insert size for this fragment, derived from alignment, if the reads have been
-   aligned.
+   Insert size for this fragment, derived from alignment, if the reads have
+   been aligned.
    */
   union { null, int } insertSize = null;
 
   /**
-   The reads from this fragment.
+   Reads from this fragment.
    */
   array<AlignmentRecord> alignments = [];
 }
@@ -1002,12 +1117,12 @@ record Genotype {
   union { null, string } referenceName = null;
 
   /**
-   The 0-based start position of this genotype's variant on the reference.
+   The zero-based start position of this genotype's variant on the reference.
    */
   union { null, long } start = null;
 
   /**
-   The 0-based, exclusive end position of this genotype's variant on the reference.
+   The zero-based, exclusive end position of this genotype's variant on the reference.
    */
   union { null, long } end = null;
 
@@ -1017,7 +1132,7 @@ record Genotype {
   union { null, VariantCallingAnnotations } variantCallingAnnotations = null;
 
   /**
-   The unique identifier for this sample.
+   The unique identifier for this sample. Join with Sample.id for sample metadata.
    */
   union { null, string }  sampleId = null;
 
@@ -1187,9 +1302,8 @@ record Feature {
    */
   union { null, string } featureId = null;
 
-
   /**
-   Sample identifier for this feature. Join with Sample.sampleId for sample metadata.
+   Sample identifier for this feature. Join with Sample.id for sample metadata.
    sampleId tag in GFF3.
   */
   union { null, string } sampleId = null;
@@ -1220,14 +1334,14 @@ record Feature {
   union { null, string } referenceName = null;
 
   /**
-   Start position for this feature, in 0-based coordinate system with closed-open
+   Start position for this feature, in zero-based coordinate system with closed-open
    intervals. This may require conversion from the coordinate system of the native
    file format. Column 4 "start" in GFF3, column 2 "chromStart" in BED format.
    */
   union { null, long } start = null;
 
   /**
-   End position for this feature, in 0-based coordinate system with closed-open
+   End position for this feature, in zero-based coordinate system with closed-open
    intervals. This may require conversion from the coordinate system of the native
    file format. Column 5 "end" in GFF3, column 3 "chromEnd" in BED format.
    */
@@ -1342,7 +1456,7 @@ record Sample {
    in SAM/BAM files, or sample ID from the header or ##SAMPLE=&lt;ID=S_ID meta-information
    lines in VCF files.
    */
-  union { null, string } sampleId = null;
+  union { null, string } id = null;
 
   /**
    Descriptive name for this sample, e.g. SAMPLE_NAME &rarr; TAXON_ID, COMMON_NAME,
@@ -1448,13 +1562,13 @@ record Slice { // extends Sequence
   union { null, string } sequence = null;
 
   /**
-   Start position for this slice on the sequence this slice views, in 0-based coordinate
+   Start position for this slice on the sequence this slice views, in zero-based coordinate
    system with closed-open intervals.
    */
   union { null, long } start = null;
 
   /**
-   End position for this slice on the sequence this slice views, in 0-based coordinate
+   End position for this slice on the sequence this slice views, in zero-based coordinate
    system with closed-open intervals.
    */
   union { null, long } end = null;
