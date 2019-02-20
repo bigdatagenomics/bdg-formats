@@ -1,12 +1,91 @@
-# bdg-formats #
+# bdg-formats Changelog #
+
+### Version 0.11.4 ###
+
+**Closed issues:**
+
+ - Add sampleId for Feature record [\#170](https://github.com/bigdatagenomics/bdg-formats/issues/170)
+ - Release version 0.11.4 [\#169](https://github.com/bigdatagenomics/bdg-formats/issues/169)
+ - jdk 9 compilation fails [\#165](https://github.com/bigdatagenomics/bdg-formats/issues/165)
+ - AlignmentRecord.attributes should be map<string> [\#161](https://github.com/bigdatagenomics/bdg-formats/issues/161)
+ - Add API documentation link and badge [\#160](https://github.com/bigdatagenomics/bdg-formats/issues/160)
+ - Clean up fields in Fragment [\#159](https://github.com/bigdatagenomics/bdg-formats/issues/159)
+
+**Merged and closed pull requests:**
+
+ - Update avro dependency version to 1.8.2. [\#171](https://github.com/bigdatagenomics/bdg-formats/pull/171) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-165] Support JDKs 9 and above. [\#168](https://github.com/bigdatagenomics/bdg-formats/pull/168) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-170] Add sampleId to Feature record [\#167](https://github.com/bigdatagenomics/bdg-formats/pull/167) ([akmorrow13](https://github.com/akmorrow13))
+ - compilation fails on jdk 9 [https://github.com/bigdatagenomics/bdg-fo… [\#166](https://github.com/bigdatagenomics/bdg-formats/pull/166) ([sreev](https://github.com/sreev))
+ - [FORMATS-160] Adding API documentation link and badge. [\#163](https://github.com/bigdatagenomics/bdg-formats/pull/163) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-159] Clean up fields and doc in fragment. [\#162](https://github.com/bigdatagenomics/bdg-formats/pull/162) ([heuermh](https://github.com/heuermh))
+ - Adding code of contact adapted from the Contributor Convenant, version 1.4. [\#157](https://github.com/bigdatagenomics/bdg-formats/pull/157) ([heuermh](https://github.com/heuermh))
+
+
+### Version 0.11.3 ###
+
+**Closed issues:**
+
+ - Release version 0.11.3 [\#152](https://github.com/bigdatagenomics/bdg-formats/issues/152)
+ - Add splitFromMultiallelic to Variant [\#149](https://github.com/bigdatagenomics/bdg-formats/issues/149)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-149] Add splitFromMultiallelic to Variant. [\#150](https://github.com/bigdatagenomics/bdg-formats/pull/150) ([fnothaft](https://github.com/fnothaft))
+
+
+### Version 0.11.2 ###
+
+**Closed issues:**
+
+ - Release version 0.11.2 [\#148](https://github.com/bigdatagenomics/bdg-formats/issues/148)
+ - Add quality field to variant [\#146](https://github.com/bigdatagenomics/bdg-formats/issues/146)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-146] Add variant quality field. [\#147](https://github.com/bigdatagenomics/bdg-formats/pull/147) ([fnothaft](https://github.com/fnothaft))
+
+
+### Version 0.11.1 ###
+
+**Closed issues:**
+
+ - Floats for genotype likelihoods can underflow [\#144](https://github.com/bigdatagenomics/bdg-formats/issues/144)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-144] Move genotype likelihood fields to doubles. [\#145](https://github.com/bigdatagenomics/bdg-formats/pull/145) ([fnothaft](https://github.com/fnothaft))
+
+
+### Version 0.11.0 ###
+
+**Closed issues:**
+
+ - Add totalLength, index, and slices to Slice [\#141](https://github.com/bigdatagenomics/bdg-formats/issues/141)
+ - Rename start/end fields in NucleotideContigFragment [\#138](https://github.com/bigdatagenomics/bdg-formats/issues/138)
+ - Add back contig length to NucleotideContigFragment [\#135](https://github.com/bigdatagenomics/bdg-formats/issues/135)
+ - NucleotideContigFragment uses `contig` instead of `contigName` [\#127](https://github.com/bigdatagenomics/bdg-formats/issues/127)
+ - Remove AlignmentRecord.mateAlignmentEnd [\#115](https://github.com/bigdatagenomics/bdg-formats/issues/115)
+ - Add processing description schema [\#114](https://github.com/bigdatagenomics/bdg-formats/issues/114)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-141] Add totalLength, index, and slices to Slice. [\#140](https://github.com/bigdatagenomics/bdg-formats/pull/140) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-138] Rename NucleotideContigFragment start/end fields. [\#139](https://github.com/bigdatagenomics/bdg-formats/pull/139) ([fnothaft](https://github.com/fnothaft))
+ - [FORMATS-135] Store the total contig length with a nucleotide contig … [\#136](https://github.com/bigdatagenomics/bdg-formats/pull/136) ([fnothaft](https://github.com/fnothaft))
+ - [FORMATS-114] Add processing description record. [\#134](https://github.com/bigdatagenomics/bdg-formats/pull/134) ([fnothaft](https://github.com/fnothaft))
+ - [FORMATS-127] Use contigName instead of contig [\#132](https://github.com/bigdatagenomics/bdg-formats/pull/132) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-115] Remove AlignmentRecord.mateAlignmentEnd [\#131](https://github.com/bigdatagenomics/bdg-formats/pull/131) ([heuermh](https://github.com/heuermh))
+ - Fix case for default Strand [\#129](https://github.com/bigdatagenomics/bdg-formats/pull/129) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-124] Add field for generic non-reference allele. [\#125](https://github.com/bigdatagenomics/bdg-formats/pull/125) ([fnothaft](https://github.com/fnothaft))
+ - Add attributes map field to Sequence, Slice, Read records [\#123](https://github.com/bigdatagenomics/bdg-formats/pull/123) ([heuermh](https://github.com/heuermh))
+ - Doc fixes to CHANGES.md and CONTRIBUTING.md [\#121](https://github.com/bigdatagenomics/bdg-formats/pull/121) ([heuermh](https://github.com/heuermh))
+
 
 ### Version 0.10.0 ###
 
 * ISSUE [118](https://github.com/bigdatagenomics/bdg-formats/issues/118): Use separate fields for Number=R VCF INFO attributes
 * ISSUE [116](https://github.com/bigdatagenomics/bdg-formats/issues/116): Add forward reference between Variant and VariantAnnotation
-
-### Version 0.10.0 ###
-
 * ISSUE [113](https://github.com/bigdatagenomics/bdg-formats/pull/113): Harmonize filter representation between Variant and VariantCallingAnnotations
 * ISSUE [111](https://github.com/bigdatagenomics/bdg-formats/pull/111): Improve doc for VariantAnnotation
 * ISSUE [110](https://github.com/bigdatagenomics/bdg-formats/pull/110): Add variant filters for VCF column 7 FILTER
