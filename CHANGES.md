@@ -1,5 +1,28 @@
 # bdg-formats Changelog #
 
+### Version 0.12.0 ###
+
+**Closed issues:**
+
+ - Javadoc errors in generated code cause release to fail [\#179](https://github.com/bigdatagenomics/bdg-formats/issues/179)
+ - Remove quality score variant [\#173](https://github.com/bigdatagenomics/bdg-formats/issues/173)
+ - Update AlignmentRecord field docs with mappings to SAM spec where appropriate [\#155](https://github.com/bigdatagenomics/bdg-formats/issues/155)
+ - All "original" fields should have the same prefix [\#130](https://github.com/bigdatagenomics/bdg-formats/issues/130)
+ - Lengthen "abbreviated" field names [\#126](https://github.com/bigdatagenomics/bdg-formats/issues/126)
+ - Rename Contig objects [\#43](https://github.com/bigdatagenomics/bdg-formats/issues/43)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-179] Use additionalJOptions element instead of additionalparam. [\#180](https://github.com/bigdatagenomics/bdg-formats/pull/180) ([heuermh](https://github.com/heuermh))
+ - Updating CHANGES.md [\#177](https://github.com/bigdatagenomics/bdg-formats/pull/177) ([heuermh](https://github.com/heuermh))
+ - Refactor AlignmentRecord, RecordGroup, and ProcessingStep [\#175](https://github.com/bigdatagenomics/bdg-formats/pull/175) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-173] Remove quality score variant [\#174](https://github.com/bigdatagenomics/bdg-formats/pull/174) ([heuermh](https://github.com/heuermh))
+ - Re-add reference.assembly field. [\#172](https://github.com/bigdatagenomics/bdg-formats/pull/172) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-43] Rename contig to reference. [\#154](https://github.com/bigdatagenomics/bdg-formats/pull/154) ([heuermh](https://github.com/heuermh))
+ - Lengthen "abbreviated" field names [\#143](https://github.com/bigdatagenomics/bdg-formats/pull/143) ([Gasta88](https://github.com/Gasta88))
+ - Refactor Genotype and GenotypeAnnotation [\#108](https://github.com/bigdatagenomics/bdg-formats/pull/108) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 0.11.4 ###
 
 **Closed issues:**
