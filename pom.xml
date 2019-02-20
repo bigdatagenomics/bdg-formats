@@ -79,7 +79,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.0.1</version>
           <configuration>
-            <additionalparam>-Xdoclint:none</additionalparam>
+	    <additionalJOptions>-Xdoclint:none</additionalJOptions>
           </configuration>
         </plugin>
       </plugins>
@@ -148,7 +148,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
             <configuration>
-              <additionalparam>-Xdoclint:none</additionalparam>
+	      <additionalJOptions>-Xdoclint:none</additionalJOptions>
             </configuration>
             <executions>
               <execution>
