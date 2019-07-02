@@ -1,5 +1,16 @@
 # bdg-formats Changelog #
 
+### Version 0.13.0 ###
+
+**Closed issues:**
+
+ - Replace NucleotideContigFragment with Sequence and Slice [\#142](https://github.com/bigdatagenomics/bdg-formats/issues/142)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-142] Replace NucleotideContigFragment with Sequence and Slice [\#153](https://github.com/bigdatagenomics/bdg-formats/pull/153) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 0.12.0 ###
 
 **Closed issues:**
