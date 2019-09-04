@@ -261,7 +261,7 @@ record AlignmentRecord {
    read. Additionally, if the error scores have been recalibrated, this field
    will not contain the original base quality scores. SAM column 11 field QUAL.
    */
-  union { null, string } quality = null;
+  union { null, string } qualityScores = null;
 
   /**
    Compact Ideosyncratic Gapped Alignment Report (CIGAR) string that
@@ -400,7 +400,7 @@ record AlignmentRecord {
    Original per-base quality scores of the read for this alignment, before
    recalibration. SAM optional field reserved tag OQ.
    */
-  union { null, string } originalQuality = null;
+  union { null, string } originalQualityScores = null;
 
   /**
    Read group identifier for the read for this alignment. Join with
