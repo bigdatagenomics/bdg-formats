@@ -11,7 +11,7 @@
 
   <groupId>org.bdgenomics.bdg-formats</groupId>
   <artifactId>bdg-formats</artifactId>
-  <version>0.13.1-SNAPSHOT</version>
+  <version>0.14.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Big Data Genomics: Avro Formats</name>
 
@@ -31,20 +31,9 @@
   </scm>
   <developers>
     <developer>
-      <id>massie</id>
-      <name>Matt Massie</name>
-      <email>massie@cs.berkeley.edu</email>
-      <url>http://www.cs.berkeley.edu/~massie</url>
-      <organization>U.C. Berkeley Computer Science</organization>
-      <organizationUrl>http://www.cs.berkeley.edu/</organizationUrl>
-    </developer>
-    <developer>
-      <id>fnothaft</id>
-      <name>Frank Austin Nothaft</name>
-      <email>fnothaft@berkeley.edu</email>
-      <url>http://www.fnothaft.net</url>
-      <organization>U.C. Berkeley Computer Science</organization>
-      <organizationUrl>http://www.cs.berkeley.edu/</organizationUrl>
+      <id>heuermh</id>
+      <name>Michael L Heuer</name>
+      <organization>University of California Berkeley</organization>
     </developer>
   </developers>
   <issueManagement>
@@ -77,7 +66,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.0</version>
           <configuration>
 	    <additionalJOptions>-Xdoclint:none</additionalJOptions>
           </configuration>
@@ -146,7 +135,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
             <configuration>
 	      <additionalJOptions>-Xdoclint:none</additionalJOptions>
             </configuration>
