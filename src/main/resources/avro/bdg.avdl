@@ -197,6 +197,12 @@ record ReadGroup {
   union { null, string } sampleId = null;
 
   /**
+   Zero or more barcode sequences associated with this read group. SAM tag BC
+   for header record type @RG, split by dash '-' characters.
+   */
+  array<string> barcodes = [];
+
+  /**
    Processing steps that have been applied to this read group. SAM tag PG for
    header record type @RG.
    */
