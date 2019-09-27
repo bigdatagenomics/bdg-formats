@@ -204,9 +204,9 @@ record ReadGroup {
 }
 
 /**
- Alignment record.
+ Alignment.
  */
-record AlignmentRecord {
+record Alignment {
 
   /**
    The reference for this alignment. If the read is unaligned, this
@@ -475,7 +475,7 @@ record Fragment {
   /**
    Reads from this fragment.
    */
-  array<AlignmentRecord> alignments = [];
+  array<Alignment> alignments = [];
 }
 
 /**
