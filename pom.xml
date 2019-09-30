@@ -87,6 +87,8 @@
               <goal>idl-protocol</goal>
             </goals>
             <configuration>
+              <createSetters>false</createSetters>
+              <fieldVisibility>PRIVATE</fieldVisibility>
               <sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
               <stringType>String</stringType>
             </configuration>
