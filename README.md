@@ -1,7 +1,7 @@
 bdg-formats
 ===
 
-[![Build Status](https://img.shields.io/jenkins/s/https/amplab.cs.berkeley.edu/jenkins/view/Big%20Data%20Genomics/job/bdg-formats.svg)](https://amplab.cs.berkeley.edu/jenkins/view/Big%20Data%20Genomics/job/bdg-formats/)
+[![Build Status](https://travis-ci.org/bigdatagenomics/bdg-formats.svg?branch=master)](https://travis-ci.org/bigdatagenomics/bdg-formats)
 [![Maven Central](https://img.shields.io/maven-central/v/org.bdgenomics.bdg-formats/bdg-formats.svg?maxAge=600)](http://search.maven.org/#search%7Cga%7C1%7Corg.bdgenomics.bdg-formats)
 [![API Documentation](http://javadoc.io/badge/org.bdgenomics.bdg-formats/bdg-formats.svg?color=brightgreen&label=scaladoc)](http://javadoc.io/doc/org.bdgenomics.bdg-formats/bdg-formats)
 
