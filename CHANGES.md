@@ -1,5 +1,39 @@
 # bdg-formats Changelog #
 
+### Version 0.15.0 ###
+
+**Closed issues:**
+
+ - Rename AlignmentRecord --> Alignment or similar [\#164](https://github.com/bigdatagenomics/bdg-formats/issues/164)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-192] Use direct Jenkins build status link. [\#193](https://github.com/bigdatagenomics/bdg-formats/pull/193) ([heuermh](https://github.com/heuermh))
+ - Use private field visibility in generated source. [\#190](https://github.com/bigdatagenomics/bdg-formats/pull/190) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-164] Rename AlignmentRecord to Alignment. [\#188](https://github.com/bigdatagenomics/bdg-formats/pull/188) ([heuermh](https://github.com/heuermh))
+
+
+### Version 0.14.0 ###
+
+**Closed issues:**
+
+ - Snapshot version should be 0.14.0-SNAPSHOT [\#184](https://github.com/bigdatagenomics/bdg-formats/issues/184)
+ - Add barcodes field to ReadGroup [\#182](https://github.com/bigdatagenomics/bdg-formats/issues/182)
+ - Alignment record quality vs Read qualityScores [\#181](https://github.com/bigdatagenomics/bdg-formats/issues/181)
+ - ADAM Extension to precision medecine [\#158](https://github.com/bigdatagenomics/bdg-formats/issues/158)
+ - Document schema design philosophy [\#91](https://github.com/bigdatagenomics/bdg-formats/issues/91)
+ - Update Fragment type to support more general "read-bucketing" [\#54](https://github.com/bigdatagenomics/bdg-formats/issues/54)
+ - Publish C/C++ artifacts [\#22](https://github.com/bigdatagenomics/bdg-formats/issues/22)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-182] Add barcodes field to ReadGroup [\#187](https://github.com/bigdatagenomics/bdg-formats/pull/187) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-181] Use qualityScores for base quality scores [\#186](https://github.com/bigdatagenomics/bdg-formats/pull/186) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-184] Snapshot version should be 0.14.0-SNAPSHOT [\#185](https://github.com/bigdatagenomics/bdg-formats/pull/185) ([heuermh](https://github.com/heuermh))
+ - [BDG-FORMATS-54] Generalizing the Fragment type [\#56](https://github.com/bigdatagenomics/bdg-formats/pull/56) ([laserson](https://github.com/laserson))
+ - Platform-specific data [\#55](https://github.com/bigdatagenomics/bdg-formats/pull/55) ([ilveroluca](https://github.com/ilveroluca))
+
+
 ### Version 0.13.0 ###
 
 **Closed issues:**
