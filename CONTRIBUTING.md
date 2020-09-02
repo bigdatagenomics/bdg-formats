@@ -23,7 +23,7 @@ The ADAM project also hosts a developers mailing list, which can be used to disc
 
 ### Search the Github issue tracker and pull requests
 
-Before you write too much code, check the [open issues in the bdg-foramts issue tracker](https://github.com/bigdatagenomics/bdg-formats/issues?state=open)
+Before you write too much code, check the [open issues in the bdg-formats issue tracker](https://github.com/bigdatagenomics/bdg-formats/issues?state=open)
 and [bdg-formats open pull requests](https://github.com/bigdatagenomics/bdg-formats/pulls) to see if someone else is already working on it. If the issue is
 a new one, and you have already written the code to address the issue, simply [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 If you haven't written any code but plan to, go ahead and [open a new issue](https://github.com/bigdatagenomics/bdg-formats/issues/new) and assign
