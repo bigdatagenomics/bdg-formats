@@ -554,6 +554,58 @@ enum VariantAnnotationMessage {
 }
 
 /**
+ Putative impact of a variant annotation.
+ */
+enum Impact {
+
+  /**
+   High impact.
+   */
+  HIGH,
+
+  /**
+   Moderate impact.
+   */
+  MODERATE,
+
+  /**
+   Low impact.
+   */
+  LOW,
+
+  /**
+   Modifier impact.
+   */
+  MODIFIER
+}
+
+/**
+ Strand of an alignment or feature.
+ */
+enum Strand {
+
+  /**
+   Forward ("+") strand.
+   */
+  FORWARD,
+
+  /**
+   Reverse ("-") strand.
+   */
+  REVERSE,
+
+  /**
+   Independent or not stranded (".").
+   */
+  INDEPENDENT,
+
+  /**
+   Strandedness is relevant, but unknown ("?").
+   */
+  UNKNOWN
+}
+
+/**
  Annotation of a variant in the context of a feature, typically a transcript.
  */
 record TranscriptEffect {
@@ -570,6 +622,12 @@ record TranscriptEffect {
    stop_gained, missense_variant, synonymous_variant, upstream_gene_variant.
    */
   array<string> effects = [];
+
+  /**
+   Putative impact of the annotation; a simple estimation of putative impact/
+   deleteriousness.
+   */
+  union { null, Impact } impact = null;
 
   /**
    Common gene name (HGNC), e.g. BRCA2. May be closest gene if annotation
@@ -597,6 +655,11 @@ record TranscriptEffect {
    Feature biotype, e.g. Protein coding or Non coding. See http://vega.sanger.ac.uk/info/about/gene_and_transcript_types.html.
    */
   union { null, string } biotype = null;
+
+  /**
+   Feature strand, if known.
+   */
+  union { null, Strand } strand = null;
 
   /**
    Intron or exon rank.
@@ -636,12 +699,22 @@ record TranscriptEffect {
   /**
    Coding sequence position (one based, includes START and STOP codons).
    */
-  union { null, int } cdsPosition = null;
+  union { null, int } codingSequencePosition = null;
 
   /**
    Coding sequence length in base pairs (one based, includes START and STOP codons).
    */
-  union { null, int } cdsLength = null;
+  union { null, int } codingSequenceLength = null;
+
+  /**
+   Coding sequence for the reference allele.
+   */
+  union { null, string } referenceCodingSequence = null;
+
+  /**
+   Coding sequence of this alternate allele.
+   */
+  union { null, string } alternateCodingSequence = null;
 
   /**
    Protein sequence position (one based, includes START but not STOP).
@@ -652,6 +725,16 @@ record TranscriptEffect {
    Protein sequence length in amino acids (one based, includes START but not STOP).
    */
   union { null, int } proteinLength = null;
+
+  /**
+   Protein sequence for the reference allele.
+   */
+  union { null, string } referenceProteinSequence = null;
+
+  /**
+   Protein sequence of this alternate allele.
+   */
+  union { null, string } alternateProteinSequence = null;
 
   /**
    Distance in base pairs to the feature.
@@ -1168,32 +1251,6 @@ record Genotype {
    is phased. Should only be populated if phased == true; else should be null.
    */
   union { null, int } phaseQuality = null;
-}
-
-/**
- Strand of an alignment or feature.
- */
-enum Strand {
-
-  /**
-   Forward ("+") strand.
-   */
-  FORWARD,
-
-  /**
-   Reverse ("-") strand.
-   */
-  REVERSE,
-
-  /**
-   Independent or not stranded (".").
-   */
-  INDEPENDENT,
-
-  /**
-   Strandedness is relevant, but unknown ("?").
-   */
-  UNKNOWN
 }
 
 /**
