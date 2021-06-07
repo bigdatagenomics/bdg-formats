@@ -1526,6 +1526,11 @@ record Sequence {
   union { null, long } length = null;
 
   /**
+   Sample identifier for this sequence. Join with Sample.id for sample metadata.
+   */
+  union { null, string } sampleId = null;
+
+  /**
    Map of attributes.
    */
   map<string> attributes = {};
@@ -1594,6 +1599,11 @@ record Slice { // extends Sequence
   union { null, int } slices = null;
 
   /**
+   Sample identifier for this slice. Join with Sample.id for sample metadata.
+   */
+  union { null, string } sampleId = null;
+
+  /**
    Map of attributes.
    */
   map<string> attributes = {};
@@ -1634,6 +1644,11 @@ record Read { // extends Sequence
    Phred quality scores from 0 to 93 using ASCII values 33 to 126.
    */
   union { null, string } qualityScores = null;
+
+  /**
+   Sample identifier for this read. Join with Sample.id for sample metadata.
+   */
+  union { null, string } sampleId = null;
 
   /**
    Map of attributes.
