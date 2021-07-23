@@ -1,5 +1,32 @@
 # bdg-formats Changelog #
 
+### Version 0.16.0 ###
+
+**Closed issues:**
+
+ - Add sample to Sequence, Slice, and Read [\#205](https://github.com/bigdatagenomics/bdg-formats/issues/205)
+ - Add impact, strand, ref/alt protein sequence, ref/alt coding sequence to TranscriptEffect [\#202](https://github.com/bigdatagenomics/bdg-formats/issues/202)
+ - Update release script to update changelog [\#197](https://github.com/bigdatagenomics/bdg-formats/issues/197)
+ - Changelog is missing versions 0.14.0 and 0.15.0 [\#196](https://github.com/bigdatagenomics/bdg-formats/issues/196)
+ - Migrate CI build to Travis or Github Actions [\#194](https://github.com/bigdatagenomics/bdg-formats/issues/194)
+ - Jenkins build status icon link is broken [\#192](https://github.com/bigdatagenomics/bdg-formats/issues/192)
+ - Add record definition for VCF header [\#191](https://github.com/bigdatagenomics/bdg-formats/issues/191)
+ - Add record definition for VariantContext [\#183](https://github.com/bigdatagenomics/bdg-formats/issues/183)
+ - Migrate bdg-formats to new adam-formats module [\#151](https://github.com/bigdatagenomics/bdg-formats/issues/151)
+
+**Merged and closed pull requests:**
+
+ - [FORMATS-205] Add sample to Sequence, Slice, and Read [\#206](https://github.com/bigdatagenomics/bdg-formats/pull/206) ([heuermh](https://github.com/heuermh))
+ - Update maven plugin dependency versions [\#204](https://github.com/bigdatagenomics/bdg-formats/pull/204) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-202] Add impact, strand, ref/alt coding sequence, ref/alt protein sequence to TranscriptEffect [\#203](https://github.com/bigdatagenomics/bdg-formats/pull/203) ([heuermh](https://github.com/heuermh))
+ - Fix typo in contributing doc [\#201](https://github.com/bigdatagenomics/bdg-formats/pull/201) ([heuermh](https://github.com/heuermh))
+ - Minor updates to readme [\#200](https://github.com/bigdatagenomics/bdg-formats/pull/200) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-197] Update release script to update changelog [\#199](https://github.com/bigdatagenomics/bdg-formats/pull/199) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-196] Update changelog for versions 0.14.0 and 0.15.0 [\#198](https://github.com/bigdatagenomics/bdg-formats/pull/198) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-194] Enable Travis for CI build [\#195](https://github.com/bigdatagenomics/bdg-formats/pull/195) ([heuermh](https://github.com/heuermh))
+ - Add encoded sequence and sequence encoding. [\#189](https://github.com/bigdatagenomics/bdg-formats/pull/189) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 0.15.0 ###
 
 **Closed issues:**
