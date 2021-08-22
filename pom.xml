@@ -42,7 +42,7 @@
   </issueManagement>
 
   <properties>
-    <avro.version>1.8.2</avro.version>
+    <avro.version>1.10.2</avro.version>
     <java.version>1.8</java.version>
   </properties>
   
