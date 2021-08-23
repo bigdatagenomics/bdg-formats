@@ -1385,6 +1385,11 @@ record Feature {
   union { null, string } exonId = null;
 
   /**
+   Protein or translation identifier, e.g. O14640. protein_id tag in GFF2/GTF and Genbank.
+   */
+  union { null, string } proteinId = null;
+
+  /**
    Secondary names or identifiers for this feature. Alias tag in GFF3.
    */
   array<string> aliases = [];
