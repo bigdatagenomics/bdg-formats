@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
   <name>Big Data Genomics: Avro Formats</name>
 
-  <url>http://www.bdgenomics.org</url>
+  <url>https://github.com/bigdatagenomics/bdg-formats</url>
   <licenses>
     <license>
       <name>Apache License</name>
