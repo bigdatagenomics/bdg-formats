@@ -1,5 +1,22 @@
 # bdg-formats Changelog #
 
+### Version 0.17.0 ###
+
+**Closed issues:**
+
+ - Add proteinId field to Feature [\#208](https://github.com/bigdatagenomics/bdg-formats/issues/208)
+ - Flatten VariantAnnotation and GenotypeAnnotation [\#156](https://github.com/bigdatagenomics/bdg-formats/issues/156)
+ - Improve gVCF support [\#106](https://github.com/bigdatagenomics/bdg-formats/issues/106)
+ - Reconsider StructuralVariant and StructuralVariantType [\#104](https://github.com/bigdatagenomics/bdg-formats/issues/104)
+
+**Merged and closed pull requests:**
+
+ - Update github-changes-maven-plugin version to 1.2 [\#210](https://github.com/bigdatagenomics/bdg-formats/pull/210) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-208] Add proteinId field to Feature [\#209](https://github.com/bigdatagenomics/bdg-formats/pull/209) ([heuermh](https://github.com/heuermh))
+ - Update avro dependency version to 1.10.2 [\#207](https://github.com/bigdatagenomics/bdg-formats/pull/207) ([heuermh](https://github.com/heuermh))
+ - [FORMATS-106] Refactor Genotype and GenotypeAnnotation. [\#176](https://github.com/bigdatagenomics/bdg-formats/pull/176) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 0.16.0 ###
 
 **Closed issues:**
