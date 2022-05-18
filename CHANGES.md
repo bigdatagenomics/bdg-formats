@@ -1,5 +1,16 @@
 # bdg-formats Changelog #
 
+### Version 1.0 ###
+
+**Closed issues:**
+
+ - Update pom.xml url to Github repository [\#211](https://github.com/bigdatagenomics/bdg-formats/issues/211)
+
+**Merged and closed pull requests:**
+
+ - Update pom.xml url to Github repository [\#212](https://github.com/bigdatagenomics/bdg-formats/pull/212) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 0.17.0 ###
 
 **Closed issues:**
