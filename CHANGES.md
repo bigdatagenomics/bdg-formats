@@ -1,5 +1,19 @@
 # bdg-formats Changelog #
 
+### Version 1.0.1 ###
+
+**Closed issues:**
+
+ - Migrate CI from Travis to Github Actions [\#216](https://github.com/bigdatagenomics/bdg-formats/issues/216)
+ - Fix avro-maven-plugin version 1.11.1 warnings [\#214](https://github.com/bigdatagenomics/bdg-formats/issues/214)
+ - Update Avro dependency version to 1.11.1 [\#213](https://github.com/bigdatagenomics/bdg-formats/issues/213)
+
+**Merged and closed pull requests:**
+
+ - Migrate CI from Travis to Github Actions [\#217](https://github.com/bigdatagenomics/bdg-formats/pull/217) ([heuermh](https://github.com/heuermh))
+ - Update Avro dependency version to 1.11.1 [\#215](https://github.com/bigdatagenomics/bdg-formats/pull/215) ([heuermh](https://github.com/heuermh))
+
+
 ### Version 1.0 ###
 
 **Closed issues:**
