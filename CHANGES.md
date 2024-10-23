@@ -1,5 +1,15 @@
 # bdg-formats Changelog #
 
+### Version 1.0.3 ###
+
+**Closed issues:**
+
+
+**Merged and closed pull requests:**
+
+ - Bump org.apache.avro:avro from 1.11.3 to 1.11.4 [\#222](https://github.com/bigdatagenomics/bdg-formats/pull/222) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+
 ### Version 1.0.2 ###
 
 **Closed issues:**
